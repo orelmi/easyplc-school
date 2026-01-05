@@ -297,9 +297,33 @@ async function main() {
             content: "## Pourquoi utiliser un automate ?\n\n- **Flexibilité** : On peut modifier le programme sans changer le câblage\n- **Fiabilité** : Conçu pour fonctionner 24h/24 en environnement industriel\n- **Diagnostic** : Détection et signalement des pannes\n- **Communication** : Échange de données avec d'autres systèmes"
           },
           {
-            type: "image",
-            url: "/images/plc-structure.svg",
-            caption: "Structure d'un automate programmable"
+            type: "diagram",
+            title: "Structure d'un automate programmable",
+            content: `┌─────────────────────────────────────────────────────────────┐
+│                    AUTOMATE PROGRAMMABLE                    │
+│  ┌─────────────────────────────────────────────────────────┐│
+│  │                                                         ││
+│  │  ┌─────────┐    ┌─────────────┐    ┌─────────────────┐ ││
+│  │  │         │    │             │    │                 │ ││
+│  │  │ ENTRÉES │───▶│     CPU     │───▶│    SORTIES      │ ││
+│  │  │  (I)    │    │  (Programme)│    │      (Q)        │ ││
+│  │  │         │    │             │    │                 │ ││
+│  │  └─────────┘    └─────────────┘    └─────────────────┘ ││
+│  │       ▲               │                    │           ││
+│  │       │          ┌────┴────┐               ▼           ││
+│  │       │          │ MÉMOIRE │         ┌─────────┐       ││
+│  │       │          └─────────┘         │ALIMENT. │       ││
+│  │       │                              └─────────┘       ││
+│  └───────┼──────────────────────────────────────────────┘ │
+│          │                                      │          │
+└──────────┼──────────────────────────────────────┼──────────┘
+           │                                      │
+    ┌──────┴──────┐                      ┌───────┴───────┐
+    │  CAPTEURS   │                      │  ACTIONNEURS  │
+    │ - Boutons   │                      │ - Moteurs     │
+    │ - Détecteurs│                      │ - Vannes      │
+    │ - Sondes    │                      │ - Voyants     │
+    └─────────────┘                      └───────────────┘`
           },
           {
             type: "text",

@@ -20,9 +20,33 @@ export const lessonTranslations = {
             content: "## Why use a PLC?\n\n- **Flexibility**: The program can be modified without changing the wiring\n- **Reliability**: Designed to operate 24/7 in industrial environments\n- **Diagnostics**: Detection and reporting of faults\n- **Communication**: Data exchange with other systems"
           },
           {
-            type: "image",
-            url: "/images/plc-structure.svg",
-            caption: "Structure of a programmable logic controller"
+            type: "diagram",
+            title: "Structure of a programmable logic controller",
+            content: `┌─────────────────────────────────────────────────────────────┐
+│                  PROGRAMMABLE LOGIC CONTROLLER              │
+│  ┌─────────────────────────────────────────────────────────┐│
+│  │                                                         ││
+│  │  ┌─────────┐    ┌─────────────┐    ┌─────────────────┐ ││
+│  │  │         │    │             │    │                 │ ││
+│  │  │ INPUTS  │───▶│     CPU     │───▶│    OUTPUTS      │ ││
+│  │  │  (I)    │    │  (Program)  │    │      (Q)        │ ││
+│  │  │         │    │             │    │                 │ ││
+│  │  └─────────┘    └─────────────┘    └─────────────────┘ ││
+│  │       ▲               │                    │           ││
+│  │       │          ┌────┴────┐               ▼           ││
+│  │       │          │ MEMORY  │         ┌─────────┐       ││
+│  │       │          └─────────┘         │  POWER  │       ││
+│  │       │                              └─────────┘       ││
+│  └───────┼──────────────────────────────────────────────┘ │
+│          │                                      │          │
+└──────────┼──────────────────────────────────────┼──────────┘
+           │                                      │
+    ┌──────┴──────┐                      ┌───────┴───────┐
+    │  SENSORS    │                      │  ACTUATORS    │
+    │ - Buttons   │                      │ - Motors      │
+    │ - Detectors │                      │ - Valves      │
+    │ - Probes    │                      │ - Indicators  │
+    └─────────────┘                      └───────────────┘`
           },
           {
             type: "text",
@@ -276,9 +300,33 @@ export const lessonTranslations = {
             content: "## ¿Por qué usar un PLC?\n\n- **Flexibilidad**: El programa puede modificarse sin cambiar el cableado\n- **Fiabilidad**: Diseñado para funcionar 24/7 en entornos industriales\n- **Diagnósticos**: Detección y reporte de fallos\n- **Comunicación**: Intercambio de datos con otros sistemas"
           },
           {
-            type: "image",
-            url: "/images/plc-structure.svg",
-            caption: "Estructura de un controlador lógico programable"
+            type: "diagram",
+            title: "Estructura de un controlador lógico programable",
+            content: `┌─────────────────────────────────────────────────────────────┐
+│                CONTROLADOR LÓGICO PROGRAMABLE               │
+│  ┌─────────────────────────────────────────────────────────┐│
+│  │                                                         ││
+│  │  ┌─────────┐    ┌─────────────┐    ┌─────────────────┐ ││
+│  │  │         │    │             │    │                 │ ││
+│  │  │ENTRADAS │───▶│     CPU     │───▶│    SALIDAS      │ ││
+│  │  │  (I)    │    │ (Programa)  │    │      (Q)        │ ││
+│  │  │         │    │             │    │                 │ ││
+│  │  └─────────┘    └─────────────┘    └─────────────────┘ ││
+│  │       ▲               │                    │           ││
+│  │       │          ┌────┴────┐               ▼           ││
+│  │       │          │ MEMORIA │         ┌─────────┐       ││
+│  │       │          └─────────┘         │ ALIMENT.│       ││
+│  │       │                              └─────────┘       ││
+│  └───────┼──────────────────────────────────────────────┘ │
+│          │                                      │          │
+└──────────┼──────────────────────────────────────┼──────────┘
+           │                                      │
+    ┌──────┴──────┐                      ┌───────┴───────┐
+    │  SENSORES   │                      │  ACTUADORES   │
+    │ - Botones   │                      │ - Motores     │
+    │ - Detectores│                      │ - Válvulas    │
+    │ - Sondas    │                      │ - Indicadores │
+    └─────────────┘                      └───────────────┘`
           },
           {
             type: "text",
