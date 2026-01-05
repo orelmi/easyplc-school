@@ -1,6 +1,7 @@
 import { PrismaClient } from '@prisma/client'
 import bcrypt from 'bcryptjs'
 import { lessonTranslations, quizTranslations, cncLessonTranslations, cncQuizTranslations, siemensLessonTranslations, siemensQuizTranslations } from './translations.js'
+import { vfdLessonTranslations } from './vfd-translations.js'
 
 const prisma = new PrismaClient()
 // Module translations for English and Spanish
@@ -16,7 +17,13 @@ const moduleTranslations = {
     { order: 8, title: "Axes and Interpolation", description: "Master coordinate systems and tool movements" },
     { order: 9, title: "Introduction to Siemens S7-1500", description: "Discover the S7-1500 PLC and TIA Portal environment" },
     { order: 10, title: "TIA Portal Programming", description: "Learn to create projects and program with TIA Portal" },
-    { order: 11, title: "S7-1500 Data Blocks", description: "Master data blocks (DB) and structured programming" }
+    { order: 11, title: "S7-1500 Data Blocks", description: "Master data blocks (DB) and structured programming" },
+    { order: 12, title: "Introduction to VFDs", description: "Discover the fundamentals of variable frequency drives" },
+    { order: 13, title: "VFD Configuration", description: "Learn to configure and set up a variable frequency drive" },
+    { order: 14, title: "VFD Communication and Diagnostics", description: "Master industrial communication and VFD diagnostics" },
+    { order: 15, title: "Introduction to Positioning", description: "Discover the basics of motion control and positioning" },
+    { order: 16, title: "Stepper Motors and Servomotors", description: "Understand different motor types for positioning" },
+    { order: 17, title: "Motion Programming", description: "Learn to program trajectories and motion profiles" }
   ],
   es: [
     { order: 1, title: "Introducción a la Automatización", description: "Descubra los fundamentos de la automatización industrial y los controladores lógicos programables" },
@@ -29,7 +36,13 @@ const moduleTranslations = {
     { order: 8, title: "Ejes e Interpolación", description: "Domine los sistemas de coordenadas y movimientos de herramienta" },
     { order: 9, title: "Introducción a Siemens S7-1500", description: "Descubra el PLC S7-1500 y el entorno TIA Portal" },
     { order: 10, title: "Programación con TIA Portal", description: "Aprenda a crear proyectos y programar con TIA Portal" },
-    { order: 11, title: "Bloques de Datos S7-1500", description: "Domine los bloques de datos (DB) y la programación estructurada" }
+    { order: 11, title: "Bloques de Datos S7-1500", description: "Domine los bloques de datos (DB) y la programación estructurada" },
+    { order: 12, title: "Introducción a Variadores", description: "Descubra los fundamentos de los variadores de frecuencia" },
+    { order: 13, title: "Configuración de Variadores", description: "Aprenda a configurar y parametrizar variadores de velocidad" },
+    { order: 14, title: "Comunicación y Diagnóstico VFD", description: "Domine la comunicación industrial y diagnóstico de variadores" },
+    { order: 15, title: "Introducción al Posicionamiento", description: "Descubra las bases del control de movimiento y posicionamiento" },
+    { order: 16, title: "Motores Paso a Paso y Servomotores", description: "Comprenda los diferentes tipos de motores para posicionamiento" },
+    { order: 17, title: "Programación del Movimiento", description: "Aprenda a programar trayectorias y perfiles de movimiento" }
   ]
 } as const
 
@@ -38,12 +51,14 @@ const cursusTranslations = {
   en: [
     { order: 1, title: "Industrial Automation", description: "Complete learning path for industrial automation and PLC programming" },
     { order: 2, title: "CNC Machining", description: "Learn to program and operate CNC machines" },
-    { order: 3, title: "Siemens Automation", description: "Specialized path for Siemens S7-1500 PLCs and TIA Portal" }
+    { order: 3, title: "Siemens Automation", description: "Specialized path for Siemens S7-1500 PLCs and TIA Portal" },
+    { order: 4, title: "Variable Speed Drives and Positioning", description: "Master variable frequency drives and motion control" }
   ],
   es: [
     { order: 1, title: "Automatización Industrial", description: "Ruta de aprendizaje completa para automatización industrial y programación de PLCs" },
     { order: 2, title: "Mecanizado CNC", description: "Aprenda a programar y operar máquinas CNC" },
-    { order: 3, title: "Automatización Siemens", description: "Ruta especializada para PLCs Siemens S7-1500 y TIA Portal" }
+    { order: 3, title: "Automatización Siemens", description: "Ruta especializada para PLCs Siemens S7-1500 y TIA Portal" },
+    { order: 4, title: "Variadores de Velocidad y Posicionamiento", description: "Domine los variadores de frecuencia y el control de movimiento" }
   ]
 }
 
@@ -229,6 +244,80 @@ async function main() {
     },
   })
 
+  // Create VFD (Variable Frequency Drive) Modules
+  const module12 = await prisma.module.create({
+    data: {
+      title: "Introduction aux variateurs de vitesse",
+      description: "Découvrez les principes fondamentaux des variateurs de fréquence",
+      order: 12,
+      icon: "⚡",
+      color: "#7c3aed",
+      isLocked: false,
+      requiredXp: 0,
+    },
+  })
+
+  const module13 = await prisma.module.create({
+    data: {
+      title: "Paramétrage des variateurs",
+      description: "Apprenez à configurer et paramétrer un variateur de vitesse",
+      order: 13,
+      icon: "🎛️",
+      color: "#a855f7",
+      isLocked: true,
+      requiredXp: 300,
+    },
+  })
+
+  const module14 = await prisma.module.create({
+    data: {
+      title: "Communication et diagnostic VFD",
+      description: "Maîtrisez la communication industrielle et le diagnostic des variateurs",
+      order: 14,
+      icon: "📡",
+      color: "#c084fc",
+      isLocked: true,
+      requiredXp: 600,
+    },
+  })
+
+  // Create Positioning/Motion Control Modules
+  const module15 = await prisma.module.create({
+    data: {
+      title: "Introduction au positionnement",
+      description: "Découvrez les bases du contrôle de mouvement et du positionnement",
+      order: 15,
+      icon: "🎯",
+      color: "#dc2626",
+      isLocked: false,
+      requiredXp: 0,
+    },
+  })
+
+  const module16 = await prisma.module.create({
+    data: {
+      title: "Moteurs pas à pas et servomoteurs",
+      description: "Comprenez les différents types de moteurs pour le positionnement",
+      order: 16,
+      icon: "🔄",
+      color: "#ea580c",
+      isLocked: true,
+      requiredXp: 300,
+    },
+  })
+
+  const module17 = await prisma.module.create({
+    data: {
+      title: "Programmation du mouvement",
+      description: "Apprenez à programmer des trajectoires et des profils de mouvement",
+      order: 17,
+      icon: "📈",
+      color: "#f97316",
+      isLocked: true,
+      requiredXp: 600,
+    },
+  })
+
   // Create Cursus
   const cursusAutomatisme = await prisma.cursus.create({
     data: {
@@ -257,6 +346,16 @@ async function main() {
       icon: "🔷",
       color: "#009999",
       order: 3,
+    },
+  })
+
+  const cursusVFD = await prisma.cursus.create({
+    data: {
+      title: "Variation de vitesse et positionnement",
+      description: "Maîtrisez les variateurs de fréquence et le contrôle de mouvement",
+      icon: "⚡",
+      color: "#7c3aed",
+      order: 4,
     },
   })
 
@@ -293,6 +392,17 @@ async function main() {
           language: lang,
           title: cursusSiemensTrans.title,
           description: cursusSiemensTrans.description
+        }
+      })
+    }
+    const cursusVFDTrans = cursusTranslations[lang].find(t => t.order === 4)
+    if (cursusVFDTrans) {
+      await prisma.cursusTranslation.create({
+        data: {
+          cursusId: cursusVFD.id,
+          language: lang,
+          title: cursusVFDTrans.title,
+          description: cursusVFDTrans.description
         }
       })
     }
@@ -333,8 +443,23 @@ async function main() {
     ]
   })
 
+  // Associate Modules to Cursus VFD/Positionnement
+  await prisma.cursusModule.createMany({
+    data: [
+      { cursusId: cursusVFD.id, moduleId: module1.id, order: 1, isRequired: true },   // Shared foundation
+      { cursusId: cursusVFD.id, moduleId: module2.id, order: 2, isRequired: true },   // Shared foundation
+      { cursusId: cursusVFD.id, moduleId: module4.id, order: 3, isRequired: true },   // Sensors/Actuators (important for motion)
+      { cursusId: cursusVFD.id, moduleId: module12.id, order: 4, isRequired: true },  // Intro VFD
+      { cursusId: cursusVFD.id, moduleId: module13.id, order: 5, isRequired: true },  // VFD Configuration
+      { cursusId: cursusVFD.id, moduleId: module14.id, order: 6, isRequired: true },  // VFD Communication
+      { cursusId: cursusVFD.id, moduleId: module15.id, order: 7, isRequired: true },  // Intro Positioning
+      { cursusId: cursusVFD.id, moduleId: module16.id, order: 8, isRequired: true },  // Motors
+      { cursusId: cursusVFD.id, moduleId: module17.id, order: 9, isRequired: true },  // Motion Programming
+    ]
+  })
+
   // Create Module Translations
-  const modules = [module1, module2, module3, module4, module5, module6, module7, module8, module9, module10, module11]
+  const modules = [module1, module2, module3, module4, module5, module6, module7, module8, module9, module10, module11, module12, module13, module14, module15, module16, module17]
   for (const lang of ['en', 'es'] as const) {
     for (const module of modules) {
       const trans = moduleTranslations[lang].find(t => t.order === modules.indexOf(module) + 1)
@@ -3487,6 +3612,690 @@ async function main() {
     },
   })
 
+  // Create Lessons for Module 12 (Introduction aux variateurs de vitesse)
+  const lesson12_1 = await prisma.lesson.create({
+    data: {
+      moduleId: module12.id,
+      title: "Qu'est-ce qu'un variateur de vitesse ?",
+      description: "Découvrez le principe et les applications des variateurs de fréquence",
+      order: 1,
+      xpReward: 50,
+      duration: 12,
+      content: JSON.stringify({
+        sections: [
+          { type: "text", content: "# Introduction aux variateurs de vitesse\n\nUn **variateur de vitesse** (VFD - Variable Frequency Drive) est un dispositif électronique permettant de contrôler la vitesse d'un moteur électrique en faisant varier la fréquence et la tension d'alimentation." },
+          { type: "info", content: "Les variateurs permettent des économies d'énergie de 20 à 50% dans les applications de pompage et ventilation." },
+          { type: "text", content: "## Principe de fonctionnement\n\n1. **Redresseur** : Convertit le courant alternatif en courant continu\n2. **Bus DC** : Stocke l'énergie sous forme continue\n3. **Onduleur** : Convertit le DC en AC à fréquence variable\n4. **Contrôle** : Gère la vitesse selon la consigne" },
+          { type: "text", content: "## Applications courantes\n\n- Pompes et ventilateurs\n- Convoyeurs\n- Compresseurs\n- Machines-outils\n- Systèmes de levage" }
+        ]
+      }),
+    },
+  })
+
+  const lesson12_2 = await prisma.lesson.create({
+    data: {
+      moduleId: module12.id,
+      title: "Types de moteurs et variateurs",
+      description: "Apprenez les différents types de moteurs compatibles avec les variateurs",
+      order: 2,
+      xpReward: 55,
+      duration: 14,
+      content: JSON.stringify({
+        sections: [
+          { type: "text", content: "# Types de moteurs et variateurs\n\nLes variateurs de vitesse sont principalement conçus pour les moteurs asynchrones, mais d'autres types existent." },
+          { type: "text", content: "## Moteurs asynchrones (AC)\n\n- **Cage d'écureuil** : Le plus courant, robuste et économique\n- **À rotor bobiné** : Pour applications spéciales\n- **Caractéristiques** : Couple constant, vitesse variable" },
+          { type: "text", content: "## Types de variateurs\n\n| Type | Application | Caractéristiques |\n|------|------------|------------------|\n| Scalaire (V/f) | Pompes, ventilateurs | Simple, économique |\n| Vectoriel boucle ouverte | Convoyeurs, mixeurs | Bon couple basse vitesse |\n| Vectoriel boucle fermée | Levage, positionnement | Haute performance |\n| Servo-drive | Robotique, CNC | Très haute dynamique |" },
+          { type: "warning", content: "Un moteur standard ne doit pas fonctionner en continu en dessous de 30% de sa vitesse nominale sans ventilation forcée." }
+        ]
+      }),
+    },
+  })
+
+  const lesson12_3 = await prisma.lesson.create({
+    data: {
+      moduleId: module12.id,
+      title: "Schémas de câblage",
+      description: "Comprenez le câblage électrique d'un variateur de vitesse",
+      order: 3,
+      xpReward: 60,
+      duration: 15,
+      content: JSON.stringify({
+        sections: [
+          { type: "text", content: "# Câblage d'un variateur de vitesse\n\nLe câblage correct d'un variateur est essentiel pour son bon fonctionnement et la sécurité." },
+          { type: "text", content: "## Circuit puissance\n\n- **L1, L2, L3** : Alimentation réseau triphasé\n- **U, V, W** : Sortie vers le moteur\n- **PE** : Terre de protection" },
+          { type: "text", content: "## Circuit de commande\n\n- **Entrées numériques** : Marche/Arrêt, sens de rotation\n- **Entrées analogiques** : Consigne vitesse (0-10V ou 4-20mA)\n- **Sorties relais** : Défaut, prêt, en marche\n- **Sorties analogiques** : Retour vitesse, courant" },
+          { type: "warning", content: "Respectez toujours les distances de câblage entre les circuits puissance et commande pour éviter les perturbations électromagnétiques." }
+        ]
+      }),
+    },
+  })
+
+  const lesson12_4 = await prisma.lesson.create({
+    data: {
+      moduleId: module12.id,
+      title: "Protections et sécurité",
+      description: "Découvrez les dispositifs de protection des variateurs",
+      order: 4,
+      xpReward: 55,
+      duration: 12,
+      content: JSON.stringify({
+        sections: [
+          { type: "text", content: "# Protections et sécurité\n\nLes variateurs intègrent de nombreuses protections pour le moteur et l'installation." },
+          { type: "text", content: "## Protections intégrées\n\n- **Surcharge thermique** : Protection I²t du moteur\n- **Court-circuit** : Détection instantanée\n- **Surtension/Sous-tension** : Surveillance du bus DC\n- **Défaut terre** : Protection différentielle" },
+          { type: "text", content: "## Fonctions de sécurité\n\n- **STO** (Safe Torque Off) : Coupure sûre du couple\n- **SLS** (Safely Limited Speed) : Vitesse limitée sûre\n- **SS1** (Safe Stop 1) : Arrêt contrôlé puis STO\n- **SBC** (Safe Brake Control) : Gestion sûre du frein" },
+          { type: "info", content: "Les fonctions de sécurité intégrées (STO, SS1, etc.) sont certifiées SIL2/PLd selon les normes IEC 61508 et ISO 13849." }
+        ]
+      }),
+    },
+  })
+
+  const lesson12_5 = await prisma.lesson.create({
+    data: {
+      moduleId: module12.id,
+      title: "Économie d'énergie",
+      description: "Optimisez la consommation énergétique avec les variateurs",
+      order: 5,
+      xpReward: 50,
+      duration: 10,
+      content: JSON.stringify({
+        sections: [
+          { type: "text", content: "# Économie d'énergie\n\nLes variateurs de vitesse sont des outils majeurs pour réduire la consommation énergétique." },
+          { type: "text", content: "## Loi du cube (pompes/ventilateurs)\n\nLa puissance consommée varie avec le cube de la vitesse :\n- 80% vitesse = 51% de puissance\n- 60% vitesse = 22% de puissance\n- 50% vitesse = 12.5% de puissance" },
+          { type: "info", content: "Une réduction de vitesse de 20% sur une pompe peut réduire la consommation de près de 50% !" },
+          { type: "text", content: "## Bonnes pratiques\n\n1. Dimensionner correctement le moteur\n2. Utiliser le mode économie d'énergie\n3. Optimiser les rampes d'accélération\n4. Récupérer l'énergie de freinage" }
+        ]
+      }),
+    },
+  })
+
+  const lesson12_6 = await prisma.lesson.create({
+    data: {
+      moduleId: module12.id,
+      title: "Marques et modèles courants",
+      description: "Découvrez les principaux fabricants de variateurs",
+      order: 6,
+      xpReward: 45,
+      duration: 10,
+      content: JSON.stringify({
+        sections: [
+          { type: "text", content: "# Principaux fabricants\n\nLe marché des variateurs est dominé par quelques grands acteurs." },
+          { type: "text", content: "## Fabricants majeurs\n\n| Fabricant | Gammes | Points forts |\n|-----------|--------|-------------|\n| ABB | ACS580, ACS880 | Robustesse, industrie lourde |\n| Siemens | SINAMICS G, S | Intégration TIA Portal |\n| Schneider | Altivar | Simplicité, bâtiment |\n| Danfoss | VLT | HVAC, efficacité |\n| SEW | MOVIDRIVE | Précision, convoyage |" },
+          { type: "text", content: "## Critères de choix\n\n- Puissance et tension\n- Type de contrôle requis\n- Environnement (IP, température)\n- Options de communication\n- Support technique local" }
+        ]
+      }),
+    },
+  })
+
+  // Create Lessons for Module 13 (Paramétrage des variateurs)
+  const lesson13_1 = await prisma.lesson.create({
+    data: {
+      moduleId: module13.id,
+      title: "Paramètres moteur",
+      description: "Configurez les paramètres du moteur dans le variateur",
+      order: 1,
+      xpReward: 60,
+      duration: 15,
+      content: JSON.stringify({
+        sections: [
+          { type: "text", content: "# Paramétrage du moteur\n\nLa première étape est de renseigner les caractéristiques du moteur dans le variateur." },
+          { type: "text", content: "## Données de la plaque signalétique\n\n- **Puissance nominale** (kW)\n- **Tension nominale** (V)\n- **Courant nominal** (A)\n- **Fréquence nominale** (Hz)\n- **Vitesse nominale** (tr/min)\n- **Cos φ** (facteur de puissance)" },
+          { type: "text", content: "## Auto-tuning\n\nLa plupart des variateurs proposent une fonction d'identification automatique du moteur :\n1. Moteur à l'arrêt (identification statique)\n2. Moteur en rotation (identification dynamique)" },
+          { type: "warning", content: "L'auto-tuning avec rotation nécessite que la charge soit découplée du moteur." }
+        ]
+      }),
+    },
+  })
+
+  const lesson13_2 = await prisma.lesson.create({
+    data: {
+      moduleId: module13.id,
+      title: "Rampes et limites",
+      description: "Configurez les rampes d'accélération et les limites de vitesse",
+      order: 2,
+      xpReward: 55,
+      duration: 14,
+      content: JSON.stringify({
+        sections: [
+          { type: "text", content: "# Rampes et limites\n\nLes rampes définissent la dynamique d'accélération et de décélération du moteur." },
+          { type: "text", content: "## Types de rampes\n\n- **Linéaire** : Accélération constante\n- **En S** : Démarrage et fin progressifs\n- **Personnalisée** : Profil adapté à l'application" },
+          { type: "text", content: "## Paramètres typiques\n\n| Paramètre | Plage | Défaut |\n|-----------|-------|--------|\n| Temps d'accélération | 0.1-999s | 5-10s |\n| Temps de décélération | 0.1-999s | 5-10s |\n| Vitesse minimale | 0-50% | 0% |\n| Vitesse maximale | 50-120% | 100% |" },
+          { type: "info", content: "Des rampes trop rapides peuvent provoquer des défauts de surintensité ou de surtension (lors du freinage)." }
+        ]
+      }),
+    },
+  })
+
+  const lesson13_3 = await prisma.lesson.create({
+    data: {
+      moduleId: module13.id,
+      title: "Modes de commande",
+      description: "Choisissez le mode de commande adapté à votre application",
+      order: 3,
+      xpReward: 60,
+      duration: 15,
+      content: JSON.stringify({
+        sections: [
+          { type: "text", content: "# Modes de commande\n\nLe variateur peut être commandé de différentes manières selon l'installation." },
+          { type: "text", content: "## Sources de commande\n\n- **Clavier local** : Boutons et potentiomètre sur le variateur\n- **Bornier** : Entrées numériques et analogiques\n- **Bus de terrain** : Profibus, Modbus, Ethernet/IP\n- **Combiné** : Certaines fonctions locales, d'autres par bus" },
+          { type: "text", content: "## Sources de consigne\n\n| Source | Avantages | Inconvénients |\n|--------|-----------|---------------|\n| Potentiomètre | Simple | Imprécis |\n| 0-10V | Standard | Sensible aux parasites |\n| 4-20mA | Robuste | Nécessite alimentation |\n| Bus | Précis, flexible | Plus complexe |" }
+        ]
+      }),
+    },
+  })
+
+  const lesson13_4 = await prisma.lesson.create({
+    data: {
+      moduleId: module13.id,
+      title: "Régulation PID intégrée",
+      description: "Utilisez le régulateur PID intégré du variateur",
+      order: 4,
+      xpReward: 65,
+      duration: 16,
+      content: JSON.stringify({
+        sections: [
+          { type: "text", content: "# Régulation PID intégrée\n\nLes variateurs modernes intègrent un régulateur PID pour le contrôle de process." },
+          { type: "text", content: "## Applications typiques\n\n- Régulation de pression (pompes)\n- Régulation de débit\n- Régulation de niveau\n- Maintien de tension (bobinage)" },
+          { type: "text", content: "## Paramètres PID\n\n- **Gain proportionnel (P)** : Réactivité\n- **Temps d'intégration (I)** : Élimination de l'erreur statique\n- **Temps de dérivation (D)** : Anticipation\n- **Consigne** : Valeur cible du process" },
+          { type: "info", content: "Commencez par régler P seul, puis ajoutez I progressivement. D est rarement nécessaire et peut rendre le système instable." }
+        ]
+      }),
+    },
+  })
+
+  const lesson13_5 = await prisma.lesson.create({
+    data: {
+      moduleId: module13.id,
+      title: "Gestion des défauts",
+      description: "Configurez le comportement en cas de défaut",
+      order: 5,
+      xpReward: 55,
+      duration: 12,
+      content: JSON.stringify({
+        sections: [
+          { type: "text", content: "# Gestion des défauts\n\nLa configuration correcte des défauts est essentielle pour la sécurité et la disponibilité." },
+          { type: "text", content: "## Types de réaction\n\n- **Arrêt immédiat** : Roue libre\n- **Arrêt sur rampe** : Décélération contrôlée\n- **Arrêt rapide** : Rampe accélérée\n- **Injection DC** : Freinage électrique" },
+          { type: "text", content: "## Défauts courants\n\n| Code | Signification | Action |\n|------|--------------|--------|\n| OC | Surintensité | Vérifier charge |\n| OV | Surtension | Allonger rampes |\n| OH | Surchauffe | Ventilation |\n| EF | Défaut terre | Câblage |" },
+          { type: "warning", content: "Ne désactivez jamais les protections sans comprendre les risques pour l'installation." }
+        ]
+      }),
+    },
+  })
+
+  const lesson13_6 = await prisma.lesson.create({
+    data: {
+      moduleId: module13.id,
+      title: "Sauvegarde et restauration",
+      description: "Sauvegardez et restaurez les paramètres du variateur",
+      order: 6,
+      xpReward: 50,
+      duration: 10,
+      content: JSON.stringify({
+        sections: [
+          { type: "text", content: "# Sauvegarde et restauration\n\nLa sauvegarde des paramètres est essentielle pour la maintenance et le remplacement." },
+          { type: "text", content: "## Méthodes de sauvegarde\n\n- **Clé USB** : Direct sur le variateur\n- **Logiciel PC** : Outil constructeur\n- **Carte mémoire** : Module optionnel\n- **Export fichier** : Via logiciel" },
+          { type: "text", content: "## Bonnes pratiques\n\n1. Sauvegarder après chaque modification\n2. Documenter les changements\n3. Garder une copie hors site\n4. Tester la restauration périodiquement" },
+          { type: "info", content: "Pensez à sauvegarder également le firmware du variateur, pas seulement les paramètres." }
+        ]
+      }),
+    },
+  })
+
+  // Create Lessons for Module 14 (Communication et diagnostic VFD)
+  const lesson14_1 = await prisma.lesson.create({
+    data: {
+      moduleId: module14.id,
+      title: "Protocoles de communication",
+      description: "Découvrez les protocoles de communication industrielle",
+      order: 1,
+      xpReward: 60,
+      duration: 15,
+      content: JSON.stringify({
+        sections: [
+          { type: "text", content: "# Protocoles de communication\n\nLes variateurs modernes supportent de nombreux protocoles de communication industrielle." },
+          { type: "text", content: "## Protocoles courants\n\n| Protocole | Type | Vitesse | Fabricants |\n|-----------|------|---------|------------|\n| Modbus RTU | Série | 115.2kb/s | Universel |\n| Profibus DP | Série | 12Mb/s | Siemens |\n| Profinet | Ethernet | 100Mb/s | Siemens |\n| Ethernet/IP | Ethernet | 100Mb/s | Rockwell |\n| EtherCAT | Ethernet | 100Mb/s | Beckhoff |" },
+          { type: "text", content: "## Données échangées\n\n- **Commande** : Marche, arrêt, reset\n- **Consigne** : Vitesse, couple\n- **Retours** : État, vitesse réelle, courant\n- **Alarmes** : Codes défauts, warnings" }
+        ]
+      }),
+    },
+  })
+
+  const lesson14_2 = await prisma.lesson.create({
+    data: {
+      moduleId: module14.id,
+      title: "Communication Modbus",
+      description: "Maîtrisez la communication Modbus avec les variateurs",
+      order: 2,
+      xpReward: 65,
+      duration: 18,
+      content: JSON.stringify({
+        sections: [
+          { type: "text", content: "# Communication Modbus\n\nModbus est le protocole le plus répandu pour la communication avec les variateurs." },
+          { type: "text", content: "## Configuration Modbus RTU\n\n- **Adresse esclave** : 1-247\n- **Vitesse** : 9600-115200 baud\n- **Parité** : Paire, impaire ou aucune\n- **Bits de stop** : 1 ou 2" },
+          { type: "text", content: "## Fonctions Modbus\n\n| Code | Fonction | Usage |\n|------|----------|-------|\n| 03 | Read Holding Registers | Lecture paramètres |\n| 06 | Write Single Register | Écriture 1 param |\n| 16 | Write Multiple Registers | Écriture multiple |" },
+          { type: "info", content: "La plupart des variateurs utilisent les registres 40001-49999 (Holding Registers) pour les paramètres et le contrôle." }
+        ]
+      }),
+    },
+  })
+
+  const lesson14_3 = await prisma.lesson.create({
+    data: {
+      moduleId: module14.id,
+      title: "Intégration automate",
+      description: "Intégrez les variateurs dans un système automatisé",
+      order: 3,
+      xpReward: 70,
+      duration: 20,
+      content: JSON.stringify({
+        sections: [
+          { type: "text", content: "# Intégration avec automate\n\nL'intégration du variateur dans le système de contrôle permet une gestion centralisée." },
+          { type: "text", content: "## Mot de commande (Control Word)\n\nStructure typique 16 bits :\n- Bit 0 : ON/OFF\n- Bit 1 : Reset défaut\n- Bit 2 : Coast stop\n- Bit 3 : Quick stop\n- Bits 4-5 : Rampe\n- Bit 10 : Sens de rotation" },
+          { type: "text", content: "## Mot d'état (Status Word)\n\n- Bit 0 : Ready\n- Bit 1 : Running\n- Bit 2 : At speed\n- Bit 3 : Fault\n- Bit 7 : Warning" },
+          { type: "warning", content: "Prévoyez toujours un mode de secours (commande locale) en cas de perte de communication avec l'automate." }
+        ]
+      }),
+    },
+  })
+
+  const lesson14_4 = await prisma.lesson.create({
+    data: {
+      moduleId: module14.id,
+      title: "Diagnostic et monitoring",
+      description: "Surveillez l'état et les performances du variateur",
+      order: 4,
+      xpReward: 60,
+      duration: 15,
+      content: JSON.stringify({
+        sections: [
+          { type: "text", content: "# Diagnostic et monitoring\n\nLe monitoring permet d'anticiper les problèmes et d'optimiser les performances." },
+          { type: "text", content: "## Données à surveiller\n\n- **Courant moteur** : Charge relative\n- **Température** : IGBT, moteur\n- **Tension bus DC** : Stabilité alimentation\n- **Heures de fonctionnement** : Maintenance préventive" },
+          { type: "text", content: "## Historique des défauts\n\nLes variateurs conservent un historique :\n- Code du défaut\n- Date et heure\n- Valeurs au moment du défaut\n- Conditions de fonctionnement" },
+          { type: "info", content: "Consultez régulièrement le compteur d'heures de fonctionnement des ventilateurs et des condensateurs pour planifier leur remplacement." }
+        ]
+      }),
+    },
+  })
+
+  const lesson14_5 = await prisma.lesson.create({
+    data: {
+      moduleId: module14.id,
+      title: "Dépannage",
+      description: "Diagnostiquez et résolvez les problèmes courants",
+      order: 5,
+      xpReward: 65,
+      duration: 16,
+      content: JSON.stringify({
+        sections: [
+          { type: "text", content: "# Dépannage des variateurs\n\nMéthodologie de diagnostic pour résoudre efficacement les problèmes." },
+          { type: "text", content: "## Procédure de dépannage\n\n1. **Relever le code défaut**\n2. **Consulter l'historique**\n3. **Vérifier les conditions**\n4. **Contrôler le câblage**\n5. **Tester les composants" },
+          { type: "text", content: "## Problèmes fréquents\n\n| Symptôme | Causes possibles |\n|----------|------------------|\n| Défaut OC au démarrage | Court-circuit, câble trop long |\n| Défaut OV au freinage | Rampe trop courte, pas de résistance |\n| Surchauffe | Ventilation, surcharge |\n| Pas de communication | Paramètres, câblage |" }
+        ]
+      }),
+    },
+  })
+
+  const lesson14_6 = await prisma.lesson.create({
+    data: {
+      moduleId: module14.id,
+      title: "Maintenance préventive",
+      description: "Planifiez la maintenance des variateurs",
+      order: 6,
+      xpReward: 55,
+      duration: 12,
+      content: JSON.stringify({
+        sections: [
+          { type: "text", content: "# Maintenance préventive\n\nUne maintenance régulière prolonge la durée de vie et évite les arrêts imprévus." },
+          { type: "text", content: "## Planning de maintenance\n\n| Intervalle | Actions |\n|------------|--------|\n| Mensuel | Nettoyage, inspection visuelle |\n| Annuel | Serrage connexions, ventilateurs |\n| 5 ans | Condensateurs bus DC |\n| 10 ans | Remplacement préventif |" },
+          { type: "text", content: "## Points de contrôle\n\n- État des ventilateurs\n- Connexions serrées\n- Absence de poussière\n- Condensateurs (gonflement)\n- Historique des défauts" },
+          { type: "info", content: "Tenez un carnet de maintenance pour chaque variateur avec l'historique des interventions." }
+        ]
+      }),
+    },
+  })
+
+  // Create Lessons for Module 15 (Introduction au positionnement)
+  const lesson15_1 = await prisma.lesson.create({
+    data: {
+      moduleId: module15.id,
+      title: "Principes du contrôle de mouvement",
+      description: "Découvrez les fondamentaux du motion control",
+      order: 1,
+      xpReward: 55,
+      duration: 14,
+      content: JSON.stringify({
+        sections: [
+          { type: "text", content: "# Introduction au contrôle de mouvement\n\nLe **motion control** ou contrôle de mouvement est la discipline qui permet de positionner précisément des éléments mécaniques." },
+          { type: "text", content: "## Applications\n\n- **Robotique** : Bras manipulateurs\n- **Emballage** : Remplissage, étiquetage\n- **Usinage** : CNC, découpe laser\n- **Manutention** : Pick & place\n- **Impression** : Rotatives, jet d'encre" },
+          { type: "text", content: "## Composants d'un système\n\n1. **Contrôleur** : Calcule les trajectoires\n2. **Drive (servo-variateur)** : Alimente le moteur\n3. **Moteur** : Convertit l'énergie électrique en mouvement\n4. **Retour position** : Codeur, règle optique" }
+        ]
+      }),
+    },
+  })
+
+  const lesson15_2 = await prisma.lesson.create({
+    data: {
+      moduleId: module15.id,
+      title: "Notions de mécanique",
+      description: "Comprenez les concepts mécaniques essentiels",
+      order: 2,
+      xpReward: 60,
+      duration: 15,
+      content: JSON.stringify({
+        sections: [
+          { type: "text", content: "# Notions de mécanique\n\nLa compréhension de la mécanique est essentielle pour dimensionner un système de positionnement." },
+          { type: "text", content: "## Grandeurs fondamentales\n\n- **Position** : Où se trouve l'axe (mm, degrés)\n- **Vitesse** : Rapidité du déplacement (mm/s, tr/min)\n- **Accélération** : Variation de vitesse (m/s²)\n- **Couple** : Force de rotation (Nm)\n- **Inertie** : Résistance au changement de vitesse (kg.m²)" },
+          { type: "text", content: "## Transmission mécanique\n\n| Type | Précision | Vitesse |\n|------|-----------|--------|\n| Vis à billes | Très haute | Moyenne |\n| Crémaillère | Haute | Haute |\n| Courroie | Moyenne | Très haute |\n| Entraînement direct | Maximale | Maximale |" }
+        ]
+      }),
+    },
+  })
+
+  const lesson15_3 = await prisma.lesson.create({
+    data: {
+      moduleId: module15.id,
+      title: "Codeurs et capteurs de position",
+      description: "Maîtrisez les capteurs de position",
+      order: 3,
+      xpReward: 65,
+      duration: 16,
+      content: JSON.stringify({
+        sections: [
+          { type: "text", content: "# Codeurs et capteurs de position\n\nLa mesure précise de la position est la clé du contrôle de mouvement." },
+          { type: "text", content: "## Types de codeurs\n\n- **Incrémental** : Compte les impulsions, nécessite prise d'origine\n- **Absolu mono-tour** : Position absolue sur un tour\n- **Absolu multi-tours** : Position absolue sur plusieurs tours" },
+          { type: "text", content: "## Caractéristiques\n\n| Paramètre | Description |\n|-----------|-------------|\n| Résolution | Points par tour (PPR) |\n| Précision | Erreur de mesure |\n| Répétabilité | Constance des mesures |\n| Vitesse max | Fréquence maximale |" },
+          { type: "info", content: "Un codeur 17 bits offre une résolution de 131 072 points par tour, soit une précision de 0.0027°." }
+        ]
+      }),
+    },
+  })
+
+  const lesson15_4 = await prisma.lesson.create({
+    data: {
+      moduleId: module15.id,
+      title: "Boucles de régulation",
+      description: "Comprenez les boucles de contrôle position/vitesse/courant",
+      order: 4,
+      xpReward: 70,
+      duration: 18,
+      content: JSON.stringify({
+        sections: [
+          { type: "text", content: "# Boucles de régulation\n\nLe contrôle de mouvement utilise des boucles de régulation imbriquées." },
+          { type: "text", content: "## Structure en cascade\n\n1. **Boucle de courant** (la plus rapide) : Contrôle du couple\n2. **Boucle de vitesse** : Contrôle de la vitesse\n3. **Boucle de position** (la plus lente) : Contrôle de la position" },
+          { type: "text", content: "## Temps de cycle typiques\n\n| Boucle | Période | Fréquence |\n|--------|---------|----------|\n| Courant | 62.5 µs | 16 kHz |\n| Vitesse | 250 µs | 4 kHz |\n| Position | 1 ms | 1 kHz |" },
+          { type: "warning", content: "Chaque boucle doit être réglée de l'intérieur vers l'extérieur : courant d'abord, puis vitesse, puis position." }
+        ]
+      }),
+    },
+  })
+
+  const lesson15_5 = await prisma.lesson.create({
+    data: {
+      moduleId: module15.id,
+      title: "Prise d'origine (homing)",
+      description: "Configurez la prise d'origine des axes",
+      order: 5,
+      xpReward: 60,
+      duration: 14,
+      content: JSON.stringify({
+        sections: [
+          { type: "text", content: "# Prise d'origine (Homing)\n\nLa prise d'origine permet d'établir un référentiel de position connu." },
+          { type: "text", content: "## Méthodes de homing\n\n- **Sur capteur** : Fin de course ou détecteur\n- **Sur butée mécanique** : Couple limité\n- **Sur index codeur** : Top zéro du codeur\n- **Combinée** : Capteur + index pour précision" },
+          { type: "text", content: "## Paramètres typiques\n\n| Paramètre | Description |\n|-----------|-------------|\n| Vitesse d'approche | Vitesse vers le capteur |\n| Vitesse de recherche | Vitesse lente pour précision |\n| Offset | Décalage après homing |\n| Direction | Sens de recherche |" },
+          { type: "info", content: "Avec un codeur absolu multi-tours, la prise d'origine n'est nécessaire qu'une seule fois après le montage." }
+        ]
+      }),
+    },
+  })
+
+  const lesson15_6 = await prisma.lesson.create({
+    data: {
+      moduleId: module15.id,
+      title: "Limites et sécurités",
+      description: "Configurez les limites logicielles et matérielles",
+      order: 6,
+      xpReward: 55,
+      duration: 12,
+      content: JSON.stringify({
+        sections: [
+          { type: "text", content: "# Limites et sécurités\n\nLa protection des axes est essentielle pour la sécurité et la préservation du matériel." },
+          { type: "text", content: "## Types de limites\n\n- **Fins de course matériels** : Interrupteurs physiques (sécurité)\n- **Limites logicielles** : Zones définies par programme\n- **Limites de vitesse** : Vitesse maximale autorisée\n- **Limites de couple** : Couple maximal (protection mécanique)" },
+          { type: "text", content: "## Ordre de priorité\n\n1. Arrêt d'urgence (STO)\n2. Fins de course matériels\n3. Limites logicielles\n4. Limites process" },
+          { type: "warning", content: "Les fins de course matériels sont une sécurité ultime et ne doivent jamais être utilisés en fonctionnement normal." }
+        ]
+      }),
+    },
+  })
+
+  // Create Lessons for Module 16 (Moteurs pas à pas et servomoteurs)
+  const lesson16_1 = await prisma.lesson.create({
+    data: {
+      moduleId: module16.id,
+      title: "Moteurs pas à pas",
+      description: "Découvrez le fonctionnement des moteurs pas à pas",
+      order: 1,
+      xpReward: 60,
+      duration: 15,
+      content: JSON.stringify({
+        sections: [
+          { type: "text", content: "# Moteurs pas à pas\n\nLe moteur pas à pas avance par incréments fixes appelés \"pas\", permettant un positionnement précis en boucle ouverte." },
+          { type: "text", content: "## Caractéristiques\n\n- **Pas standard** : 1.8° (200 pas/tour)\n- **Modes** : Pas entier, demi-pas, micro-pas\n- **Couple** : Élevé à basse vitesse\n- **Pas de retour nécessaire** : En boucle ouverte" },
+          { type: "text", content: "## Types de moteurs pas à pas\n\n| Type | Caractéristiques |\n|------|------------------|\n| Bipolaire | Plus de couple, 4 fils |\n| Unipolaire | Plus simple, 5-6 fils |\n| Hybride | Précision, couple élevé |" },
+          { type: "warning", content: "Un moteur pas à pas peut perdre des pas en cas de surcharge, sans que le système ne le détecte en boucle ouverte." }
+        ]
+      }),
+    },
+  })
+
+  const lesson16_2 = await prisma.lesson.create({
+    data: {
+      moduleId: module16.id,
+      title: "Servomoteurs synchrones",
+      description: "Maîtrisez les servomoteurs à aimants permanents",
+      order: 2,
+      xpReward: 65,
+      duration: 16,
+      content: JSON.stringify({
+        sections: [
+          { type: "text", content: "# Servomoteurs synchrones\n\nLes servomoteurs synchrones (PMSM) sont la référence pour les applications de positionnement haute performance." },
+          { type: "text", content: "## Caractéristiques\n\n- **Rotor à aimants permanents**\n- **Haute dynamique** : Accélération rapide\n- **Large plage de vitesse** : Du quasi-statique au très rapide\n- **Couple constant** : Sur toute la plage\n- **Retour position intégré** : Codeur ou résolver" },
+          { type: "text", content: "## Avantages\n\n- Rendement élevé (>90%)\n- Pas de maintenance (pas de balais)\n- Précision excellente\n- Capacité de surcharge momentanée" },
+          { type: "info", content: "Un servomoteur peut typiquement fournir 3 fois son couple nominal pendant quelques secondes pour les accélérations." }
+        ]
+      }),
+    },
+  })
+
+  const lesson16_3 = await prisma.lesson.create({
+    data: {
+      moduleId: module16.id,
+      title: "Comparaison et choix",
+      description: "Choisissez le bon moteur pour votre application",
+      order: 3,
+      xpReward: 55,
+      duration: 14,
+      content: JSON.stringify({
+        sections: [
+          { type: "text", content: "# Comparaison pas à pas vs servo\n\nLe choix dépend des exigences de l'application." },
+          { type: "text", content: "## Tableau comparatif\n\n| Critère | Pas à pas | Servo |\n|---------|-----------|-------|\n| Coût | Faible | Élevé |\n| Précision | Bonne | Excellente |\n| Vitesse max | Limitée | Élevée |\n| Dynamique | Moyenne | Excellente |\n| Boucle | Ouverte possible | Fermée requise |\n| Bruit | Plus élevé | Faible |" },
+          { type: "text", content: "## Quand choisir le pas à pas\n\n- Budget limité\n- Vitesses modérées\n- Charges prévisibles\n- Position maintenue à l'arrêt" },
+          { type: "text", content: "## Quand choisir le servo\n\n- Haute dynamique requise\n- Charges variables\n- Haute vitesse\n- Précision critique" }
+        ]
+      }),
+    },
+  })
+
+  const lesson16_4 = await prisma.lesson.create({
+    data: {
+      moduleId: module16.id,
+      title: "Dimensionnement moteur",
+      description: "Apprenez à dimensionner un système d'entraînement",
+      order: 4,
+      xpReward: 70,
+      duration: 18,
+      content: JSON.stringify({
+        sections: [
+          { type: "text", content: "# Dimensionnement moteur\n\nUn dimensionnement correct garantit les performances et la durée de vie du système." },
+          { type: "text", content: "## Étapes de dimensionnement\n\n1. **Calculer l'inertie totale** : Charge + transmission + moteur\n2. **Déterminer le couple requis** : Accélération + friction + gravité\n3. **Définir le cycle** : Temps de mouvement et repos\n4. **Vérifier le couple RMS** : Ne doit pas dépasser le nominal" },
+          { type: "text", content: "## Formules essentielles\n\n- Couple accélération : T = J × α\n- Couple friction : T = F × r\n- Inertie cylindre : J = ½ × m × r²\n- Rapport d'inertie optimal : Jcharge/Jmoteur ≤ 10" },
+          { type: "warning", content: "Un rapport d'inertie trop élevé dégrade les performances dynamiques et la stabilité de l'asservissement." }
+        ]
+      }),
+    },
+  })
+
+  const lesson16_5 = await prisma.lesson.create({
+    data: {
+      moduleId: module16.id,
+      title: "Drivers et servo-variateurs",
+      description: "Découvrez l'électronique de commande des moteurs",
+      order: 5,
+      xpReward: 60,
+      duration: 15,
+      content: JSON.stringify({
+        sections: [
+          { type: "text", content: "# Drivers et servo-variateurs\n\nLe driver ou servo-variateur est l'électronique qui alimente et contrôle le moteur." },
+          { type: "text", content: "## Drivers pas à pas\n\n- **Entrées** : Step (impulsion), Dir (direction), Enable\n- **Modes** : Pas entier à 1/256 micro-pas\n- **Courant** : Réglable selon le moteur" },
+          { type: "text", content: "## Servo-variateurs\n\n| Fonction | Description |\n|----------|-------------|\n| Boucle courant | Contrôle du couple |\n| Boucle vitesse | Contrôle de la vitesse |\n| Boucle position | Contrôle de la position |\n| Auto-tuning | Réglage automatique |" },
+          { type: "info", content: "Les servo-variateurs modernes intègrent des fonctions de sécurité (STO, SS1) conformes aux normes SIL/PL." }
+        ]
+      }),
+    },
+  })
+
+  const lesson16_6 = await prisma.lesson.create({
+    data: {
+      moduleId: module16.id,
+      title: "Moteurs linéaires",
+      description: "Découvrez les moteurs à entraînement direct linéaire",
+      order: 6,
+      xpReward: 55,
+      duration: 12,
+      content: JSON.stringify({
+        sections: [
+          { type: "text", content: "# Moteurs linéaires\n\nLes moteurs linéaires éliminent les transmissions mécaniques pour un entraînement direct." },
+          { type: "text", content: "## Avantages\n\n- **Pas de jeu mécanique** : Précision maximale\n- **Vitesse élevée** : Jusqu'à 10 m/s et plus\n- **Dynamique** : Accélérations de plusieurs g\n- **Maintenance** : Réduite (pas de pièces d'usure)" },
+          { type: "text", content: "## Types de moteurs linéaires\n\n| Type | Caractéristiques |\n|------|------------------|\n| Ironcore | Force élevée, ondulation |\n| Ironless | Pas d'ondulation, force moindre |\n| Tubulaire | Compact, guidage intégré |" },
+          { type: "warning", content: "Les moteurs linéaires génèrent des champs magnétiques forts. Attention aux objets métalliques et aux équipements sensibles à proximité." }
+        ]
+      }),
+    },
+  })
+
+  // Create Lessons for Module 17 (Programmation du mouvement)
+  const lesson17_1 = await prisma.lesson.create({
+    data: {
+      moduleId: module17.id,
+      title: "Profils de mouvement",
+      description: "Maîtrisez les profils de vitesse et d'accélération",
+      order: 1,
+      xpReward: 65,
+      duration: 16,
+      content: JSON.stringify({
+        sections: [
+          { type: "text", content: "# Profils de mouvement\n\nLe profil de mouvement définit comment l'axe passe d'un point à un autre." },
+          { type: "text", content: "## Types de profils\n\n- **Trapézoïdal** : Accélération constante, simple\n- **En S** : Jerk limité, plus doux\n- **Sinusoïdal** : Très doux, optimal pour certaines charges" },
+          { type: "text", content: "## Paramètres du profil\n\n| Paramètre | Description | Unité |\n|-----------|-------------|-------|\n| Position | Point de destination | mm, degrés |\n| Vitesse max | Vitesse de croisière | mm/s |\n| Accélération | Montée en vitesse | mm/s² |\n| Jerk | Variation d'accélération | mm/s³ |" },
+          { type: "info", content: "Un profil en S réduit les vibrations mécaniques et l'usure, particulièrement important pour les charges lourdes ou fragiles." }
+        ]
+      }),
+    },
+  })
+
+  const lesson17_2 = await prisma.lesson.create({
+    data: {
+      moduleId: module17.id,
+      title: "Mouvements absolus et relatifs",
+      description: "Programmez des déplacements absolus et incrémentaux",
+      order: 2,
+      xpReward: 55,
+      duration: 14,
+      content: JSON.stringify({
+        sections: [
+          { type: "text", content: "# Mouvements absolus et relatifs\n\nDeux façons de spécifier une destination de mouvement." },
+          { type: "text", content: "## Mouvement absolu\n\n- La position cible est définie par rapport à l'origine\n- Exemple : \"Aller à la position 100 mm\"\n- Indépendant de la position actuelle" },
+          { type: "text", content: "## Mouvement relatif (incrémental)\n\n- Le déplacement est défini par rapport à la position actuelle\n- Exemple : \"Avancer de 50 mm\"\n- Dépend de la position de départ" },
+          { type: "text", content: "## Instructions typiques\n\n| Instruction | Type | Exemple |\n|-------------|------|--------|\n| MC_MoveAbsolute | Absolu | Aller à 200 mm |\n| MC_MoveRelative | Relatif | Avancer de 50 mm |\n| MC_MoveVelocity | Vitesse | Tourner à 1000 tr/min |" }
+        ]
+      }),
+    },
+  })
+
+  const lesson17_3 = await prisma.lesson.create({
+    data: {
+      moduleId: module17.id,
+      title: "Synchronisation d'axes",
+      description: "Synchronisez plusieurs axes entre eux",
+      order: 3,
+      xpReward: 70,
+      duration: 18,
+      content: JSON.stringify({
+        sections: [
+          { type: "text", content: "# Synchronisation d'axes\n\nLa synchronisation permet de coordonner plusieurs axes pour des mouvements complexes." },
+          { type: "text", content: "## Types de synchronisation\n\n- **Engrenage électronique (gearing)** : Ratio fixe entre axes\n- **Came électronique (camming)** : Profil personnalisé\n- **Maître-esclave** : Un axe suit l'autre" },
+          { type: "text", content: "## Applications\n\n| Application | Type de synchro |\n|-------------|----------------|\n| Convoyeur synchrone | Gearing |\n| Découpe à la volée | Camming |\n| Impression | Gearing + correction |\n| Emballage flow-pack | Camming |" },
+          { type: "info", content: "L'engrenage électronique peut avoir un rapport variable (rampe d'embrayage) pour un accouplement progressif." }
+        ]
+      }),
+    },
+  })
+
+  const lesson17_4 = await prisma.lesson.create({
+    data: {
+      moduleId: module17.id,
+      title: "Interpolation multi-axes",
+      description: "Programmez des trajectoires coordonnées",
+      order: 4,
+      xpReward: 75,
+      duration: 20,
+      content: JSON.stringify({
+        sections: [
+          { type: "text", content: "# Interpolation multi-axes\n\nL'interpolation coordonne plusieurs axes pour des trajectoires fluides." },
+          { type: "text", content: "## Types d'interpolation\n\n- **Linéaire** : Ligne droite entre deux points\n- **Circulaire** : Arc de cercle\n- **Hélicoïdale** : Combinaison linéaire + circulaire\n- **Spline** : Courbes complexes" },
+          { type: "text", content: "## Exemple : Découpe\n\n```\nG01 X100 Y50 F1000  // Linéaire\nG02 X150 Y100 R50   // Arc horaire\nG03 X100 Y150 I-50  // Arc anti-horaire\n```" },
+          { type: "warning", content: "La vitesse résultante sur la trajectoire doit être contrôlée pour respecter les limites de chaque axe individuel." }
+        ]
+      }),
+    },
+  })
+
+  const lesson17_5 = await prisma.lesson.create({
+    data: {
+      moduleId: module17.id,
+      title: "Blocs fonction PLCopen",
+      description: "Utilisez les blocs standardisés PLCopen Motion",
+      order: 5,
+      xpReward: 65,
+      duration: 16,
+      content: JSON.stringify({
+        sections: [
+          { type: "text", content: "# Blocs PLCopen Motion\n\nLa norme PLCopen définit des blocs fonctionnels standardisés pour le contrôle de mouvement." },
+          { type: "text", content: "## Blocs de base\n\n| Bloc | Fonction |\n|------|----------|\n| MC_Power | Activer/désactiver l'axe |\n| MC_Home | Prise d'origine |\n| MC_MoveAbsolute | Mouvement absolu |\n| MC_MoveRelative | Mouvement relatif |\n| MC_Stop | Arrêt immédiat |\n| MC_Reset | Acquitter les défauts |" },
+          { type: "text", content: "## Structure d'un bloc\n\n- **Entrées** : Execute, Position, Velocity, Acceleration\n- **Sorties** : Done, Busy, Error, ErrorID\n- **Axe** : Référence de l'axe concerné" },
+          { type: "info", content: "L'utilisation des blocs PLCopen garantit une portabilité du code entre différents fabricants d'automates." }
+        ]
+      }),
+    },
+  })
+
+  const lesson17_6 = await prisma.lesson.create({
+    data: {
+      moduleId: module17.id,
+      title: "Diagnostic et optimisation",
+      description: "Optimisez les performances de vos axes",
+      order: 6,
+      xpReward: 60,
+      duration: 15,
+      content: JSON.stringify({
+        sections: [
+          { type: "text", content: "# Diagnostic et optimisation\n\nL'analyse des performances permet d'optimiser les temps de cycle et la qualité." },
+          { type: "text", content: "## Outils de diagnostic\n\n- **Oscilloscope intégré** : Visualisation en temps réel\n- **Enregistrement** : Historique des mouvements\n- **FFT** : Analyse fréquentielle des vibrations" },
+          { type: "text", content: "## Paramètres à surveiller\n\n| Paramètre | Optimal | Problème si |\n|-----------|---------|-------------|\n| Erreur de poursuite | < 1 mm | Croissante |\n| Courant moyen | < 80% nominal | > 100% |\n| Vibrations | Faibles | Résonance |" },
+          { type: "text", content: "## Optimisation\n\n1. Ajuster les gains PID\n2. Réduire les jeux mécaniques\n3. Optimiser les profils de mouvement\n4. Vérifier l'alignement" }
+        ]
+      }),
+    },
+  })
+
   // Create Quizzes
   await prisma.quiz.createMany({
     data: [
@@ -6491,6 +7300,222 @@ async function main() {
         explanation: "Les dossiers permettent d'organiser les blocs logiquement, facilitant la navigation dans les grands projets.",
         order: 5,
       },
+      // Quiz Module 12 - Lesson 1 (Introduction aux variateurs)
+      { lessonId: lesson12_1.id, question: "Que signifie l'acronyme VFD ?", options: JSON.stringify(["Variable Frequency Drive", "Voltage Flux Device", "Virtual Field Data", "Variable Flow Driver"]), correctIndex: 0, explanation: "VFD signifie Variable Frequency Drive, soit variateur de fréquence en français.", order: 1 },
+      { lessonId: lesson12_1.id, question: "Quel composant du variateur convertit le DC en AC variable ?", options: JSON.stringify(["Le redresseur", "Le bus DC", "L'onduleur", "Le filtre"]), correctIndex: 2, explanation: "L'onduleur (inverter) convertit le courant continu en courant alternatif à fréquence variable.", order: 2 },
+      { lessonId: lesson12_1.id, question: "Quelle économie d'énergie peut-on attendre sur les pompes/ventilateurs ?", options: JSON.stringify(["5 à 10%", "20 à 50%", "60 à 80%", "Aucune"]), correctIndex: 1, explanation: "Les variateurs permettent des économies de 20 à 50% sur les applications de pompage et ventilation grâce à la loi du cube.", order: 3 },
+      { lessonId: lesson12_1.id, question: "Quelle est la fonction du redresseur ?", options: JSON.stringify(["Convertir AC en DC", "Convertir DC en AC", "Filtrer les harmoniques", "Contrôler la vitesse"]), correctIndex: 0, explanation: "Le redresseur convertit le courant alternatif du réseau en courant continu pour le bus DC.", order: 4 },
+      { lessonId: lesson12_1.id, question: "Pour quelle application les variateurs sont-ils particulièrement adaptés ?", options: JSON.stringify(["Éclairage", "Chauffage résistif", "Pompes et ventilateurs", "Ordinateurs"]), correctIndex: 2, explanation: "Les variateurs sont très efficaces pour les pompes et ventilateurs où la puissance varie avec le cube de la vitesse.", order: 5 },
+      // Quiz Module 12 - Lesson 2 (Types de moteurs)
+      { lessonId: lesson12_2.id, question: "Quel type de moteur est le plus couramment utilisé avec les variateurs ?", options: JSON.stringify(["Moteur à courant continu", "Moteur asynchrone cage d'écureuil", "Moteur synchrone", "Moteur universel"]), correctIndex: 1, explanation: "Le moteur asynchrone à cage d'écureuil est le plus courant car robuste, économique et bien adapté aux variateurs.", order: 1 },
+      { lessonId: lesson12_2.id, question: "Quel type de variateur offre le meilleur couple à basse vitesse ?", options: JSON.stringify(["Scalaire (V/f)", "Vectoriel", "PWM simple", "Résistance rotorique"]), correctIndex: 1, explanation: "Le contrôle vectoriel offre un excellent couple même à très basse vitesse.", order: 2 },
+      { lessonId: lesson12_2.id, question: "En dessous de quelle vitesse un moteur standard nécessite-t-il une ventilation forcée ?", options: JSON.stringify(["50%", "30%", "10%", "5%"]), correctIndex: 1, explanation: "En dessous de 30% de la vitesse nominale, le ventilateur intégré ne suffit plus à refroidir le moteur.", order: 3 },
+      { lessonId: lesson12_2.id, question: "Pour quelle application utilise-t-on un servo-drive ?", options: JSON.stringify(["Pompe centrifuge", "Ventilation bâtiment", "Robotique et CNC", "Climatisation"]), correctIndex: 2, explanation: "Les servo-drives offrent une très haute dynamique nécessaire pour la robotique et les machines CNC.", order: 4 },
+      { lessonId: lesson12_2.id, question: "Que signifie V/f dans le contrôle scalaire ?", options: JSON.stringify(["Vitesse/fréquence", "Tension/fréquence", "Voltage/flux", "Variable/fixe"]), correctIndex: 1, explanation: "Le contrôle V/f maintient un rapport constant entre la tension et la fréquence pour garder le flux constant.", order: 5 },
+      // Quiz Module 12 - Lesson 3 (Câblage)
+      { lessonId: lesson12_3.id, question: "Comment sont désignées les bornes de sortie moteur d'un variateur ?", options: JSON.stringify(["L1, L2, L3", "U, V, W", "R, S, T", "A, B, C"]), correctIndex: 1, explanation: "Les sorties vers le moteur sont conventionnellement désignées U, V, W.", order: 1 },
+      { lessonId: lesson12_3.id, question: "Quel type de signal est couramment utilisé pour la consigne vitesse ?", options: JSON.stringify(["0-5V uniquement", "0-10V ou 4-20mA", "Signal carré", "HDMI"]), correctIndex: 1, explanation: "Les signaux 0-10V et 4-20mA sont les standards industriels pour les consignes analogiques.", order: 2 },
+      { lessonId: lesson12_3.id, question: "Pourquoi séparer les câbles puissance et commande ?", options: JSON.stringify(["Pour faciliter la maintenance", "Pour éviter les perturbations électromagnétiques", "C'est obligatoire par la norme", "Pour réduire les coûts"]), correctIndex: 1, explanation: "La séparation évite que les signaux de puissance perturbent les signaux de commande sensibles.", order: 3 },
+      { lessonId: lesson12_3.id, question: "À quoi sert la borne PE ?", options: JSON.stringify(["Alimentation", "Sortie relais", "Terre de protection", "Entrée analogique"]), correctIndex: 2, explanation: "PE (Protective Earth) est la connexion de terre de protection pour la sécurité électrique.", order: 4 },
+      { lessonId: lesson12_3.id, question: "Que signalent typiquement les sorties relais d'un variateur ?", options: JSON.stringify(["La température ambiante", "Défaut, prêt, en marche", "La consigne vitesse", "Le courant moteur"]), correctIndex: 1, explanation: "Les relais signalent généralement l'état du variateur : défaut, prêt à fonctionner, moteur en marche.", order: 5 },
+      // Quiz Module 12 - Lesson 4 (Protections)
+      { lessonId: lesson12_4.id, question: "Que signifie STO ?", options: JSON.stringify(["Standard Terminal Output", "Safe Torque Off", "Speed Tracking Option", "System Test Operation"]), correctIndex: 1, explanation: "STO (Safe Torque Off) est une fonction de sécurité qui coupe le couple moteur de façon sûre.", order: 1 },
+      { lessonId: lesson12_4.id, question: "Quelle protection surveille la charge thermique du moteur ?", options: JSON.stringify(["Surtension", "Protection I²t", "Défaut terre", "Court-circuit"]), correctIndex: 1, explanation: "La protection I²t (I carré t) calcule l'échauffement du moteur en fonction du courant et du temps.", order: 2 },
+      { lessonId: lesson12_4.id, question: "À quel niveau de sécurité les fonctions STO sont-elles généralement certifiées ?", options: JSON.stringify(["SIL1/PLc", "SIL2/PLd", "SIL3/PLe", "Aucune certification"]), correctIndex: 1, explanation: "Les fonctions STO sont typiquement certifiées SIL2/PLd selon IEC 61508 et ISO 13849.", order: 3 },
+      { lessonId: lesson12_4.id, question: "Que fait la fonction SS1 ?", options: JSON.stringify(["Démarre le moteur", "Arrêt contrôlé puis STO", "Limite la vitesse", "Active le frein"]), correctIndex: 1, explanation: "SS1 (Safe Stop 1) effectue un arrêt contrôlé sur rampe puis active le STO.", order: 4 },
+      { lessonId: lesson12_4.id, question: "Quelle protection détecte un défaut d'isolement ?", options: JSON.stringify(["Surtension", "Surcharge", "Défaut terre", "Sous-tension"]), correctIndex: 2, explanation: "La protection défaut terre (ground fault) détecte les courants de fuite vers la terre.", order: 5 },
+      // Quiz Module 12 - Lesson 5 (Économie d'énergie)
+      { lessonId: lesson12_5.id, question: "Selon la loi du cube, à 50% de vitesse, quelle est la puissance consommée ?", options: JSON.stringify(["50%", "25%", "12.5%", "6.25%"]), correctIndex: 2, explanation: "À 50% de vitesse, la puissance est de 0.5³ = 0.125 soit 12.5% de la puissance nominale.", order: 1 },
+      { lessonId: lesson12_5.id, question: "Quelle application bénéficie le plus de la loi du cube ?", options: JSON.stringify(["Levage", "Convoyeur", "Pompe centrifuge", "Presse hydraulique"]), correctIndex: 2, explanation: "Les pompes centrifuges et ventilateurs suivent la loi d'affinité où la puissance varie avec le cube de la vitesse.", order: 2 },
+      { lessonId: lesson12_5.id, question: "Comment récupérer l'énergie de freinage ?", options: JSON.stringify(["Résistance de freinage", "Renvoi au réseau", "Les deux sont possibles", "Ce n'est pas possible"]), correctIndex: 2, explanation: "L'énergie peut être dissipée dans une résistance ou renvoyée au réseau avec un variateur régénératif.", order: 3 },
+      { lessonId: lesson12_5.id, question: "Pourquoi dimensionner correctement le moteur ?", options: JSON.stringify(["Réduire le coût initial", "Optimiser le rendement", "Simplifier le câblage", "Faciliter la maintenance"]), correctIndex: 1, explanation: "Un moteur surdimensionné fonctionne à charge partielle avec un rendement dégradé.", order: 4 },
+      { lessonId: lesson12_5.id, question: "Qu'est-ce que le mode économie d'énergie du variateur ?", options: JSON.stringify(["Arrêt automatique", "Réduction de tension à faible charge", "Limitation de vitesse", "Mise en veille"]), correctIndex: 1, explanation: "Le mode éco réduit la tension moteur quand la charge est faible pour diminuer les pertes fer.", order: 5 },
+      // Quiz Module 12 - Lesson 6 (Marques)
+      { lessonId: lesson12_6.id, question: "Quelle marque est réputée pour l'intégration TIA Portal ?", options: JSON.stringify(["ABB", "Siemens", "Danfoss", "SEW"]), correctIndex: 1, explanation: "Les variateurs Siemens SINAMICS s'intègrent nativement dans l'environnement TIA Portal.", order: 1 },
+      { lessonId: lesson12_6.id, question: "Pour quelle application Danfoss est-il particulièrement reconnu ?", options: JSON.stringify(["Robotique", "HVAC et efficacité énergétique", "Industrie lourde", "Machines-outils"]), correctIndex: 1, explanation: "Danfoss VLT est reconnu pour les applications HVAC et son efficacité énergétique.", order: 2 },
+      { lessonId: lesson12_6.id, question: "Quel critère n'est PAS important dans le choix d'un variateur ?", options: JSON.stringify(["Puissance et tension", "Couleur du boîtier", "Type de contrôle", "Options de communication"]), correctIndex: 1, explanation: "La couleur est purement esthétique et n'affecte pas les performances du variateur.", order: 3 },
+      { lessonId: lesson12_6.id, question: "Que signifie IP dans les caractéristiques environnementales ?", options: JSON.stringify(["Internet Protocol", "Indice de Protection", "Input Power", "Integrated Processor"]), correctIndex: 1, explanation: "L'indice IP (Ingress Protection) indique le niveau de protection contre la poussière et l'eau.", order: 4 },
+      { lessonId: lesson12_6.id, question: "Quelle gamme ABB est adaptée à l'industrie lourde ?", options: JSON.stringify(["ACS180", "ACS310", "ACS880", "ACS50"]), correctIndex: 2, explanation: "La gamme ACS880 est la gamme industrielle haute performance d'ABB.", order: 5 },
+      // Quiz Module 13 - Lesson 1 (Paramètres moteur)
+      { lessonId: lesson13_1.id, question: "Où trouve-t-on les données à paramétrer dans le variateur ?", options: JSON.stringify(["Dans le manuel du variateur", "Sur la plaque signalétique du moteur", "Sur Internet", "Dans l'automate"]), correctIndex: 1, explanation: "La plaque signalétique du moteur contient toutes les caractéristiques nominales nécessaires.", order: 1 },
+      { lessonId: lesson13_1.id, question: "Qu'est-ce que l'auto-tuning ?", options: JSON.stringify(["Réglage automatique de la radio", "Identification automatique du moteur", "Calibration des capteurs", "Mise à jour firmware"]), correctIndex: 1, explanation: "L'auto-tuning identifie automatiquement les paramètres électriques du moteur.", order: 2 },
+      { lessonId: lesson13_1.id, question: "Quelle condition pour l'auto-tuning dynamique ?", options: JSON.stringify(["Moteur alimenté", "Charge découplée", "Variateur froid", "Communication active"]), correctIndex: 1, explanation: "L'auto-tuning avec rotation nécessite que la charge soit découplée pour tourner librement.", order: 3 },
+      { lessonId: lesson13_1.id, question: "Que représente le cos φ sur la plaque moteur ?", options: JSON.stringify(["Le rendement", "Le facteur de puissance", "La vitesse maximale", "Le courant de démarrage"]), correctIndex: 1, explanation: "Le cos φ (cosinus phi) est le facteur de puissance du moteur à charge nominale.", order: 4 },
+      { lessonId: lesson13_1.id, question: "Pourquoi la fréquence nominale est-elle importante ?", options: JSON.stringify(["Pour la communication", "Pour le calcul de la vitesse et du flux", "Pour le bruit", "Pour le refroidissement"]), correctIndex: 1, explanation: "La fréquence nominale permet au variateur de calculer la vitesse synchrone et maintenir le flux correct.", order: 5 },
+      // Quiz Module 13 - Lesson 2 (Rampes)
+      { lessonId: lesson13_2.id, question: "Qu'est-ce qu'une rampe en S ?", options: JSON.stringify(["Une rampe en forme de S", "Une accélération progressive au début et à la fin", "Une rampe très rapide", "Une rampe pour charges lourdes"]), correctIndex: 1, explanation: "La rampe en S a une accélération progressive au démarrage et à la fin pour un mouvement plus doux.", order: 1 },
+      { lessonId: lesson13_2.id, question: "Que se passe-t-il si la rampe d'accélération est trop rapide ?", options: JSON.stringify(["Rien de particulier", "Défaut de surintensité", "Le moteur va plus vite", "Économie d'énergie"]), correctIndex: 1, explanation: "Une rampe trop rapide demande trop de courant et déclenche la protection surintensité.", order: 2 },
+      { lessonId: lesson13_2.id, question: "Que provoque une décélération trop rapide ?", options: JSON.stringify(["Surchauffe moteur", "Défaut de surtension", "Court-circuit", "Perte de communication"]), correctIndex: 1, explanation: "Le moteur devient générateur lors du freinage, renvoyant de l'énergie qui fait monter la tension du bus DC.", order: 3 },
+      { lessonId: lesson13_2.id, question: "À quoi sert la limite de vitesse minimale ?", options: JSON.stringify(["Protéger le moteur", "Éviter la surchauffe à basse vitesse", "Économiser l'énergie", "Toutes ces réponses"]), correctIndex: 3, explanation: "La limite basse protège le moteur qui peut surchauffer à très basse vitesse sans ventilation suffisante.", order: 4 },
+      { lessonId: lesson13_2.id, question: "Peut-on dépasser 100% de la vitesse nominale ?", options: JSON.stringify(["Non, jamais", "Oui, jusqu'à 120% typiquement", "Oui, sans limite", "Seulement en mode spécial"]), correctIndex: 1, explanation: "On peut généralement aller jusqu'à 120% mais le couple disponible diminue au-delà de la fréquence nominale.", order: 5 },
+      // Quiz Module 13 - Lesson 3 (Modes de commande)
+      { lessonId: lesson13_3.id, question: "Quel avantage du signal 4-20mA sur le 0-10V ?", options: JSON.stringify(["Plus précis", "Moins sensible aux parasites", "Plus rapide", "Moins cher"]), correctIndex: 1, explanation: "Le signal courant 4-20mA est moins sensible aux perturbations électromagnétiques que la tension.", order: 1 },
+      { lessonId: lesson13_3.id, question: "Que permet le mode de commande combiné ?", options: JSON.stringify(["Plus de puissance", "Certaines fonctions locales, d'autres par bus", "Deux moteurs", "Redondance"]), correctIndex: 1, explanation: "Le mode combiné permet par exemple la marche/arrêt par bornier et la consigne par bus de terrain.", order: 2 },
+      { lessonId: lesson13_3.id, question: "Quel est l'inconvénient principal du potentiomètre ?", options: JSON.stringify(["Coût élevé", "Imprécision", "Complexité", "Consommation"]), correctIndex: 1, explanation: "Le potentiomètre manque de précision et de répétabilité comparé aux signaux numériques.", order: 3 },
+      { lessonId: lesson13_3.id, question: "Quel protocole est universel pour les variateurs ?", options: JSON.stringify(["Profinet", "EtherCAT", "Modbus", "DeviceNet"]), correctIndex: 2, explanation: "Modbus est supporté par pratiquement tous les fabricants de variateurs.", order: 4 },
+      { lessonId: lesson13_3.id, question: "Où se paramètre la source de commande ?", options: JSON.stringify(["Dans l'automate", "Dans les paramètres du variateur", "Sur le moteur", "Dans le câblage"]), correctIndex: 1, explanation: "La source de commande (local, bornier, bus) se configure dans les paramètres du variateur.", order: 5 },
+      // Quiz Module 13 - Lesson 4 (PID)
+      { lessonId: lesson13_4.id, question: "Que régule typiquement le PID intégré d'un variateur ?", options: JSON.stringify(["La vitesse moteur", "Une grandeur process (pression, débit...)", "Le courant", "La température variateur"]), correctIndex: 1, explanation: "Le PID intégré régule une grandeur process comme la pression ou le débit, pas la vitesse moteur directement.", order: 1 },
+      { lessonId: lesson13_4.id, question: "Quel paramètre PID élimine l'erreur statique ?", options: JSON.stringify(["P (proportionnel)", "I (intégral)", "D (dérivé)", "Aucun"]), correctIndex: 1, explanation: "L'action intégrale accumule l'erreur dans le temps jusqu'à son élimination.", order: 2 },
+      { lessonId: lesson13_4.id, question: "Par quoi commencer le réglage PID ?", options: JSON.stringify(["D seul", "I seul", "P seul", "Tout en même temps"]), correctIndex: 2, explanation: "On commence par P seul, puis on ajoute I progressivement. D est rarement nécessaire.", order: 3 },
+      { lessonId: lesson13_4.id, question: "Que provoque un gain I trop élevé ?", options: JSON.stringify(["Réponse lente", "Oscillations", "Erreur statique", "Aucun effet"]), correctIndex: 1, explanation: "Un gain intégral trop élevé provoque des dépassements et oscillations.", order: 4 },
+      { lessonId: lesson13_4.id, question: "Pour quelle application le PID intégré est-il adapté ?", options: JSON.stringify(["Positionnement précis", "Régulation de pression pompe", "Synchronisation d'axes", "Commande numérique"]), correctIndex: 1, explanation: "Le PID intégré est parfait pour les régulations simples comme la pression de pompe.", order: 5 },
+      // Quiz Module 13 - Lesson 5 (Défauts)
+      { lessonId: lesson13_5.id, question: "Que signifie le code défaut OC ?", options: JSON.stringify(["Over Current (surintensité)", "Open Circuit", "Over Charge", "Output Control"]), correctIndex: 0, explanation: "OC signifie Over Current, indiquant une surintensité détectée.", order: 1 },
+      { lessonId: lesson13_5.id, question: "Quelle action pour un défaut OV (surtension) au freinage ?", options: JSON.stringify(["Réduire la charge", "Allonger la rampe de décélération", "Augmenter la vitesse", "Changer le moteur"]), correctIndex: 1, explanation: "Une rampe plus longue réduit l'énergie de freinage renvoyée et évite la surtension.", order: 2 },
+      { lessonId: lesson13_5.id, question: "Qu'est-ce que l'arrêt sur rampe en cas de défaut ?", options: JSON.stringify(["Arrêt immédiat", "Décélération contrôlée puis arrêt", "Maintien de vitesse", "Inversion"]), correctIndex: 1, explanation: "L'arrêt sur rampe effectue une décélération contrôlée au lieu d'un arrêt brutal.", order: 3 },
+      { lessonId: lesson13_5.id, question: "Que vérifier en cas de défaut de surchauffe ?", options: JSON.stringify(["Le câblage", "La ventilation et la charge", "La communication", "La consigne"]), correctIndex: 1, explanation: "La surchauffe indique généralement un problème de ventilation ou de surcharge.", order: 4 },
+      { lessonId: lesson13_5.id, question: "Pourquoi ne pas désactiver les protections ?", options: JSON.stringify(["C'est impossible", "Risque pour l'installation et la sécurité", "Ça consomme plus", "C'est illégal"]), correctIndex: 1, explanation: "Désactiver les protections expose l'installation et les personnes à des risques graves.", order: 5 },
+      // Quiz Module 13 - Lesson 6 (Sauvegarde)
+      { lessonId: lesson13_6.id, question: "Pourquoi sauvegarder les paramètres du variateur ?", options: JSON.stringify(["Pour la garantie", "Pour faciliter le remplacement", "Pour la certification", "C'est obligatoire"]), correctIndex: 1, explanation: "La sauvegarde permet de reconfigurer rapidement un variateur de remplacement.", order: 1 },
+      { lessonId: lesson13_6.id, question: "Quelle méthode de sauvegarde est la plus pratique ?", options: JSON.stringify(["Noter sur papier", "Clé USB directement sur le variateur", "Photo de l'écran", "Mémoriser"]), correctIndex: 1, explanation: "La clé USB permet une sauvegarde rapide et fiable directement sur le variateur.", order: 2 },
+      { lessonId: lesson13_6.id, question: "Que faut-il également sauvegarder ?", options: JSON.stringify(["Le manuel", "Le firmware du variateur", "La facture", "Le schéma électrique"]), correctIndex: 1, explanation: "Le firmware peut être différent entre variateurs et affecter la compatibilité des paramètres.", order: 3 },
+      { lessonId: lesson13_6.id, question: "À quelle fréquence sauvegarder ?", options: JSON.stringify(["Une fois par an", "Après chaque modification", "Jamais", "À l'installation uniquement"]), correctIndex: 1, explanation: "Chaque modification des paramètres devrait être suivie d'une sauvegarde.", order: 4 },
+      { lessonId: lesson13_6.id, question: "Où garder la copie de sauvegarde ?", options: JSON.stringify(["Sur le variateur uniquement", "À côté du variateur", "Hors site également", "Dans le moteur"]), correctIndex: 2, explanation: "Une copie hors site protège contre la perte en cas de sinistre ou vol.", order: 5 },
+      // Quiz Module 14 - Lesson 1 (Protocoles)
+      { lessonId: lesson14_1.id, question: "Quel protocole est universel et supporté par tous les fabricants ?", options: JSON.stringify(["Profinet", "EtherCAT", "Modbus", "CC-Link"]), correctIndex: 2, explanation: "Modbus RTU est le protocole le plus universel, supporté par pratiquement tous les variateurs.", order: 1 },
+      { lessonId: lesson14_1.id, question: "Quelle est la vitesse typique de Profinet ?", options: JSON.stringify(["9600 bps", "115.2 kbps", "100 Mbps", "1 Gbps"]), correctIndex: 2, explanation: "Profinet utilise Ethernet standard à 100 Mbps.", order: 2 },
+      { lessonId: lesson14_1.id, question: "Quel type de données est échangé en continu ?", options: JSON.stringify(["Paramètres de configuration", "Commande et retours d'état", "Historique des défauts", "Manuel utilisateur"]), correctIndex: 1, explanation: "Les mots de commande, consignes et retours d'état sont échangés cycliquement.", order: 3 },
+      { lessonId: lesson14_1.id, question: "Quel protocole est typiquement associé à Siemens ?", options: JSON.stringify(["Modbus", "Profinet/Profibus", "Ethernet/IP", "DeviceNet"]), correctIndex: 1, explanation: "Profinet et Profibus sont les protocoles natifs de l'écosystème Siemens.", order: 4 },
+      { lessonId: lesson14_1.id, question: "Quel protocole offre le temps de cycle le plus court ?", options: JSON.stringify(["Modbus RTU", "Profibus", "EtherCAT", "CANopen"]), correctIndex: 2, explanation: "EtherCAT atteint des temps de cycle de l'ordre de la microseconde.", order: 5 },
+      // Quiz Module 14 - Lesson 2 (Modbus)
+      { lessonId: lesson14_2.id, question: "Quelle plage d'adresses Modbus pour un esclave ?", options: JSON.stringify(["0-255", "1-247", "1-127", "0-65535"]), correctIndex: 1, explanation: "Les adresses esclaves Modbus RTU vont de 1 à 247.", order: 1 },
+      { lessonId: lesson14_2.id, question: "Quelle fonction Modbus pour lire plusieurs registres ?", options: JSON.stringify(["01", "03", "06", "15"]), correctIndex: 1, explanation: "La fonction 03 (Read Holding Registers) permet de lire plusieurs registres.", order: 2 },
+      { lessonId: lesson14_2.id, question: "Quelle vitesse Modbus RTU est la plus courante ?", options: JSON.stringify(["2400 baud", "9600 baud", "38400 baud", "115200 baud"]), correctIndex: 1, explanation: "9600 baud est la vitesse par défaut la plus courante pour Modbus RTU.", order: 3 },
+      { lessonId: lesson14_2.id, question: "Que signifie RTU dans Modbus RTU ?", options: JSON.stringify(["Real Time Unit", "Remote Terminal Unit", "Register Transfer Unit", "Rapid Transfer Update"]), correctIndex: 1, explanation: "RTU signifie Remote Terminal Unit, le format binaire compact de Modbus.", order: 4 },
+      { lessonId: lesson14_2.id, question: "Quelle fonction pour écrire un seul registre ?", options: JSON.stringify(["03", "06", "16", "01"]), correctIndex: 1, explanation: "La fonction 06 (Write Single Register) écrit une valeur dans un registre.", order: 5 },
+      // Quiz Module 14 - Lesson 3 (Intégration automate)
+      { lessonId: lesson14_3.id, question: "Que contient le mot de commande (Control Word) ?", options: JSON.stringify(["La vitesse réelle", "Les ordres de marche/arrêt", "Les paramètres moteur", "L'historique"]), correctIndex: 1, explanation: "Le Control Word contient les bits de commande : marche, arrêt, reset, etc.", order: 1 },
+      { lessonId: lesson14_3.id, question: "Quel bit indique généralement le défaut dans le Status Word ?", options: JSON.stringify(["Bit 0", "Bit 1", "Bit 3", "Bit 15"]), correctIndex: 2, explanation: "Le bit 3 est conventionnellement utilisé pour signaler un défaut.", order: 2 },
+      { lessonId: lesson14_3.id, question: "Pourquoi prévoir un mode de secours local ?", options: JSON.stringify(["Pour les tests", "En cas de perte de communication", "Pour économiser", "C'est obligatoire"]), correctIndex: 1, explanation: "Le mode local permet de continuer à fonctionner si la communication avec l'automate est perdue.", order: 3 },
+      { lessonId: lesson14_3.id, question: "Comment s'appelle la consigne vitesse envoyée au variateur ?", options: JSON.stringify(["Speed Feedback", "Speed Reference/Setpoint", "Speed Limit", "Speed Error"]), correctIndex: 1, explanation: "La consigne s'appelle Speed Reference ou Speed Setpoint.", order: 4 },
+      { lessonId: lesson14_3.id, question: "Que retourne le variateur comme information de vitesse ?", options: JSON.stringify(["Speed Reference", "Speed Feedback/Actual", "Speed Error", "Speed Limit"]), correctIndex: 1, explanation: "Le variateur retourne la vitesse réelle (actual/feedback) mesurée ou estimée.", order: 5 },
+      // Quiz Module 14 - Lesson 4 (Diagnostic)
+      { lessonId: lesson14_4.id, question: "Quel paramètre indique la charge relative du moteur ?", options: JSON.stringify(["Tension bus DC", "Courant moteur", "Température IGBT", "Fréquence sortie"]), correctIndex: 1, explanation: "Le courant moteur par rapport au nominal indique directement la charge.", order: 1 },
+      { lessonId: lesson14_4.id, question: "Pourquoi surveiller les heures de fonctionnement ?", options: JSON.stringify(["Pour la facturation", "Pour la maintenance préventive", "Pour la garantie", "Pour le rendement"]), correctIndex: 1, explanation: "Les heures de fonctionnement permettent de planifier les maintenances préventives.", order: 2 },
+      { lessonId: lesson14_4.id, question: "Que contient l'historique des défauts ?", options: JSON.stringify(["Seulement le code", "Code, date, et conditions au moment du défaut", "Uniquement la date", "Rien d'utile"]), correctIndex: 1, explanation: "L'historique complet aide au diagnostic avec le contexte du défaut.", order: 3 },
+      { lessonId: lesson14_4.id, question: "Quel composant a une durée de vie limitée à surveiller ?", options: JSON.stringify(["Le processeur", "Les condensateurs du bus DC", "Les borniers", "Le boîtier"]), correctIndex: 1, explanation: "Les condensateurs électrolytiques vieillissent et doivent être remplacés typiquement tous les 5-10 ans.", order: 4 },
+      { lessonId: lesson14_4.id, question: "Comment accéder au diagnostic à distance ?", options: JSON.stringify(["Pas possible", "Via le bus de terrain", "Uniquement sur place", "Par téléphone"]), correctIndex: 1, explanation: "Les protocoles de communication permettent de lire les données de diagnostic à distance.", order: 5 },
+      // Quiz Module 14 - Lesson 5 (Dépannage)
+      { lessonId: lesson14_5.id, question: "Quelle est la première étape de dépannage ?", options: JSON.stringify(["Changer le variateur", "Relever le code défaut", "Appeler le support", "Redémarrer"]), correctIndex: 1, explanation: "Le code défaut oriente immédiatement vers la cause probable du problème.", order: 1 },
+      { lessonId: lesson14_5.id, question: "Un défaut OC au démarrage peut indiquer ?", options: JSON.stringify(["Surtension réseau", "Court-circuit ou câble trop long", "Surcharge thermique", "Défaut communication"]), correctIndex: 1, explanation: "Un court-circuit moteur ou un câble trop long provoque une surintensité au démarrage.", order: 2 },
+      { lessonId: lesson14_5.id, question: "Que vérifier pour un défaut de surchauffe ?", options: JSON.stringify(["La communication", "Ventilation et charge", "Le câblage entrées", "La consigne"]), correctIndex: 1, explanation: "La surchauffe est liée à un manque de ventilation ou une charge excessive.", order: 3 },
+      { lessonId: lesson14_5.id, question: "Un défaut OV au freinage nécessite ?", options: JSON.stringify(["Résistance de freinage ou rampe plus longue", "Moteur plus puissant", "Câble plus gros", "Nouveau variateur"]), correctIndex: 0, explanation: "L'énergie de freinage doit être dissipée par une résistance ou la rampe allongée.", order: 4 },
+      { lessonId: lesson14_5.id, question: "Pas de communication avec le variateur : que vérifier d'abord ?", options: JSON.stringify(["Le firmware", "Paramètres et câblage", "Le moteur", "Les rampes"]), correctIndex: 1, explanation: "Vérifier l'adresse, la vitesse, le câblage et la terminaison en premier.", order: 5 },
+      // Quiz Module 14 - Lesson 6 (Maintenance)
+      { lessonId: lesson14_6.id, question: "À quelle fréquence faire une inspection visuelle ?", options: JSON.stringify(["Quotidienne", "Mensuelle", "Annuelle", "Jamais"]), correctIndex: 1, explanation: "Une inspection mensuelle permet de détecter rapidement les problèmes.", order: 1 },
+      { lessonId: lesson14_6.id, question: "Quand remplacer les condensateurs du bus DC ?", options: JSON.stringify(["Tous les ans", "Tous les 5 ans environ", "Jamais", "À chaque panne"]), correctIndex: 1, explanation: "Les condensateurs électrolytiques ont une durée de vie typique de 5-10 ans.", order: 2 },
+      { lessonId: lesson14_6.id, question: "Que vérifier annuellement ?", options: JSON.stringify(["Seulement le firmware", "Serrage connexions et ventilateurs", "Rien", "Le numéro de série"]), correctIndex: 1, explanation: "Les connexions peuvent se desserrer avec les vibrations et les cycles thermiques.", order: 3 },
+      { lessonId: lesson14_6.id, question: "Comment détecter un condensateur défaillant ?", options: JSON.stringify(["Par la couleur", "Gonflement du dessus", "Par le bruit", "Impossible à détecter"]), correctIndex: 1, explanation: "Un condensateur défaillant présente souvent un gonflement visible sur le dessus.", order: 4 },
+      { lessonId: lesson14_6.id, question: "Pourquoi tenir un carnet de maintenance ?", options: JSON.stringify(["Pour la garantie", "Pour l'historique et la traçabilité", "C'est obligatoire", "Pour la décoration"]), correctIndex: 1, explanation: "L'historique des interventions aide à identifier les tendances et problèmes récurrents.", order: 5 },
+      // Quiz Module 15 - Lesson 1 (Principes positionnement)
+      { lessonId: lesson15_1.id, question: "Qu'est-ce que le motion control ?", options: JSON.stringify(["Contrôle de température", "Contrôle de mouvement et positionnement", "Contrôle qualité", "Télécommande"]), correctIndex: 1, explanation: "Le motion control est la discipline du contrôle précis des mouvements mécaniques.", order: 1 },
+      { lessonId: lesson15_1.id, question: "Quel composant calcule les trajectoires ?", options: JSON.stringify(["Le moteur", "Le contrôleur", "Le codeur", "L'alimentation"]), correctIndex: 1, explanation: "Le contrôleur de mouvement calcule les profils et coordonne les axes.", order: 2 },
+      { lessonId: lesson15_1.id, question: "À quoi sert le retour position ?", options: JSON.stringify(["Alimenter le moteur", "Mesurer la position réelle", "Calculer la trajectoire", "Refroidir le système"]), correctIndex: 1, explanation: "Le retour position (codeur) mesure la position réelle pour la boucle de régulation.", order: 3 },
+      { lessonId: lesson15_1.id, question: "Quelle application n'utilise PAS le motion control ?", options: JSON.stringify(["Robotique", "Emballage", "Éclairage", "CNC"]), correctIndex: 2, explanation: "L'éclairage standard ne nécessite pas de contrôle de mouvement.", order: 4 },
+      { lessonId: lesson15_1.id, question: "Quel est le rôle du drive/servo-variateur ?", options: JSON.stringify(["Calculer les trajectoires", "Alimenter et contrôler le moteur", "Mesurer la position", "Programmer le système"]), correctIndex: 1, explanation: "Le drive alimente le moteur en puissance et gère les boucles de régulation.", order: 5 },
+      // Quiz Module 15 - Lesson 2 (Mécanique)
+      { lessonId: lesson15_2.id, question: "Quelle unité pour le couple ?", options: JSON.stringify(["kg", "mm/s", "Nm", "rad/s"]), correctIndex: 2, explanation: "Le couple s'exprime en Newton-mètres (Nm).", order: 1 },
+      { lessonId: lesson15_2.id, question: "Qu'est-ce que l'inertie ?", options: JSON.stringify(["La vitesse", "La résistance au changement de vitesse", "La position", "La température"]), correctIndex: 1, explanation: "L'inertie représente la résistance d'un corps à modifier sa vitesse de rotation.", order: 2 },
+      { lessonId: lesson15_2.id, question: "Quel type de transmission offre la meilleure précision ?", options: JSON.stringify(["Courroie", "Chaîne", "Vis à billes", "Engrenage"]), correctIndex: 2, explanation: "La vis à billes offre une très haute précision et un excellent rendement.", order: 3 },
+      { lessonId: lesson15_2.id, question: "L'entraînement direct élimine quoi ?", options: JSON.stringify(["Le moteur", "La transmission mécanique", "Le codeur", "L'alimentation"]), correctIndex: 1, explanation: "L'entraînement direct supprime la transmission (réducteur, vis) pour une précision maximale.", order: 4 },
+      { lessonId: lesson15_2.id, question: "Quelle transmission est la plus rapide ?", options: JSON.stringify(["Vis à billes", "Courroie", "Crémaillère", "Réducteur"]), correctIndex: 1, explanation: "La courroie permet les vitesses les plus élevées grâce à sa légèreté.", order: 5 },
+      // Quiz Module 15 - Lesson 3 (Codeurs)
+      { lessonId: lesson15_3.id, question: "Que nécessite un codeur incrémental ?", options: JSON.stringify(["Rien de spécial", "Une prise d'origine", "Un câble spécial", "Une alimentation 230V"]), correctIndex: 1, explanation: "Le codeur incrémental ne connaît pas sa position absolue, une prise d'origine est nécessaire.", order: 1 },
+      { lessonId: lesson15_3.id, question: "Combien de points par tour pour un codeur 17 bits ?", options: JSON.stringify(["17", "1024", "65536", "131072"]), correctIndex: 3, explanation: "Un codeur 17 bits offre 2^17 = 131072 points par tour.", order: 2 },
+      { lessonId: lesson15_3.id, question: "Quel codeur garde sa position après coupure ?", options: JSON.stringify(["Incrémental", "Absolu", "Potentiomètre", "Résolver"]), correctIndex: 1, explanation: "Le codeur absolu conserve la position même hors tension grâce à un encodage unique.", order: 3 },
+      { lessonId: lesson15_3.id, question: "Que signifie PPR ?", options: JSON.stringify(["Points Par Révolution", "Position Par Registre", "Pulse Par Rotation", "Points Par Registre"]), correctIndex: 0, explanation: "PPR (Points Per Revolution) indique la résolution du codeur.", order: 4 },
+      { lessonId: lesson15_3.id, question: "Qu'est-ce qu'un codeur multi-tours ?", options: JSON.stringify(["Un codeur à plusieurs vitesses", "Un codeur qui compte les tours complets", "Un codeur tournant vite", "Un codeur avec plusieurs câbles"]), correctIndex: 1, explanation: "Le codeur multi-tours mémorise la position absolue sur plusieurs rotations complètes.", order: 5 },
+      // Quiz Module 15 - Lesson 4 (Boucles)
+      { lessonId: lesson15_4.id, question: "Quelle boucle est la plus rapide ?", options: JSON.stringify(["Position", "Vitesse", "Courant", "Elles sont égales"]), correctIndex: 2, explanation: "La boucle de courant est la plus rapide (16 kHz typique), puis vitesse, puis position.", order: 1 },
+      { lessonId: lesson15_4.id, question: "Dans quel ordre régler les boucles ?", options: JSON.stringify(["Position, vitesse, courant", "Courant, vitesse, position", "Tout en même temps", "L'ordre n'importe pas"]), correctIndex: 1, explanation: "On règle de l'intérieur vers l'extérieur : courant, puis vitesse, puis position.", order: 2 },
+      { lessonId: lesson15_4.id, question: "Quelle boucle contrôle le couple ?", options: JSON.stringify(["Position", "Vitesse", "Courant", "Aucune"]), correctIndex: 2, explanation: "Le couple est proportionnel au courant, donc contrôlé par la boucle de courant.", order: 3 },
+      { lessonId: lesson15_4.id, question: "Quelle fréquence typique pour la boucle de position ?", options: JSON.stringify(["16 kHz", "4 kHz", "1 kHz", "100 Hz"]), correctIndex: 2, explanation: "La boucle de position fonctionne typiquement à 1 kHz (1 ms).", order: 4 },
+      { lessonId: lesson15_4.id, question: "Pourquoi les boucles sont-elles imbriquées ?", options: JSON.stringify(["Pour simplifier", "Chaque boucle corrige la suivante", "Par hasard", "Pour économiser"]), correctIndex: 1, explanation: "Chaque boucle externe utilise la boucle interne comme actionneur, permettant un contrôle précis.", order: 5 },
+      // Quiz Module 15 - Lesson 5 (Homing)
+      { lessonId: lesson15_5.id, question: "À quoi sert la prise d'origine ?", options: JSON.stringify(["Allumer le système", "Établir un référentiel de position connu", "Régler la vitesse", "Calibrer le codeur"]), correctIndex: 1, explanation: "Le homing définit un point de référence connu pour le système de coordonnées.", order: 1 },
+      { lessonId: lesson15_5.id, question: "Avec quel type de codeur peut-on éviter le homing ?", options: JSON.stringify(["Incrémental", "Absolu mono-tour", "Absolu multi-tours", "Potentiomètre"]), correctIndex: 2, explanation: "Le codeur absolu multi-tours conserve la position absolue, évitant le homing quotidien.", order: 2 },
+      { lessonId: lesson15_5.id, question: "Qu'est-ce que la vitesse d'approche ?", options: JSON.stringify(["Vitesse maximale", "Vitesse rapide vers le capteur de homing", "Vitesse de travail", "Vitesse minimale"]), correctIndex: 1, explanation: "La vitesse d'approche est la vitesse rapide utilisée pour aller vers le capteur de homing.", order: 3 },
+      { lessonId: lesson15_5.id, question: "Pourquoi utiliser une vitesse de recherche lente ?", options: JSON.stringify(["Économie d'énergie", "Meilleure précision du point zéro", "Réduire le bruit", "Éviter l'usure"]), correctIndex: 1, explanation: "Une vitesse lente après détection du capteur améliore la précision de la position zéro.", order: 4 },
+      { lessonId: lesson15_5.id, question: "À quoi sert l'offset de homing ?", options: JSON.stringify(["Décaler la position zéro", "Augmenter la vitesse", "Réduire le courant", "Changer de direction"]), correctIndex: 0, explanation: "L'offset permet de définir la position zéro à un endroit différent du capteur physique.", order: 5 },
+      // Quiz Module 15 - Lesson 6 (Limites)
+      { lessonId: lesson15_6.id, question: "Quel type de limite est prioritaire ?", options: JSON.stringify(["Limites logicielles", "Fins de course matériels", "Limites process", "Elles sont égales"]), correctIndex: 1, explanation: "Les fins de course matériels ont la priorité maximale après l'arrêt d'urgence.", order: 1 },
+      { lessonId: lesson15_6.id, question: "À quoi servent les limites logicielles ?", options: JSON.stringify(["Remplacer les fins de course matériels", "Définir la zone de travail normale", "Protéger le codeur", "Réduire la vitesse"]), correctIndex: 1, explanation: "Les limites logicielles définissent la zone de travail, les fins de course matériels sont une sécurité.", order: 2 },
+      { lessonId: lesson15_6.id, question: "Quand les fins de course matériels doivent-ils être activés ?", options: JSON.stringify(["En fonctionnement normal", "Jamais en fonctionnement normal", "À chaque cycle", "Au démarrage"]), correctIndex: 1, explanation: "Les fins de course sont une sécurité ultime et ne doivent pas être atteints en fonctionnement normal.", order: 3 },
+      { lessonId: lesson15_6.id, question: "Que protège une limite de couple ?", options: JSON.stringify(["Le codeur", "La mécanique en cas de blocage", "Le variateur", "Le câblage"]), correctIndex: 1, explanation: "La limite de couple protège la mécanique si l'axe rencontre un obstacle.", order: 4 },
+      { lessonId: lesson15_6.id, question: "Quel ordre de priorité des sécurités ?", options: JSON.stringify(["Logiciel, matériel, AU", "AU, matériel, logiciel", "Tout pareil", "Logiciel uniquement"]), correctIndex: 1, explanation: "L'arrêt d'urgence est prioritaire, puis les fins de course matériels, puis les limites logicielles.", order: 5 },
+      // Quiz Module 16 - Lesson 1 (Pas à pas)
+      { lessonId: lesson16_1.id, question: "Quel est le pas angulaire standard d'un moteur pas à pas ?", options: JSON.stringify(["0.9°", "1.8°", "3.6°", "7.2°"]), correctIndex: 1, explanation: "Le pas standard est de 1.8°, soit 200 pas par tour complet.", order: 1 },
+      { lessonId: lesson16_1.id, question: "Qu'est-ce que le micro-stepping ?", options: JSON.stringify(["Petits moteurs", "Division du pas en fractions", "Pas très rapides", "Moteurs miniatures"]), correctIndex: 1, explanation: "Le micro-stepping divise chaque pas en fractions plus petites pour plus de résolution.", order: 2 },
+      { lessonId: lesson16_1.id, question: "Quel inconvénient majeur du moteur pas à pas ?", options: JSON.stringify(["Coût élevé", "Perte de pas possible en surcharge", "Faible couple", "Bruit nul"]), correctIndex: 1, explanation: "En boucle ouverte, une surcharge peut faire perdre des pas sans détection.", order: 3 },
+      { lessonId: lesson16_1.id, question: "Combien de fils pour un moteur bipolaire ?", options: JSON.stringify(["2", "4", "6", "8"]), correctIndex: 1, explanation: "Un moteur bipolaire a 4 fils (2 par phase).", order: 4 },
+      { lessonId: lesson16_1.id, question: "Où le moteur pas à pas excelle-t-il ?", options: JSON.stringify(["Haute vitesse", "Positionnement à basse vitesse", "Forte accélération", "Charges variables"]), correctIndex: 1, explanation: "Le pas à pas offre un excellent couple et maintien de position à basse vitesse.", order: 5 },
+      // Quiz Module 16 - Lesson 2 (Servomoteurs)
+      { lessonId: lesson16_2.id, question: "Que signifie PMSM ?", options: JSON.stringify(["Permanent Magnet Synchronous Motor", "Power Motor Speed Management", "Precision Motion System Module", "Programmable Motor Servo Module"]), correctIndex: 0, explanation: "PMSM signifie Permanent Magnet Synchronous Motor (moteur synchrone à aimants permanents).", order: 1 },
+      { lessonId: lesson16_2.id, question: "Quel rendement typique d'un servomoteur ?", options: JSON.stringify(["50%", "70%", "90% ou plus", "99%"]), correctIndex: 2, explanation: "Les servomoteurs synchrones ont un excellent rendement, souvent supérieur à 90%.", order: 2 },
+      { lessonId: lesson16_2.id, question: "Quelle surcharge momentanée un servo peut-il fournir ?", options: JSON.stringify(["Aucune", "1.5x nominal", "3x nominal typiquement", "10x nominal"]), correctIndex: 2, explanation: "Un servomoteur peut typiquement fournir 3 fois son couple nominal pendant quelques secondes.", order: 3 },
+      { lessonId: lesson16_2.id, question: "Pourquoi les servos n'ont-ils pas de balais ?", options: JSON.stringify(["Pour le coût", "Pas de maintenance, meilleur rendement", "Par hasard", "Pour le design"]), correctIndex: 1, explanation: "L'absence de balais élimine l'usure et les étincelles, améliorant rendement et durée de vie.", order: 4 },
+      { lessonId: lesson16_2.id, question: "Quel type de retour est intégré aux servomoteurs ?", options: JSON.stringify(["Aucun", "Codeur ou résolver", "Potentiomètre", "Sonde température uniquement"]), correctIndex: 1, explanation: "Les servomoteurs intègrent un codeur ou résolver pour le retour position.", order: 5 },
+      // Quiz Module 16 - Lesson 3 (Comparaison)
+      { lessonId: lesson16_3.id, question: "Quel moteur choisir pour un budget limité ?", options: JSON.stringify(["Servo", "Pas à pas", "Linéaire", "DC brushless"]), correctIndex: 1, explanation: "Le moteur pas à pas est nettement moins cher qu'un système servo.", order: 1 },
+      { lessonId: lesson16_3.id, question: "Pour quelle application choisir un servo ?", options: JSON.stringify(["Positionnement simple et lent", "Haute dynamique et charges variables", "Coût minimal", "Boucle ouverte"]), correctIndex: 1, explanation: "Les servos excellent pour les applications dynamiques avec charges variables.", order: 2 },
+      { lessonId: lesson16_3.id, question: "Quel moteur est plus silencieux ?", options: JSON.stringify(["Pas à pas", "Servo", "Ils sont identiques", "DC brossé"]), correctIndex: 1, explanation: "Les servomoteurs sont généralement plus silencieux que les moteurs pas à pas.", order: 3 },
+      { lessonId: lesson16_3.id, question: "Lequel peut fonctionner en boucle ouverte ?", options: JSON.stringify(["Servo uniquement", "Pas à pas", "Les deux", "Aucun"]), correctIndex: 1, explanation: "Le moteur pas à pas peut fonctionner sans retour de position (boucle ouverte).", order: 4 },
+      { lessonId: lesson16_3.id, question: "Pour maintenir une position à l'arrêt ?", options: JSON.stringify(["Servo consomme moins", "Pas à pas maintient naturellement", "Identique", "Impossible"]), correctIndex: 1, explanation: "Le pas à pas maintient sa position avec couple même à l'arrêt, sans contrôle actif.", order: 5 },
+      // Quiz Module 16 - Lesson 4 (Dimensionnement)
+      { lessonId: lesson16_4.id, question: "Quelle formule pour le couple d'accélération ?", options: JSON.stringify(["T = m × v", "T = J × α", "T = P / ω", "T = F × d"]), correctIndex: 1, explanation: "Le couple d'accélération est T = J (inertie) × α (accélération angulaire).", order: 1 },
+      { lessonId: lesson16_4.id, question: "Quel rapport d'inertie charge/moteur est optimal ?", options: JSON.stringify(["< 1", "= 1", "≤ 10", "> 100"]), correctIndex: 2, explanation: "Un rapport d'inertie inférieur à 10 assure de bonnes performances dynamiques.", order: 2 },
+      { lessonId: lesson16_4.id, question: "Que représente le couple RMS ?", options: JSON.stringify(["Couple maximal", "Couple moyen sur le cycle", "Couple minimal", "Couple au démarrage"]), correctIndex: 1, explanation: "Le couple RMS est le couple moyen quadratique sur le cycle, à comparer au nominal.", order: 3 },
+      { lessonId: lesson16_4.id, question: "Un rapport d'inertie trop élevé provoque ?", options: JSON.stringify(["Meilleure précision", "Instabilité et mauvaises performances", "Économie d'énergie", "Aucun effet"]), correctIndex: 1, explanation: "Un rapport d'inertie trop élevé dégrade les performances dynamiques et la stabilité.", order: 4 },
+      { lessonId: lesson16_4.id, question: "Que faut-il calculer en premier ?", options: JSON.stringify(["Le couple moteur", "L'inertie totale", "La vitesse max", "Le prix"]), correctIndex: 1, explanation: "L'inertie totale (charge + transmission + moteur) est le point de départ du dimensionnement.", order: 5 },
+      // Quiz Module 16 - Lesson 5 (Drivers)
+      { lessonId: lesson16_5.id, question: "Quels signaux pour un driver pas à pas ?", options: JSON.stringify(["U, V, W", "Step, Dir, Enable", "0-10V", "CAN bus"]), correctIndex: 1, explanation: "Un driver pas à pas reçoit des impulsions (Step), la direction (Dir) et l'activation (Enable).", order: 1 },
+      { lessonId: lesson16_5.id, question: "Qu'est-ce que l'auto-tuning d'un servo-variateur ?", options: JSON.stringify(["Réglage radio", "Identification et réglage automatique des gains", "Mise à jour firmware", "Configuration IP"]), correctIndex: 1, explanation: "L'auto-tuning identifie le système et règle automatiquement les gains des boucles.", order: 2 },
+      { lessonId: lesson16_5.id, question: "Jusqu'à combien de micro-pas peut-on diviser ?", options: JSON.stringify(["1/2", "1/16", "1/256", "Illimité"]), correctIndex: 2, explanation: "Certains drivers permettent jusqu'à 1/256 micro-pas, soit 51200 pas/tour.", order: 3 },
+      { lessonId: lesson16_5.id, question: "Quelle fonction de sécurité est standard dans les servo-variateurs ?", options: JSON.stringify(["Aucune", "STO (Safe Torque Off)", "Arrêt d'urgence complet", "Protection incendie"]), correctIndex: 1, explanation: "La fonction STO est standard dans les servo-variateurs modernes.", order: 4 },
+      { lessonId: lesson16_5.id, question: "Que règle-t-on principalement sur un driver pas à pas ?", options: JSON.stringify(["Les gains PID", "Le courant et le micro-stepping", "La température", "La communication"]), correctIndex: 1, explanation: "Le courant (selon le moteur) et le niveau de micro-stepping sont les réglages principaux.", order: 5 },
+      // Quiz Module 16 - Lesson 6 (Moteurs linéaires)
+      { lessonId: lesson16_6.id, question: "Quel avantage principal du moteur linéaire ?", options: JSON.stringify(["Coût réduit", "Pas de transmission = pas de jeu mécanique", "Simplicité", "Faible puissance"]), correctIndex: 1, explanation: "L'entraînement direct élimine tous les jeux mécaniques des transmissions.", order: 1 },
+      { lessonId: lesson16_6.id, question: "Quelle vitesse peut atteindre un moteur linéaire ?", options: JSON.stringify(["1 m/s max", "Jusqu'à 10 m/s et plus", "100 m/s", "Identique aux rotatifs"]), correctIndex: 1, explanation: "Les moteurs linéaires peuvent atteindre plus de 10 m/s.", order: 2 },
+      { lessonId: lesson16_6.id, question: "Quel type de moteur linéaire n'a pas d'ondulation de force ?", options: JSON.stringify(["Ironcore", "Ironless", "Tubulaire", "Hybride"]), correctIndex: 1, explanation: "Les moteurs ironless (sans fer) n'ont pas d'ondulation de force (cogging).", order: 3 },
+      { lessonId: lesson16_6.id, question: "Quelle précaution avec les moteurs linéaires ?", options: JSON.stringify(["Éviter l'eau", "Attention aux champs magnétiques forts", "Ne pas dépasser 1 m/s", "Lubrification constante"]), correctIndex: 1, explanation: "Les aimants puissants peuvent attirer des objets métalliques et perturber des équipements.", order: 4 },
+      { lessonId: lesson16_6.id, question: "Où utilise-t-on les moteurs linéaires tubulaires ?", options: JSON.stringify(["Grandes courses", "Applications compactes avec guidage intégré", "Haute vitesse", "Fort couple"]), correctIndex: 1, explanation: "Les moteurs tubulaires sont compacts et intègrent souvent leur guidage.", order: 5 },
+      // Quiz Module 17 - Lesson 1 (Profils)
+      { lessonId: lesson17_1.id, question: "Quel profil est le plus doux mécaniquement ?", options: JSON.stringify(["Trapézoïdal", "En S", "Carré", "Linéaire"]), correctIndex: 1, explanation: "Le profil en S limite le jerk (variation d'accélération) pour un mouvement plus doux.", order: 1 },
+      { lessonId: lesson17_1.id, question: "Qu'est-ce que le jerk ?", options: JSON.stringify(["La vitesse", "L'accélération", "La variation d'accélération", "La position"]), correctIndex: 2, explanation: "Le jerk est la dérivée de l'accélération, exprimé en mm/s³ ou m/s³.", order: 2 },
+      { lessonId: lesson17_1.id, question: "Quel profil est le plus simple à calculer ?", options: JSON.stringify(["En S", "Sinusoïdal", "Trapézoïdal", "Polynomial"]), correctIndex: 2, explanation: "Le profil trapézoïdal avec accélération constante est le plus simple.", order: 3 },
+      { lessonId: lesson17_1.id, question: "Pourquoi limiter le jerk ?", options: JSON.stringify(["Économie d'énergie", "Réduire les vibrations et l'usure", "Augmenter la vitesse", "Simplifier le calcul"]), correctIndex: 1, explanation: "Un jerk limité réduit les chocs mécaniques, les vibrations et l'usure.", order: 4 },
+      { lessonId: lesson17_1.id, question: "Quels paramètres définissent un profil trapézoïdal ?", options: JSON.stringify(["Position uniquement", "Position, vitesse, accélération", "Vitesse uniquement", "Jerk uniquement"]), correctIndex: 1, explanation: "Position cible, vitesse de croisière et accélération définissent le trapèze.", order: 5 },
+      // Quiz Module 17 - Lesson 2 (Absolu/Relatif)
+      { lessonId: lesson17_2.id, question: "Un mouvement absolu de 100mm depuis la position 50mm amène à ?", options: JSON.stringify(["50mm", "100mm", "150mm", "0mm"]), correctIndex: 1, explanation: "Un mouvement absolu va à la position spécifiée : 100mm.", order: 1 },
+      { lessonId: lesson17_2.id, question: "Un mouvement relatif de 100mm depuis la position 50mm amène à ?", options: JSON.stringify(["50mm", "100mm", "150mm", "0mm"]), correctIndex: 2, explanation: "Un mouvement relatif ajoute le déplacement à la position actuelle : 50+100=150mm.", order: 2 },
+      { lessonId: lesson17_2.id, question: "Quelle instruction PLCopen pour un mouvement absolu ?", options: JSON.stringify(["MC_MoveRelative", "MC_MoveAbsolute", "MC_MoveVelocity", "MC_Home"]), correctIndex: 1, explanation: "MC_MoveAbsolute effectue un mouvement vers une position absolue.", order: 3 },
+      { lessonId: lesson17_2.id, question: "MC_MoveVelocity fait quoi ?", options: JSON.stringify(["Mouvement à position", "Mouvement à vitesse constante sans position cible", "Prise d'origine", "Arrêt"]), correctIndex: 1, explanation: "MC_MoveVelocity maintient une vitesse constante sans destination précise.", order: 4 },
+      { lessonId: lesson17_2.id, question: "Quel type de mouvement pour un convoyeur continu ?", options: JSON.stringify(["Absolu", "Relatif", "Vitesse (velocity)", "Homing"]), correctIndex: 2, explanation: "Un convoyeur tourne à vitesse constante sans position cible, donc mode velocity.", order: 5 },
+      // Quiz Module 17 - Lesson 3 (Synchronisation)
+      { lessonId: lesson17_3.id, question: "Qu'est-ce qu'un engrenage électronique ?", options: JSON.stringify(["Un réducteur", "Un rapport de transmission virtuel entre axes", "Un codeur", "Un type de moteur"]), correctIndex: 1, explanation: "L'engrenage électronique lie deux axes avec un rapport de vitesse fixe.", order: 1 },
+      { lessonId: lesson17_3.id, question: "La came électronique permet ?", options: JSON.stringify(["Un rapport fixe", "Un profil de synchronisation personnalisé", "Plus de vitesse", "Moins de consommation"]), correctIndex: 1, explanation: "La came électronique définit un profil position/position personnalisé entre axes.", order: 2 },
+      { lessonId: lesson17_3.id, question: "Pour une découpe à la volée, quel type de synchro ?", options: JSON.stringify(["Gearing simple", "Camming", "Aucune", "Mode velocity"]), correctIndex: 1, explanation: "La découpe à la volée nécessite un profil de came pour synchroniser avec le produit.", order: 3 },
+      { lessonId: lesson17_3.id, question: "Qu'est-ce que la rampe d'embrayage ?", options: JSON.stringify(["Freinage d'urgence", "Accouplement progressif au maître", "Accélération maximum", "Type de moteur"]), correctIndex: 1, explanation: "La rampe d'embrayage permet un accouplement progressif de l'esclave au maître.", order: 4 },
+      { lessonId: lesson17_3.id, question: "Dans un système maître-esclave, qui définit le mouvement ?", options: JSON.stringify(["L'esclave", "Le maître", "Les deux également", "L'automate uniquement"]), correctIndex: 1, explanation: "Le maître définit le mouvement, l'esclave le suit selon la relation définie.", order: 5 },
+      // Quiz Module 17 - Lesson 4 (Interpolation)
+      { lessonId: lesson17_4.id, question: "L'interpolation linéaire produit ?", options: JSON.stringify(["Un arc de cercle", "Une ligne droite", "Une spirale", "Un point"]), correctIndex: 1, explanation: "L'interpolation linéaire coordonne les axes pour une trajectoire en ligne droite.", order: 1 },
+      { lessonId: lesson17_4.id, question: "Quel code G pour un arc horaire ?", options: JSON.stringify(["G00", "G01", "G02", "G03"]), correctIndex: 2, explanation: "G02 commande un arc de cercle dans le sens horaire.", order: 2 },
+      { lessonId: lesson17_4.id, question: "Qu'est-ce qu'une interpolation hélicoïdale ?", options: JSON.stringify(["Un cercle", "Un cercle + mouvement linéaire", "Une ligne", "Un point"]), correctIndex: 1, explanation: "L'hélice combine un mouvement circulaire dans un plan avec un mouvement linéaire perpendiculaire.", order: 3 },
+      { lessonId: lesson17_4.id, question: "Pourquoi contrôler la vitesse résultante ?", options: JSON.stringify(["Pour le bruit", "Pour ne pas dépasser les limites des axes individuels", "Pour économiser", "Ce n'est pas nécessaire"]), correctIndex: 1, explanation: "La vitesse sur la trajectoire doit respecter les capacités de chaque axe.", order: 4 },
+      { lessonId: lesson17_4.id, question: "Pour des courbes complexes, quel type d'interpolation ?", options: JSON.stringify(["Linéaire", "Circulaire", "Spline", "Aucune"]), correctIndex: 2, explanation: "Les splines permettent des courbes complexes avec continuité de courbure.", order: 5 },
+      // Quiz Module 17 - Lesson 5 (PLCopen)
+      { lessonId: lesson17_5.id, question: "Que fait MC_Power ?", options: JSON.stringify(["Coupe l'alimentation", "Active/désactive l'axe", "Fait un mouvement", "Reset les défauts"]), correctIndex: 1, explanation: "MC_Power active ou désactive le contrôle de l'axe.", order: 1 },
+      { lessonId: lesson17_5.id, question: "Quelle sortie indique la fin du mouvement ?", options: JSON.stringify(["Busy", "Done", "Error", "Active"]), correctIndex: 1, explanation: "La sortie Done passe à TRUE quand le mouvement est terminé.", order: 2 },
+      { lessonId: lesson17_5.id, question: "Que signifie Busy = TRUE ?", options: JSON.stringify(["Erreur", "Mouvement en cours", "Terminé", "En attente"]), correctIndex: 1, explanation: "Busy à TRUE indique que le bloc est en train d'exécuter son mouvement.", order: 3 },
+      { lessonId: lesson17_5.id, question: "Quel avantage de la norme PLCopen ?", options: JSON.stringify(["Code plus rapide", "Portabilité entre fabricants", "Moins cher", "Plus de puissance"]), correctIndex: 1, explanation: "Les blocs PLCopen standardisés facilitent la migration entre différents automates.", order: 4 },
+      { lessonId: lesson17_5.id, question: "MC_Reset sert à ?", options: JSON.stringify(["Réinitialiser la position", "Acquitter les défauts", "Arrêter le mouvement", "Calibrer le codeur"]), correctIndex: 1, explanation: "MC_Reset acquitte les erreurs de l'axe pour permettre de nouveaux mouvements.", order: 5 },
+      // Quiz Module 17 - Lesson 6 (Diagnostic)
+      { lessonId: lesson17_6.id, question: "Qu'est-ce que l'erreur de poursuite ?", options: JSON.stringify(["Erreur de communication", "Écart entre position commandée et réelle", "Défaut moteur", "Erreur de programme"]), correctIndex: 1, explanation: "L'erreur de poursuite (following error) est l'écart entre consigne et position réelle.", order: 1 },
+      { lessonId: lesson17_6.id, question: "Que permet l'analyse FFT ?", options: JSON.stringify(["Mesurer la vitesse", "Détecter les fréquences de vibration", "Calculer le couple", "Programmer le mouvement"]), correctIndex: 1, explanation: "La FFT (Fast Fourier Transform) identifie les fréquences de vibration problématiques.", order: 2 },
+      { lessonId: lesson17_6.id, question: "Une erreur de poursuite croissante indique ?", options: JSON.stringify(["Fonctionnement normal", "Problème de réglage ou mécanique", "Vitesse trop basse", "Rien de particulier"]), correctIndex: 1, explanation: "Une erreur croissante signale un problème de gains, friction ou charge excessive.", order: 3 },
+      { lessonId: lesson17_6.id, question: "Comment réduire les vibrations ?", options: JSON.stringify(["Augmenter les gains", "Ajuster les gains et vérifier la mécanique", "Augmenter la vitesse", "Ignorer"]), correctIndex: 1, explanation: "Les vibrations peuvent être dues à des gains trop élevés ou des problèmes mécaniques.", order: 4 },
+      { lessonId: lesson17_6.id, question: "À quoi sert l'oscilloscope intégré ?", options: JSON.stringify(["Mesurer la tension secteur", "Visualiser les signaux en temps réel", "Programmer", "Communiquer"]), correctIndex: 1, explanation: "L'oscilloscope intégré permet de visualiser courant, vitesse, position en temps réel.", order: 5 },
     ],
   })
 
@@ -6584,10 +7609,11 @@ async function main() {
   const allLessons = await prisma.lesson.findMany()
   for (const lesson of allLessons) {
     for (const lang of ['en', 'es'] as const) {
-      // Try regular translations first, then CNC, then Siemens translations
+      // Try regular translations first, then CNC, then Siemens, then VFD translations
       const trans = lessonTranslations[lang][lesson.title as keyof typeof lessonTranslations['en']]
         || cncLessonTranslations[lang][lesson.title as keyof typeof cncLessonTranslations['en']]
         || siemensLessonTranslations[lang][lesson.title as keyof typeof siemensLessonTranslations['en']]
+        || vfdLessonTranslations[lang][lesson.title as keyof typeof vfdLessonTranslations['en']]
       if (trans) {
         await prisma.lessonTranslation.create({
           data: {
@@ -6595,7 +7621,7 @@ async function main() {
             language: lang,
             title: trans.title,
             description: trans.description,
-            content: trans.content
+            content: trans.content || lesson.content // Use original content if translation not provided
           }
         })
       }
