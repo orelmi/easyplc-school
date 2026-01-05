@@ -38,6 +38,7 @@ export default function Layout() {
 
   const simulatorItems = [
     { to: '/simulator/plc', label: t('nav.plcSimulator', 'PLC / LADDER'), icon: '⚡' },
+    { to: '/simulator/grafcet', label: t('nav.grafcetSimulator', 'GRAFCET'), icon: '📐' },
     { to: '/simulator/gcode', label: t('nav.gcodeSimulator', 'G-Code / CNC'), icon: '🔧' },
   ]
 

@@ -73,6 +73,147 @@ This path is dedicated to Siemens S7-1500 PLCs and the TIA Portal environment:
 
 ---
 
+## Interactive Simulators
+
+EasyPLC School includes three interactive simulators to practice the concepts learned.
+
+### PLC / LADDER Simulator ⚡
+
+A complete PLC simulator with real-time LADDER visualization.
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│  PLC SIMULATOR                                                   │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                  │
+│  I/O PANEL                │  LADDER DIAGRAM                     │
+│  ┌────────────────────┐   │  ┌────────────────────────────────┐ │
+│  │ INPUTS             │   │  │                                │ │
+│  │ [I0.0] [I0.1] ...  │   │  │  ──┤START├──┤STOP├──(MOTOR)── │ │
+│  │  ⚡/🔒  ⚡/🔒       │   │  │        │      /│               │ │
+│  │                    │   │  │  ──────┴MOTOR─┴────────────── │ │
+│  │ OUTPUTS            │   │  │                                │ │
+│  │ [Q0.0] [Q0.1] ...  │   │  │  Green rails = active flow    │ │
+│  │   💡     ⚙️         │   │  │                                │ │
+│  │                    │   │  └────────────────────────────────┘ │
+│  │ TIMERS             │   │                                     │
+│  │ [T0] ████░░ 3.2s   │   │                                     │
+│  └────────────────────┘   │                                     │
+│                                                                  │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+**Features:**
+- Sample programs: Start/Stop, Traffic Light, Sequencer
+- **Momentary/Toggle mode**: Click ⚡/🔒 above each input to switch modes
+- Real-time power flow visualization (green rails)
+- Timers with progress bar
+- Different output types: lamps, motors, valves
+
+**Available Programs:**
+| Program | Description |
+|---------|-------------|
+| Start/Stop | Self-holding circuit with START/STOP buttons |
+| Traffic Light | Sequence with timers |
+| Sequencer | Sequential steps activated by buttons |
+
+---
+
+### GRAFCET Editor 📐
+
+A visual editor for creating and simulating GRAFCET diagrams (Sequential Function Charts).
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│  GRAFCET EDITOR                                        [RUN]    │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                  │
+│  TOOLS           │  CANVAS                    │  PROPERTIES     │
+│  ┌────────────┐  │  ┌──────────────────────┐  │  ┌───────────┐  │
+│  │ V Select   │  │  │     ╔═══╗            │  │  │ INPUTS    │  │
+│  │ S Step     │  │  │     ║ 0 ║──Wait      │  │  │ [start]   │  │
+│  │ T Transit. │  │  │     ╚═╤═╝            │  │  │ [stop]    │  │
+│  │ L Link     │  │  │    ───┴─── start     │  │  │ [sensor1] │  │
+│  │            │  │  │       │              │  │  │           │  │
+│  │ ACTIONS    │  │  │     ┌─┴─┐            │  │  │ OUTPUTS   │  │
+│  │ [Initial]  │  │  │     │ 1 │──Q1        │  │  │ Q1: ON    │  │
+│  │ [Delete]   │  │  │     └─┬─┘            │  │  │           │  │
+│  │            │  │  │    ───┴─── stop      │  │  │ STEPS     │  │
+│  │ LEGEND     │  │  │       │              │  │  │ Active:   │  │
+│  │ ╔═╗ Init.  │  │  │       └──▶ (return)  │  │  │ [0] [1]   │  │
+│  │ ┌─┐ Normal │  │  └──────────────────────┘  │  └───────────┘  │
+│  └────────────┘                                                  │
+│                                                                  │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+**Features:**
+- Create steps and transitions with drag-and-drop
+- Link elements (step → transition → step)
+- Real-time simulation with active step visualization
+- Edit transition conditions (boolean, timer)
+- Add actions to steps
+- Pre-loaded examples: Simple Cycle, Timed Sequence, Parallel Branches, Traffic Light
+
+**Keyboard Shortcuts:**
+| Key | Action |
+|-----|--------|
+| V | Select tool |
+| S | Add step |
+| T | Add transition |
+| L | Link elements |
+| Del | Delete selection |
+| Esc | Cancel |
+
+---
+
+### G-Code / CNC Simulator 🔧
+
+A CNC programming simulator with 2D and 3D visualization.
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│  G-CODE SIMULATOR                                                │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                  │
+│  EDITOR                │  3D VISUALIZATION                      │
+│  ┌──────────────────┐  │  ┌────────────────────────────────────┐│
+│  │ G21 G90          │  │  │           Z                        ││
+│  │ G00 X0 Y0 Z5     │  │  │           │    ╱ Tool              ││
+│  │ M03 S1200        │  │  │           │  ╱   path              ││
+│  │ G01 Z-2 F100     │  │  │           │╱                       ││
+│  │ G01 X50 F200     │  │  │     Y─────┼───────X                ││
+│  │ G02 X80 Y30 R15  │  │  │          ╱│                        ││
+│  │ G00 Z5           │  │  │        ╱  │  [Top] [Front]         ││
+│  │ M05              │  │  │      ╱    │  [Side] [3D]           ││
+│  │ M30              │  │  │                                    ││
+│  └──────────────────┘  │  └────────────────────────────────────┘│
+│                        │                                         │
+│  [▶ Run] [⏸ Pause] [⏹ Stop] Speed: [████░░]                     │
+│                                                                  │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+**Features:**
+- Code editor with syntax highlighting
+- 2D visualization (top, front, side) and 3D isometric view
+- Tool path animation
+- Statistics: total distance, estimated time, command count
+- Animation speed control
+- Sample programs: square, circle, complex machining
+
+**Supported G-Codes:**
+| Code | Description |
+|------|-------------|
+| G00 | Rapid positioning |
+| G01 | Linear interpolation |
+| G02 | Clockwise arc |
+| G03 | Counter-clockwise arc |
+| G90/G91 | Absolute/relative mode |
+| G20/G21 | Inches/millimeters |
+
+---
+
 ## Features
 
 ### User System
@@ -90,10 +231,6 @@ This path is dedicated to Siemens S7-1500 PLCs and the TIA Portal environment:
 - Global user ranking
 - Period filters (week, month, all time)
 - View your rank
-
-### Interactive Simulators
-- **PLC Simulator**: Real-time LADDER visualization with power flow animation
-- **G-Code Simulator**: 2D and 3D visualization with Three.js
 
 ### XP Point System
 
@@ -304,7 +441,7 @@ This project is open source and welcomes community contributions!
 ### Contribution Ideas
 
 - [x] ~~Add interactive PLC simulator~~ ✅ PLC simulator with real-time LADDER visualization
-- [ ] Create visual GRAFCET editor
+- [x] ~~Create visual GRAFCET editor~~ ✅ Editor with real-time simulation
 - [x] ~~Add animations for LADDER diagrams~~ ✅ Animated power flow in PLC simulator
 - [ ] Implement exam mode
 - [x] ~~Add multi-language support (EN, ES, DE)~~ ✅ FR, EN, ES available

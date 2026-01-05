@@ -880,6 +880,147 @@ Ces modules sont spécifiques au parcours Automatisme Siemens S7-1500.
 
 ---
 
+## Simulateurs interactifs
+
+EasyPLC School inclut trois simulateurs interactifs pour mettre en pratique les concepts appris.
+
+### Simulateur PLC / LADDER ⚡
+
+Un simulateur d'automate programmable complet avec visualisation LADDER en temps réel.
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│  SIMULATEUR PLC                                                  │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                  │
+│  PANNEAU E/S              │  DIAGRAMME LADDER                   │
+│  ┌────────────────────┐   │  ┌────────────────────────────────┐ │
+│  │ ENTRÉES            │   │  │                                │ │
+│  │ [I0.0] [I0.1] ...  │   │  │  ──┤START├──┤STOP├──(MOTOR)── │ │
+│  │  ⚡/🔒  ⚡/🔒       │   │  │        │      /│               │ │
+│  │                    │   │  │  ──────┴MOTOR─┴────────────── │ │
+│  │ SORTIES            │   │  │                                │ │
+│  │ [Q0.0] [Q0.1] ...  │   │  │  Rails verts = flux actif     │ │
+│  │   💡     ⚙️         │   │  │                                │ │
+│  │                    │   │  └────────────────────────────────┘ │
+│  │ TEMPORISATEURS     │   │                                     │
+│  │ [T0] ████░░ 3.2s   │   │                                     │
+│  └────────────────────┘   │                                     │
+│                                                                  │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+**Fonctionnalités :**
+- Programmes exemples : Marche/Arrêt, Feux de circulation, Séquence
+- **Mode impulsionnel/interrupteur** : Cliquez sur ⚡/🔒 au-dessus de chaque entrée pour basculer
+- Visualisation du flux de puissance en temps réel (rails verts)
+- Temporisateurs avec barre de progression
+- Différents types de sorties : lampes, moteurs, vannes
+
+**Programmes disponibles :**
+| Programme | Description |
+|-----------|-------------|
+| Marche/Arrêt | Circuit auto-maintenu avec boutons START/STOP |
+| Feux de circulation | Séquence avec temporisateurs |
+| Séquenceur | Étapes séquentielles activées par boutons |
+
+---
+
+### Éditeur GRAFCET 📐
+
+Un éditeur visuel pour créer et simuler des diagrammes GRAFCET (Graphe Fonctionnel de Commande Étape-Transition).
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│  ÉDITEUR GRAFCET                                    [MARCHE]    │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                  │
+│  OUTILS          │  CANVAS                    │  PROPRIÉTÉS     │
+│  ┌────────────┐  │  ┌──────────────────────┐  │  ┌───────────┐  │
+│  │ V Sélect.  │  │  │     ╔═══╗            │  │  │ ENTRÉES   │  │
+│  │ S Étape    │  │  │     ║ 0 ║──Attente   │  │  │ [start]   │  │
+│  │ T Transit. │  │  │     ╚═╤═╝            │  │  │ [stop]    │  │
+│  │ L Lier     │  │  │    ───┴─── start     │  │  │ [sensor1] │  │
+│  │            │  │  │       │              │  │  │           │  │
+│  │ ACTIONS    │  │  │     ┌─┴─┐            │  │  │ SORTIES   │  │
+│  │ [Initial]  │  │  │     │ 1 │──Q1        │  │  │ Q1: ON    │  │
+│  │ [Suppr.]   │  │  │     └─┬─┘            │  │  │           │  │
+│  │            │  │  │    ───┴─── stop      │  │  │ ÉTAPES    │  │
+│  │ LÉGENDE    │  │  │       │              │  │  │ Actives:  │  │
+│  │ ╔═╗ Init.  │  │  │       └──▶ (retour)  │  │  │ [0] [1]   │  │
+│  │ ┌─┐ Normal │  │  └──────────────────────┘  │  └───────────┘  │
+│  └────────────┘                                                  │
+│                                                                  │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+**Fonctionnalités :**
+- Création d'étapes et de transitions par glisser-déposer
+- Liaison des éléments (étape → transition → étape)
+- Simulation en temps réel avec visualisation des étapes actives
+- Édition des conditions de transition (booléen, temporisation)
+- Ajout d'actions aux étapes
+- Exemples pré-chargés : Cycle simple, Séquence temporisée, Branches parallèles, Feux de circulation
+
+**Raccourcis clavier :**
+| Touche | Action |
+|--------|--------|
+| V | Outil sélection |
+| S | Ajouter une étape |
+| T | Ajouter une transition |
+| L | Lier des éléments |
+| Del | Supprimer la sélection |
+| Esc | Annuler |
+
+---
+
+### Simulateur G-Code / CNC 🔧
+
+Un simulateur de programmation CNC avec visualisation 2D et 3D.
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│  SIMULATEUR G-CODE                                               │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                  │
+│  ÉDITEUR               │  VISUALISATION 3D                      │
+│  ┌──────────────────┐  │  ┌────────────────────────────────────┐│
+│  │ G21 G90          │  │  │           Z                        ││
+│  │ G00 X0 Y0 Z5     │  │  │           │    ╱ Trajectoire       ││
+│  │ M03 S1200        │  │  │           │  ╱   d'outil           ││
+│  │ G01 Z-2 F100     │  │  │           │╱                       ││
+│  │ G01 X50 F200     │  │  │     Y─────┼───────X                ││
+│  │ G02 X80 Y30 R15  │  │  │          ╱│                        ││
+│  │ G00 Z5           │  │  │        ╱  │  [Dessus] [Face]       ││
+│  │ M05              │  │  │      ╱    │  [Côté]   [3D]         ││
+│  │ M30              │  │  │                                    ││
+│  └──────────────────┘  │  └────────────────────────────────────┘│
+│                        │                                         │
+│  [▶ Exécuter] [⏸ Pause] [⏹ Stop] Vitesse: [████░░]              │
+│                                                                  │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+**Fonctionnalités :**
+- Éditeur de code avec coloration syntaxique
+- Visualisation 2D (dessus, face, côté) et 3D isométrique
+- Animation de la trajectoire d'outil
+- Statistiques : distance totale, temps estimé, nombre de commandes
+- Contrôle de vitesse d'animation
+- Programmes exemples : carré, cercle, usinage complexe
+
+**Codes G supportés :**
+| Code | Description |
+|------|-------------|
+| G00 | Déplacement rapide |
+| G01 | Interpolation linéaire |
+| G02 | Arc horaire |
+| G03 | Arc anti-horaire |
+| G90/G91 | Mode absolu/relatif |
+| G20/G21 | Pouces/millimètres |
+
+---
+
 ## Fonctionnalités
 
 ### Système d'utilisateurs
@@ -1098,7 +1239,7 @@ Ce projet est open source et accueille les contributions de la communauté !
 ### Idées de contributions
 
 - [x] ~~Ajouter un simulateur d'automate interactif~~ ✅ Simulateur PLC avec visualisation LADDER en temps réel
-- [ ] Créer un éditeur GRAFCET visuel
+- [x] ~~Créer un éditeur GRAFCET visuel~~ ✅ Éditeur avec simulation en temps réel
 - [x] ~~Ajouter des animations pour les schémas LADDER~~ ✅ Flux de puissance animé dans le simulateur PLC
 - [ ] Implémenter un mode examen
 - [x] ~~Ajouter le support multi-langues (EN, ES, DE)~~ ✅ FR, EN, ES disponibles

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { PLCState, PLCInput, PLCOutput, PLCTimer } from '../lib/plc-simulator';
 
@@ -8,27 +8,55 @@ interface PLCIOPanelProps {
   onInputClick: (address: string) => void; // For momentary buttons
 }
 
-// Input component (button or switch)
+// Type for input modes
+type InputModes = Record<string, 'momentary' | 'toggle'>;
+
+// Input component (button or switch) with mode toggle
 function InputControl({
   input,
   onChange,
-  onClick
+  onClick,
+  mode,
+  onModeChange
 }: {
   input: PLCInput;
   onChange: (value: boolean) => void;
   onClick: () => void;
+  mode: 'momentary' | 'toggle';
+  onModeChange: () => void;
 }) {
   const { t } = useTranslation();
 
-  if (input.type === 'button') {
-    return (
-      <div className="flex flex-col items-center">
+  const isMomentary = mode === 'momentary';
+
+  return (
+    <div className="flex flex-col items-center">
+      {/* Mode toggle button */}
+      <button
+        onClick={onModeChange}
+        className={`
+          mb-1 px-1.5 py-0.5 text-[8px] rounded transition-colors
+          ${isMomentary
+            ? 'bg-orange-600 text-white'
+            : 'bg-blue-600 text-white'
+          }
+        `}
+        title={isMomentary
+          ? t('plcSimulator.momentaryMode', 'Momentary (hold)')
+          : t('plcSimulator.toggleMode', 'Toggle (click)')
+        }
+      >
+        {isMomentary ? '⚡' : '🔒'}
+      </button>
+
+      {/* Input button */}
+      {isMomentary ? (
         <button
           onMouseDown={() => onChange(true)}
           onMouseUp={() => onChange(false)}
           onMouseLeave={() => onChange(false)}
-          onTouchStart={() => onChange(true)}
-          onTouchEnd={() => onChange(false)}
+          onTouchStart={(e) => { e.preventDefault(); onChange(true); }}
+          onTouchEnd={(e) => { e.preventDefault(); onChange(false); }}
           className={`
             w-12 h-12 rounded-lg border-2 transition-all
             flex items-center justify-center font-mono text-xs
@@ -42,34 +70,26 @@ function InputControl({
         >
           {input.address.split('.')[1]}
         </button>
-        <span className="text-[10px] text-gray-500 mt-1 text-center truncate w-14">
-          {input.label}
-        </span>
-        <span className="text-[9px] text-gray-600">{input.address}</span>
-      </div>
-    );
-  }
+      ) : (
+        <button
+          onClick={() => onChange(!input.value)}
+          className={`
+            w-12 h-12 rounded-lg border-2 transition-all
+            flex items-center justify-center font-mono text-xs
+            ${input.value
+              ? 'bg-green-500 border-green-400 text-white shadow-lg shadow-green-500/50'
+              : 'bg-gray-700 border-gray-600 text-gray-300 hover:bg-gray-600'
+            }
+          `}
+          title={t('plcSimulator.clickToToggle', 'Click to toggle')}
+        >
+          <div className="flex flex-col items-center">
+            <span>{input.address.split('.')[1]}</span>
+            <span className="text-[8px] mt-0.5">{input.value ? 'ON' : 'OFF'}</span>
+          </div>
+        </button>
+      )}
 
-  // Switch type
-  return (
-    <div className="flex flex-col items-center">
-      <button
-        onClick={() => onChange(!input.value)}
-        className={`
-          w-12 h-12 rounded-lg border-2 transition-all
-          flex items-center justify-center font-mono text-xs
-          ${input.value
-            ? 'bg-green-500 border-green-400 text-white shadow-lg shadow-green-500/50'
-            : 'bg-gray-700 border-gray-600 text-gray-300 hover:bg-gray-600'
-          }
-        `}
-        title={t('plcSimulator.clickToToggle', 'Click to toggle')}
-      >
-        <div className="flex flex-col items-center">
-          <span>{input.address.split('.')[1]}</span>
-          <span className="text-[8px] mt-0.5">{input.value ? 'ON' : 'OFF'}</span>
-        </div>
-      </button>
       <span className="text-[10px] text-gray-500 mt-1 text-center truncate w-14">
         {input.label}
       </span>
@@ -161,6 +181,26 @@ export default function PLCIOPanel({
 }: PLCIOPanelProps) {
   const { t } = useTranslation();
 
+  // State for input modes (momentary vs toggle)
+  // Default: I0.0-I0.3 = momentary (buttons), I0.4-I0.7 = toggle (switches)
+  const [inputModes, setInputModes] = useState<InputModes>(() => {
+    const modes: InputModes = {};
+    for (let i = 0; i < 8; i++) {
+      modes[`I0.${i}`] = i < 4 ? 'momentary' : 'toggle';
+    }
+    return modes;
+  });
+
+  // Toggle input mode between momentary and toggle
+  const toggleInputMode = (address: string) => {
+    setInputModes(prev => ({
+      ...prev,
+      [address]: prev[address] === 'momentary' ? 'toggle' : 'momentary'
+    }));
+    // Reset the input value when switching modes
+    onInputChange(address, false);
+  };
+
   const inputs = Array.from(state.inputs.values());
   const outputs = Array.from(state.outputs.values());
   const timers = Array.from(state.timers.values());
@@ -205,6 +245,8 @@ export default function PLCIOPanel({
                 input={input}
                 onChange={(value) => onInputChange(input.address, value)}
                 onClick={() => onInputClick(input.address)}
+                mode={inputModes[input.address] || 'toggle'}
+                onModeChange={() => toggleInputMode(input.address)}
               />
             ))}
           </div>
