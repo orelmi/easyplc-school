@@ -23,6 +23,45 @@ const STEP_WIDTH = 60;
 const STEP_HEIGHT = 40;
 const TRANS_WIDTH = 40;
 const TRANS_HEIGHT = 8;
+const GRID_SIZE = 40;
+
+// Helper function to draw orthogonal (perpendicular) lines between two points
+function drawOrthogonalPath(
+  ctx: CanvasRenderingContext2D,
+  fromX: number,
+  fromY: number,
+  toX: number,
+  toY: number,
+  direction: 'down' | 'up'
+) {
+  ctx.beginPath();
+  ctx.moveTo(fromX, fromY);
+
+  const dx = toX - fromX;
+  const dy = toY - fromY;
+
+  if (Math.abs(dx) < 2) {
+    // Straight vertical line
+    ctx.lineTo(toX, toY);
+  } else if (direction === 'down') {
+    // Going down: horizontal first, then vertical
+    const midY = fromY + Math.abs(dy) / 2;
+    ctx.lineTo(fromX, midY);
+    ctx.lineTo(toX, midY);
+    ctx.lineTo(toX, toY);
+  } else {
+    // Going up (loop back): need more complex routing
+    const offsetX = dx > 0 ? -GRID_SIZE : GRID_SIZE;
+    const loopOffset = GRID_SIZE * 1.5;
+
+    // Go down a bit, then sideways, then up
+    ctx.lineTo(fromX, fromY + loopOffset);
+    ctx.lineTo(toX, fromY + loopOffset);
+    ctx.lineTo(toX, toY);
+  }
+
+  ctx.stroke();
+}
 
 export default function GrafcetCanvas({
   diagram,
@@ -93,10 +132,31 @@ export default function GrafcetCanvas({
       trans.fromSteps.forEach(stepId => {
         const step = diagram.steps.find(s => s.id === stepId);
         if (step) {
-          ctx.beginPath();
-          ctx.moveTo(step.x, step.y + STEP_HEIGHT / 2);
-          ctx.lineTo(trans.x, trans.y - TRANS_HEIGHT / 2);
-          ctx.stroke();
+          const fromY = step.y + STEP_HEIGHT / 2;
+          const toY = trans.y - TRANS_HEIGHT / 2;
+
+          // Check if this is going downward (normal) or upward (loop back)
+          const isLoopBack = toY < fromY;
+
+          if (isLoopBack) {
+            // Loop back connection - route around the side
+            ctx.strokeStyle = '#f59e0b'; // Orange for loop back
+            const loopSide = step.x > trans.x ? -1 : 1;
+            const sideOffset = GRID_SIZE * 2 * loopSide;
+
+            ctx.beginPath();
+            ctx.moveTo(step.x, fromY);
+            ctx.lineTo(step.x, fromY + GRID_SIZE / 2);
+            ctx.lineTo(step.x + sideOffset, fromY + GRID_SIZE / 2);
+            ctx.lineTo(step.x + sideOffset, toY - GRID_SIZE / 2);
+            ctx.lineTo(trans.x, toY - GRID_SIZE / 2);
+            ctx.lineTo(trans.x, toY);
+            ctx.stroke();
+            ctx.strokeStyle = '#666';
+          } else {
+            // Normal downward connection with orthogonal routing
+            drawOrthogonalPath(ctx, step.x, fromY, trans.x, toY, 'down');
+          }
         }
       });
 
@@ -104,29 +164,82 @@ export default function GrafcetCanvas({
       trans.toSteps.forEach(stepId => {
         const step = diagram.steps.find(s => s.id === stepId);
         if (step) {
-          ctx.beginPath();
-          ctx.moveTo(trans.x, trans.y + TRANS_HEIGHT / 2);
-          ctx.lineTo(step.x, step.y - STEP_HEIGHT / 2);
-          ctx.stroke();
+          const fromY = trans.y + TRANS_HEIGHT / 2;
+          const toY = step.y - STEP_HEIGHT / 2;
 
-          // Draw arrow
-          const angle = Math.atan2(step.y - STEP_HEIGHT / 2 - trans.y, step.x - trans.x);
-          const arrowSize = 10;
-          const arrowX = step.x;
-          const arrowY = step.y - STEP_HEIGHT / 2;
-          ctx.beginPath();
-          ctx.moveTo(arrowX, arrowY);
-          ctx.lineTo(
-            arrowX - arrowSize * Math.cos(angle - Math.PI / 6),
-            arrowY - arrowSize * Math.sin(angle - Math.PI / 6)
-          );
-          ctx.lineTo(
-            arrowX - arrowSize * Math.cos(angle + Math.PI / 6),
-            arrowY - arrowSize * Math.sin(angle + Math.PI / 6)
-          );
-          ctx.closePath();
-          ctx.fillStyle = '#666';
-          ctx.fill();
+          // Check if this is going to step 0 (loop back to initial)
+          const isLoopBackToInitial = step.number === 0 && toY < fromY;
+
+          if (isLoopBackToInitial) {
+            // Special loop back to step 0 - draw on the left side
+            ctx.strokeStyle = '#f59e0b'; // Orange for loop back
+
+            // Find leftmost position
+            const leftMostX = Math.min(
+              ...diagram.steps.map(s => s.x),
+              ...diagram.transitions.map(t => t.x)
+            ) - GRID_SIZE * 2;
+
+            ctx.beginPath();
+            ctx.moveTo(trans.x, fromY);
+            ctx.lineTo(trans.x, fromY + GRID_SIZE / 2);
+            ctx.lineTo(leftMostX, fromY + GRID_SIZE / 2);
+            ctx.lineTo(leftMostX, toY - GRID_SIZE / 2);
+            ctx.lineTo(step.x, toY - GRID_SIZE / 2);
+            ctx.lineTo(step.x, toY);
+            ctx.stroke();
+
+            // Draw arrow pointing down
+            const arrowSize = 10;
+            ctx.beginPath();
+            ctx.moveTo(step.x, toY);
+            ctx.lineTo(step.x - arrowSize / 2, toY - arrowSize);
+            ctx.lineTo(step.x + arrowSize / 2, toY - arrowSize);
+            ctx.closePath();
+            ctx.fillStyle = '#f59e0b';
+            ctx.fill();
+
+            ctx.strokeStyle = '#666';
+          } else if (toY < fromY) {
+            // Other loop back (going upward)
+            ctx.strokeStyle = '#f59e0b';
+            const loopSide = trans.x > step.x ? 1 : -1;
+            const sideOffset = GRID_SIZE * 2 * loopSide;
+
+            ctx.beginPath();
+            ctx.moveTo(trans.x, fromY);
+            ctx.lineTo(trans.x, fromY + GRID_SIZE / 2);
+            ctx.lineTo(trans.x + sideOffset, fromY + GRID_SIZE / 2);
+            ctx.lineTo(trans.x + sideOffset, toY - GRID_SIZE / 2);
+            ctx.lineTo(step.x, toY - GRID_SIZE / 2);
+            ctx.lineTo(step.x, toY);
+            ctx.stroke();
+
+            // Draw arrow
+            const arrowSize = 10;
+            ctx.beginPath();
+            ctx.moveTo(step.x, toY);
+            ctx.lineTo(step.x - arrowSize / 2, toY - arrowSize);
+            ctx.lineTo(step.x + arrowSize / 2, toY - arrowSize);
+            ctx.closePath();
+            ctx.fillStyle = '#f59e0b';
+            ctx.fill();
+
+            ctx.strokeStyle = '#666';
+          } else {
+            // Normal downward connection with orthogonal routing
+            drawOrthogonalPath(ctx, trans.x, fromY, step.x, toY, 'down');
+
+            // Draw arrow pointing down
+            const arrowSize = 10;
+            ctx.beginPath();
+            ctx.moveTo(step.x, toY);
+            ctx.lineTo(step.x - arrowSize / 2, toY - arrowSize);
+            ctx.lineTo(step.x + arrowSize / 2, toY - arrowSize);
+            ctx.closePath();
+            ctx.fillStyle = '#666';
+            ctx.fill();
+          }
         }
       });
     });
