@@ -1,7 +1,7 @@
 import { PrismaClient } from '@prisma/client'
 import bcrypt from 'bcryptjs'
 import { lessonTranslations, quizTranslations, cncLessonTranslations, cncQuizTranslations, siemensLessonTranslations, siemensQuizTranslations } from './translations.js'
-import { vfdLessonTranslations } from './vfd-translations.js'
+import { vfdLessonTranslations, vfdQuizTranslations } from './vfd-translations.js'
 
 const prisma = new PrismaClient()
 // Module translations for English and Spanish
@@ -9216,10 +9216,11 @@ async function main() {
   const allQuizzes = await prisma.quiz.findMany()
   for (const quiz of allQuizzes) {
     for (const lang of ['en', 'es'] as const) {
-      // Try regular translations first, then CNC, then Siemens translations
+      // Try regular translations first, then CNC, then Siemens, then VFD translations
       const trans = quizTranslations[lang][quiz.question as keyof typeof quizTranslations['en']]
         || cncQuizTranslations[lang][quiz.question as keyof typeof cncQuizTranslations['en']]
         || siemensQuizTranslations[lang][quiz.question as keyof typeof siemensQuizTranslations['en']]
+        || vfdQuizTranslations[lang][quiz.question as keyof typeof vfdQuizTranslations['en']]
       if (trans) {
         await prisma.quizTranslation.create({
           data: {
