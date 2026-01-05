@@ -4,7 +4,7 @@ Plateforme open source d'apprentissage de l'automatisme industriel et des automa
 
 > **Projet open source** : Ce projet est ouvert aux contributions ! Que vous soyez développeur, enseignant en automatisme ou professionnel de l'industrie, vos contributions sont les bienvenues pour enrichir le contenu pédagogique et améliorer la plateforme.
 
-**Langues :** [English](README.md) | Français
+**Langues :** [English](README.md) | Français | [Español](README.es.md)
 
 ## Table des matières
 

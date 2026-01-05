@@ -4,7 +4,22 @@ Open source learning platform for industrial automation and programmable logic c
 
 > **Open source project**: This project welcomes contributions! Whether you're a developer, automation instructor, or industry professional, your contributions are welcome to enrich the educational content and improve the platform.
 
-**Languages:** English | [Français](README.fr.md)
+**Languages:** English | [Français](README.fr.md) | [Español](README.es.md)
+
+## Table of Contents
+
+- [Screenshots](#screenshots)
+- [Learning Paths](#learning-paths)
+- [Interactive Simulators](#interactive-simulators)
+- [Features](#features)
+- [Installation](#installation)
+- [Demo Account](#demo-account)
+- [Tech Stack](#tech-stack)
+- [Available Scripts](#available-scripts)
+- [Project Structure](#project-structure)
+- [API Endpoints](#api-endpoints)
+- [Contributing](#contributing)
+- [License](#license)
 
 ## Screenshots
 
