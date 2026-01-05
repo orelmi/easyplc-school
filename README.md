@@ -1,6 +1,61 @@
 # EasyPLC School
 
-Plateforme d'apprentissage de l'automatisme industriel et des automates programmables (PLC).
+Plateforme open source d'apprentissage de l'automatisme industriel et des automates programmables (PLC).
+
+> **Projet open source** : Ce projet est ouvert aux contributions ! Que vous soyez développeur, enseignant en automatisme ou professionnel de l'industrie, vos contributions sont les bienvenues pour enrichir le contenu pédagogique et améliorer la plateforme.
+
+## Table des matières
+
+- [Contenu pédagogique](#contenu-pédagogique)
+- [Captures d'écran](#captures-décran)
+- [Fonctionnalités](#fonctionnalités)
+- [Installation](#installation)
+- [Compte démo](#compte-démo)
+- [Stack technique](#stack-technique)
+- [Scripts disponibles](#scripts-disponibles)
+- [Structure du projet](#structure-du-projet)
+- [API Endpoints](#api-endpoints)
+- [Contribuer](#contribuer)
+- [Licence](#licence)
+
+## Contenu pédagogique
+
+### Objectifs d'apprentissage
+
+EasyPLC School vise à former les apprenants aux fondamentaux de l'automatisme industriel, depuis les concepts de base jusqu'à la programmation d'automates. La plateforme s'adresse aux :
+
+- Étudiants en génie électrique, maintenance industrielle ou automatisme
+- Techniciens souhaitant se reconvertir vers l'automatisme
+- Professionnels cherchant à consolider leurs bases
+
+### Programme des modules
+
+| Module | Thème | Compétences acquises |
+|--------|-------|---------------------|
+| 1. Introduction à l'automatisme | Découverte des PLC | Comprendre le rôle et l'architecture d'un automate |
+| 2. Logique combinatoire | Portes logiques ET, OU, NON | Maîtriser les opérations logiques fondamentales |
+| 3. Langage LADDER | Schéma à contacts | Lire et écrire des programmes en langage LADDER |
+| 4. Capteurs et actionneurs | Interfaçage physique | Connecter un automate au monde réel |
+| 5. GRAFCET | Systèmes séquentiels | Modéliser et programmer des séquences automatisées |
+
+### Approche pédagogique
+
+Chaque leçon est structurée pour favoriser l'apprentissage :
+
+- **Théorie** : Définitions, concepts et principes fondamentaux
+- **Tableaux de vérité** : Visualisation des opérations logiques
+- **Exemples industriels** : Cas pratiques issus du terrain (convoyeurs, démarrage moteur, etc.)
+- **Quiz interactifs** : Questions à choix multiples avec explications détaillées
+- **Encarts pédagogiques** : Astuces (💡) et points d'attention (⚠️)
+
+### Enrichir le contenu
+
+Le contenu pédagogique est défini dans le fichier `prisma/seed.ts`. Vous pouvez contribuer en :
+
+- Ajoutant de nouvelles leçons ou modules
+- Proposant des exercices pratiques supplémentaires
+- Améliorant les explications existantes
+- Traduisant le contenu dans d'autres langues
 
 ## Captures d'écran
 
@@ -37,22 +92,15 @@ Plateforme d'apprentissage de l'automatisme industriel et des automates programm
 - Filtres par période (semaine, mois, tout temps)
 - Visualisation de votre rang
 
-## Stack technique
+### Système de points XP
 
-### Frontend
-- React 18 + TypeScript
-- Vite (build tool)
-- Tailwind CSS
-- React Router v6
-- Zustand (state management)
+| Action | XP gagné |
+|--------|----------|
+| Compléter une leçon | 50-80 XP (selon score) |
+| Badge débloqué | 25-100 XP bonus |
+| Trophée obtenu | 150-200 XP bonus |
 
-### Backend
-- Node.js + Express
-- TypeScript
-- Prisma ORM
-- SQLite
-- JWT (authentification)
-- bcrypt (hachage des mots de passe)
+Le niveau est calculé selon la formule : XP total = 50 × niveau × (niveau + 1)
 
 ## Installation
 
@@ -64,7 +112,7 @@ Plateforme d'apprentissage de l'automatisme industriel et des automates programm
 
 1. **Cloner le projet**
 ```bash
-git clone <repo-url>
+git clone https://github.com/orelmi/easyplc-school.git
 cd easyplc-school
 ```
 
@@ -89,6 +137,10 @@ npm run db:seed
 npm run dev
 ```
 
+L'application sera accessible sur :
+- Frontend : http://localhost:5173
+- Backend API : http://localhost:3001
+
 ## Compte démo
 
 Un compte démo est créé automatiquement lors du seed :
@@ -104,9 +156,22 @@ Ce compte a déjà :
 - 3 récompenses débloquées
 - Une série de 3 jours
 
-L'application sera accessible sur :
-- Frontend : http://localhost:5173
-- Backend API : http://localhost:3001
+## Stack technique
+
+### Frontend
+- React 18 + TypeScript
+- Vite (build tool)
+- Tailwind CSS
+- React Router v6
+- Zustand (state management)
+
+### Backend
+- Node.js + Express
+- TypeScript
+- Prisma ORM
+- SQLite
+- JWT (authentification)
+- bcrypt (hachage des mots de passe)
 
 ## Scripts disponibles
 
@@ -126,7 +191,7 @@ L'application sera accessible sur :
 easyplc-school/
 ├── prisma/
 │   ├── schema.prisma    # Schéma de la base de données
-│   └── seed.ts          # Script de peuplement
+│   └── seed.ts          # Script de peuplement + contenu pédagogique
 ├── server/
 │   ├── index.ts         # Point d'entrée du serveur
 │   ├── middleware/
@@ -187,31 +252,40 @@ easyplc-school/
 | GET | `/api/rewards` | Liste des récompenses |
 | GET | `/api/leaderboard` | Classement des utilisateurs |
 
-## Système de points XP
+## Contribuer
 
-| Action | XP gagné |
-|--------|----------|
-| Compléter une leçon | 50-80 XP (selon score) |
-| Badge débloqué | 25-100 XP bonus |
-| Trophée obtenu | 150-200 XP bonus |
+Ce projet est open source et accueille les contributions de la communauté !
 
-### Formule de niveau
-Le niveau est calculé selon la formule : XP total = 50 × niveau × (niveau + 1)
+### Comment contribuer
 
-## Contenu pédagogique
+1. **Fork** le projet
+2. Créez une branche pour votre fonctionnalité (`git checkout -b feature/nouvelle-fonctionnalite`)
+3. Committez vos changements (`git commit -m 'Ajout d'une nouvelle fonctionnalité'`)
+4. Poussez vers la branche (`git push origin feature/nouvelle-fonctionnalite`)
+5. Ouvrez une **Pull Request**
 
-Le contenu des leçons couvre :
-- Définitions et concepts de base
-- Tableaux de vérité
-- Exemples pratiques industriels
-- Quiz de validation des acquis
+### Types de contributions recherchées
 
-Chaque leçon inclut :
-- Sections de texte formaté
-- Encarts d'information (💡)
-- Alertes et avertissements (⚠️)
-- Questions à choix multiples avec explications
+- **Contenu pédagogique** : Nouveaux modules, leçons, exercices
+- **Fonctionnalités** : Simulateur LADDER, éditeur GRAFCET, mode hors-ligne
+- **Améliorations UI/UX** : Accessibilité, responsive design, animations
+- **Documentation** : Tutoriels, guides d'utilisation, traductions
+- **Tests** : Tests unitaires, tests d'intégration
+- **Corrections** : Bugs, fautes d'orthographe, optimisations
+
+### Idées de contributions
+
+- [ ] Ajouter un simulateur d'automate interactif
+- [ ] Créer un éditeur GRAFCET visuel
+- [ ] Ajouter des animations pour les schémas LADDER
+- [ ] Implémenter un mode examen
+- [ ] Ajouter le support multi-langues (EN, ES, DE)
+- [ ] Créer des exercices de programmation pratiques
 
 ## Licence
 
-MIT
+MIT - Voir le fichier [LICENSE](LICENSE) pour plus de détails.
+
+---
+
+Développé avec passion pour la formation en automatisme industriel.
