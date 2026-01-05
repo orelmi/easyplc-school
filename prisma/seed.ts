@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client'
 import bcrypt from 'bcryptjs'
-
+import { lessonTranslations, quizTranslations } from './translations.js'
 
 const prisma = new PrismaClient()
 // Module translations for English and Spanish
@@ -52,9 +52,9 @@ const rewardTranslations: Record<string, Record<string, { name: string; descript
 
 async function main() {
   // Clear existing data
-  // QuizTranslation not implemented
+  await prisma.quizTranslation.deleteMany()
   await prisma.rewardTranslation.deleteMany()
-  // LessonTranslation not implemented
+  await prisma.lessonTranslation.deleteMany()
   await prisma.moduleTranslation.deleteMany()
   await prisma.quizAttempt.deleteMany()
   await prisma.userReward.deleteMany()
@@ -660,7 +660,44 @@ async function main() {
     ],
   })
 
-  
+  // Create Lesson Translations
+  const allLessons = await prisma.lesson.findMany()
+  for (const lesson of allLessons) {
+    for (const lang of ['en', 'es'] as const) {
+      const trans = lessonTranslations[lang][lesson.title as keyof typeof lessonTranslations['en']]
+      if (trans) {
+        await prisma.lessonTranslation.create({
+          data: {
+            lessonId: lesson.id,
+            language: lang,
+            title: trans.title,
+            description: trans.description,
+            content: trans.content
+          }
+        })
+      }
+    }
+  }
+
+  // Create Quiz Translations
+  const allQuizzes = await prisma.quiz.findMany()
+  for (const quiz of allQuizzes) {
+    for (const lang of ['en', 'es'] as const) {
+      const trans = quizTranslations[lang][quiz.question as keyof typeof quizTranslations['en']]
+      if (trans) {
+        await prisma.quizTranslation.create({
+          data: {
+            quizId: quiz.id,
+            language: lang,
+            question: trans.question,
+            options: JSON.stringify(trans.options),
+            explanation: trans.explanation
+          }
+        })
+      }
+    }
+  }
+
   // Create Reward Translations
   const allRewards = await prisma.reward.findMany()
   for (const reward of allRewards) {

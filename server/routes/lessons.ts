@@ -9,17 +9,32 @@ router.get('/:id', authMiddleware, async (req: AuthRequest, res: Response) => {
   try {
     const prisma: PrismaClient = req.app.locals.prisma
     const { id } = req.params
+    const lang = (req.query.lang as string) || 'fr'
 
     const lesson = await prisma.lesson.findUnique({
       where: { id },
       include: {
-        module: true,
+        module: {
+          include: {
+            translations: {
+              where: { language: lang }
+            }
+          }
+        },
         quizzes: {
           orderBy: { order: 'asc' },
+          include: {
+            translations: {
+              where: { language: lang }
+            }
+          }
         },
         progress: {
           where: { userId: req.userId },
         },
+        translations: {
+          where: { language: lang }
+        }
       },
     })
 
@@ -37,21 +52,28 @@ router.get('/:id', authMiddleware, async (req: AuthRequest, res: Response) => {
       return res.status(403).json({ error: 'Module verrouillé' })
     }
 
-    // Parse content
-    const content = JSON.parse(lesson.content)
+    // Get translations
+    const lessonTrans = (lesson as any).translations?.[0]
+    const moduleTrans = (lesson.module as any).translations?.[0]
 
-    // Format quizzes (hide correct answer)
-    const quizzes = lesson.quizzes.map((quiz) => ({
-      id: quiz.id,
-      question: quiz.question,
-      options: JSON.parse(quiz.options),
-      order: quiz.order,
-    }))
+    // Parse content (use translated content if available)
+    const content = JSON.parse(lessonTrans?.content || lesson.content)
+
+    // Format quizzes (hide correct answer, use translations)
+    const quizzes = lesson.quizzes.map((quiz) => {
+      const quizTrans = (quiz as any).translations?.[0]
+      return {
+        id: quiz.id,
+        question: quizTrans?.question || quiz.question,
+        options: JSON.parse(quizTrans?.options || quiz.options),
+        order: quiz.order,
+      }
+    })
 
     res.json({
       id: lesson.id,
-      title: lesson.title,
-      description: lesson.description,
+      title: lessonTrans?.title || lesson.title,
+      description: lessonTrans?.description || lesson.description,
       content,
       xpReward: lesson.xpReward,
       duration: lesson.duration,
@@ -60,7 +82,7 @@ router.get('/:id', authMiddleware, async (req: AuthRequest, res: Response) => {
       score: lesson.progress[0]?.score || null,
       module: {
         id: lesson.module.id,
-        title: lesson.module.title,
+        title: moduleTrans?.title || lesson.module.title,
       },
     })
   } catch (error) {
@@ -75,11 +97,18 @@ router.post('/:id/submit', authMiddleware, async (req: AuthRequest, res: Respons
     const prisma: PrismaClient = req.app.locals.prisma
     const { id } = req.params
     const { answers, timeSpent } = req.body
+    const lang = (req.query.lang as string) || 'fr'
 
     const lesson = await prisma.lesson.findUnique({
       where: { id },
       include: {
-        quizzes: true,
+        quizzes: {
+          include: {
+            translations: {
+              where: { language: lang }
+            }
+          }
+        },
       },
     })
 
@@ -96,11 +125,14 @@ router.post('/:id/submit', authMiddleware, async (req: AuthRequest, res: Respons
       const isCorrect = userAnswer === quiz.correctIndex
       if (isCorrect) correctCount++
 
+      // Get translated explanation
+      const quizTrans = (quiz as any).translations?.[0]
+
       results.push({
         quizId: quiz.id,
         isCorrect,
         correctIndex: quiz.correctIndex,
-        explanation: quiz.explanation,
+        explanation: quizTrans?.explanation || quiz.explanation,
       })
 
       // Record quiz attempt

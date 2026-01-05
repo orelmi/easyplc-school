@@ -58,9 +58,9 @@ export const api = {
   getModule: (id: string) => fetchWithAuth(withLang(`/modules/${id}`)),
 
   // Lessons
-  getLesson: (id: string) => fetchWithAuth(`/lessons/${id}`),
+  getLesson: (id: string) => fetchWithAuth(withLang(`/lessons/${id}`)),
   submitLesson: (id: string, answers: Record<string, number>, timeSpent: number) =>
-    fetchWithAuth(`/lessons/${id}/submit`, {
+    fetchWithAuth(withLang(`/lessons/${id}/submit`), {
       method: 'POST',
       body: JSON.stringify({ answers, timeSpent }),
     }),

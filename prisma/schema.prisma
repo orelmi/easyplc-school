@@ -64,9 +64,24 @@ model Lesson {
   duration    Int       @default(10)
   createdAt   DateTime  @default(now())
 
-  module      Module    @relation(fields: [moduleId], references: [id])
-  progress    LessonProgress[]
-  quizzes     Quiz[]
+  module       Module    @relation(fields: [moduleId], references: [id])
+  progress     LessonProgress[]
+  quizzes      Quiz[]
+  translations LessonTranslation[]
+}
+
+model LessonTranslation {
+  id          String    @id @default(uuid())
+  lessonId    String
+  language    String
+  title       String
+  description String
+  content     String
+  createdAt   DateTime  @default(now())
+
+  lesson      Lesson    @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+
+  @@unique([lessonId, language])
 }
 
 model LessonProgress {
@@ -96,8 +111,23 @@ model Quiz {
   order       Int
   createdAt   DateTime  @default(now())
 
-  lesson      Lesson    @relation(fields: [lessonId], references: [id])
-  attempts    QuizAttempt[]
+  lesson       Lesson    @relation(fields: [lessonId], references: [id])
+  attempts     QuizAttempt[]
+  translations QuizTranslation[]
+}
+
+model QuizTranslation {
+  id          String    @id @default(uuid())
+  quizId      String
+  language    String
+  question    String
+  options     String    // JSON array of translated options
+  explanation String?
+  createdAt   DateTime  @default(now())
+
+  quiz        Quiz      @relation(fields: [quizId], references: [id], onDelete: Cascade)
+
+  @@unique([quizId, language])
 }
 
 model QuizAttempt {
