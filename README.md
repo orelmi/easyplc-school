@@ -81,6 +81,21 @@ npm run db:seed
 npm run dev
 ```
 
+## Compte démo
+
+Un compte démo est créé automatiquement lors du seed :
+
+| Champ | Valeur |
+|-------|--------|
+| Email | `demo@easyplc.fr` |
+| Mot de passe | `demo123` |
+
+Ce compte a déjà :
+- 255 XP et niveau 2
+- 3 leçons complétées
+- 3 récompenses débloquées
+- Une série de 3 jours
+
 L'application sera accessible sur :
 - Frontend : http://localhost:5173
 - Backend API : http://localhost:3001

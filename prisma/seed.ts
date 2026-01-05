@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client'
+import bcrypt from 'bcryptjs'
 
 const prisma = new PrismaClient()
 
@@ -11,6 +12,7 @@ async function main() {
   await prisma.lesson.deleteMany()
   await prisma.module.deleteMany()
   await prisma.reward.deleteMany()
+  await prisma.user.deleteMany()
 
   // Create Modules
   const module1 = await prisma.module.create({
@@ -588,7 +590,94 @@ async function main() {
     ],
   })
 
+  // Create demo user with some progress
+  const hashedPassword = await bcrypt.hash('demo123', 10)
+
+  const demoUser = await prisma.user.create({
+    data: {
+      email: 'demo@easyplc.fr',
+      username: 'DemoUser',
+      password: hashedPassword,
+      totalXp: 255,
+      level: 2,
+      streak: 3,
+    },
+  })
+
+  // Add progress for demo user (completed first 3 lessons)
+  await prisma.lessonProgress.createMany({
+    data: [
+      {
+        userId: demoUser.id,
+        lessonId: lesson1_1.id,
+        completed: true,
+        score: 100,
+        timeSpent: 480,
+        completedAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000), // 2 days ago
+      },
+      {
+        userId: demoUser.id,
+        lessonId: lesson1_2.id,
+        completed: true,
+        score: 85,
+        timeSpent: 600,
+        completedAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000), // 1 day ago
+      },
+      {
+        userId: demoUser.id,
+        lessonId: lesson1_3.id,
+        completed: true,
+        score: 70,
+        timeSpent: 720,
+        completedAt: new Date(), // today
+      },
+    ],
+  })
+
+  // Give demo user some rewards
+  const firstReward = await prisma.reward.findFirst({
+    where: { name: 'Premier pas' },
+  })
+  const perfectReward = await prisma.reward.findFirst({
+    where: { name: 'Sans faute !' },
+  })
+  const streakReward = await prisma.reward.findFirst({
+    where: { name: 'Série de 3' },
+  })
+
+  if (firstReward) {
+    await prisma.userReward.create({
+      data: {
+        userId: demoUser.id,
+        rewardId: firstReward.id,
+        earnedAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000),
+      },
+    })
+  }
+  if (perfectReward) {
+    await prisma.userReward.create({
+      data: {
+        userId: demoUser.id,
+        rewardId: perfectReward.id,
+        earnedAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000),
+      },
+    })
+  }
+  if (streakReward) {
+    await prisma.userReward.create({
+      data: {
+        userId: demoUser.id,
+        rewardId: streakReward.id,
+        earnedAt: new Date(),
+      },
+    })
+  }
+
   console.log('✅ Database seeded successfully!')
+  console.log('')
+  console.log('📧 Compte démo créé :')
+  console.log('   Email: demo@easyplc.fr')
+  console.log('   Mot de passe: demo123')
 }
 
 main()
