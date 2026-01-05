@@ -5,10 +5,11 @@ import { api } from '../lib/api'
 import { useAuthStore } from '../store/authStore'
 
 interface Section {
-  type: 'text' | 'info' | 'warning' | 'image'
+  type: 'text' | 'info' | 'warning' | 'image' | 'diagram' | 'code'
   content?: string
   url?: string
   caption?: string
+  title?: string
 }
 
 interface Quiz {
@@ -135,17 +136,58 @@ export default function Lesson() {
   const renderSection = (section: Section, index: number) => {
     switch (section.type) {
       case 'text':
+        // Parse content to handle code blocks and markdown
+        const parseTextContent = (content: string) => {
+          const parts: Array<{ type: 'text' | 'code'; content: string }> = []
+          const codeBlockRegex = /```[\s\S]*?```/g
+          let lastIndex = 0
+          let match
+
+          while ((match = codeBlockRegex.exec(content)) !== null) {
+            // Add text before code block
+            if (match.index > lastIndex) {
+              parts.push({ type: 'text', content: content.slice(lastIndex, match.index) })
+            }
+            // Add code block (remove the ``` markers)
+            const codeContent = match[0].replace(/^```\n?/, '').replace(/\n?```$/, '')
+            parts.push({ type: 'code', content: codeContent })
+            lastIndex = match.index + match[0].length
+          }
+          // Add remaining text
+          if (lastIndex < content.length) {
+            parts.push({ type: 'text', content: content.slice(lastIndex) })
+          }
+          return parts
+        }
+
+        const parts = parseTextContent(section.content || '')
+
         return (
-          <div
-            key={index}
-            className="prose prose-primary max-w-none"
-            dangerouslySetInnerHTML={{
-              __html: section.content?.replace(/\n/g, '<br>').replace(/#{1,6}\s/g, (match) => {
-                const level = match.trim().length
-                return `<h${level} class="font-bold mt-6 mb-3">`
-              }).replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') || ''
-            }}
-          />
+          <div key={index} className="prose prose-primary max-w-none">
+            {parts.map((part, partIndex) => {
+              if (part.type === 'code') {
+                return (
+                  <div key={partIndex} className="my-4 bg-gray-900 text-green-400 rounded-lg p-4 overflow-x-auto">
+                    <pre className="font-mono text-sm whitespace-pre leading-tight">{part.content}</pre>
+                  </div>
+                )
+              }
+              return (
+                <div
+                  key={partIndex}
+                  dangerouslySetInnerHTML={{
+                    __html: part.content
+                      .replace(/\n/g, '<br>')
+                      .replace(/#{1,6}\s/g, (match) => {
+                        const level = match.trim().length
+                        return `<h${level} class="font-bold mt-6 mb-3">`
+                      })
+                      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                  }}
+                />
+              )
+            })}
+          </div>
         )
       case 'info':
         return (
@@ -177,6 +219,33 @@ export default function Lesson() {
               </figcaption>
             )}
           </figure>
+        )
+      case 'diagram':
+        return (
+          <figure key={index} className="my-6">
+            {section.title && (
+              <div className="text-sm font-semibold text-gray-700 mb-2">{section.title}</div>
+            )}
+            <div className="bg-gray-900 text-green-400 rounded-lg p-4 overflow-x-auto">
+              <pre className="font-mono text-sm whitespace-pre leading-tight">{section.content}</pre>
+            </div>
+            {section.caption && (
+              <figcaption className="text-center text-sm text-gray-500 mt-2">
+                {section.caption}
+              </figcaption>
+            )}
+          </figure>
+        )
+      case 'code':
+        return (
+          <div key={index} className="my-6">
+            {section.title && (
+              <div className="text-sm font-semibold text-gray-700 mb-2">{section.title}</div>
+            )}
+            <div className="bg-gray-800 text-gray-100 rounded-lg p-4 overflow-x-auto">
+              <pre className="font-mono text-sm whitespace-pre">{section.content}</pre>
+            </div>
+          </div>
         )
       default:
         return null
