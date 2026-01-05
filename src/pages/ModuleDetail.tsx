@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { api } from '../lib/api'
 
 interface Lesson {
@@ -25,19 +26,21 @@ interface ModuleData {
 
 export default function ModuleDetail() {
   const { id } = useParams<{ id: string }>()
+  const { i18n } = useTranslation()
   const [module, setModule] = useState<ModuleData | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
 
   useEffect(() => {
     if (id) {
+      setLoading(true)
       api
         .getModule(id)
         .then(setModule)
         .catch((err) => setError(err.message))
         .finally(() => setLoading(false))
     }
-  }, [id])
+  }, [id, i18n.language])
 
   if (loading) {
     return (

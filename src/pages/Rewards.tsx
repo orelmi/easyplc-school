@@ -30,8 +30,9 @@ export default function Rewards() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    setLoading(true)
     api.getRewards().then(setData).finally(() => setLoading(false))
-  }, [])
+  }, [i18n.language])
 
   const getLocale = () => {
     switch (i18n.language) {

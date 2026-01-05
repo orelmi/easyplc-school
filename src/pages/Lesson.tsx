@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link, useParams, useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { api } from '../lib/api'
 import { useAuthStore } from '../store/authStore'
 
@@ -48,6 +49,7 @@ interface SubmitResult {
 export default function Lesson() {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
+  const { i18n } = useTranslation()
   const { updateUser, user } = useAuthStore()
 
   const [lesson, setLesson] = useState<LessonData | null>(null)
@@ -63,13 +65,14 @@ export default function Lesson() {
 
   useEffect(() => {
     if (id) {
+      setLoading(true)
       api
         .getLesson(id)
         .then(setLesson)
         .catch((err) => setError(err.message))
         .finally(() => setLoading(false))
     }
-  }, [id])
+  }, [id, i18n.language])
 
   const handleStartQuiz = () => {
     setCurrentStep('quiz')

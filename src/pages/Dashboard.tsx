@@ -41,8 +41,9 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    setLoading(true)
     api.getProgress().then(setProgress).finally(() => setLoading(false))
-  }, [])
+  }, [i18n.language])
 
   const getLocale = () => {
     switch (i18n.language) {

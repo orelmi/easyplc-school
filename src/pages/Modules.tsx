@@ -18,13 +18,14 @@ interface Module {
 }
 
 export default function Modules() {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const [modules, setModules] = useState<Module[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    setLoading(true)
     api.getModules().then(setModules).finally(() => setLoading(false))
-  }, [])
+  }, [i18n.language])
 
   if (loading) {
     return (
