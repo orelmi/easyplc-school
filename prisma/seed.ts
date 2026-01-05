@@ -1157,7 +1157,7 @@ async function main() {
   // Create Quizzes
   await prisma.quiz.createMany({
     data: [
-      // Quiz Module 1 - Lesson 1
+      // Quiz Module 1 - Lesson 1 (5 questions)
       {
         lessonId: lesson1_1.id,
         question: "Que signifie l'acronyme PLC ?",
@@ -1184,7 +1184,46 @@ async function main() {
         explanation: "L'unité centrale (CPU) est le cerveau de l'automate qui exécute le programme utilisateur.",
         order: 2,
       },
-      // Quiz Module 1 - Lesson 2
+      {
+        lessonId: lesson1_1.id,
+        question: "En quelle année a été inventé le premier automate programmable ?",
+        options: JSON.stringify([
+          "1958",
+          "1968",
+          "1978",
+          "1988"
+        ]),
+        correctIndex: 1,
+        explanation: "Le premier automate programmable a été inventé en 1968 par Dick Morley pour General Motors.",
+        order: 3,
+      },
+      {
+        lessonId: lesson1_1.id,
+        question: "Quel composant stocke le programme et les données ?",
+        options: JSON.stringify([
+          "Le CPU",
+          "L'alimentation",
+          "La mémoire",
+          "Les entrées"
+        ]),
+        correctIndex: 2,
+        explanation: "La mémoire stocke le programme utilisateur et les données de travail de l'automate.",
+        order: 4,
+      },
+      {
+        lessonId: lesson1_1.id,
+        question: "Quel est l'avantage principal d'un automate par rapport à un câblage traditionnel ?",
+        options: JSON.stringify([
+          "Il est moins cher",
+          "Il consomme moins d'électricité",
+          "On peut modifier le programme sans changer le câblage",
+          "Il est plus petit"
+        ]),
+        correctIndex: 2,
+        explanation: "La flexibilité est l'avantage clé : on peut modifier le comportement en changeant le programme, sans toucher au câblage physique.",
+        order: 5,
+      },
+      // Quiz Module 1 - Lesson 2 (5 questions)
       {
         lessonId: lesson1_2.id,
         question: "Qu'est-ce qu'une entrée TOR ?",
@@ -1211,7 +1250,112 @@ async function main() {
         explanation: "Les sorties commandent les actionneurs (moteurs, vannes, voyants, etc.) qui agissent sur le processus.",
         order: 2,
       },
-      // Quiz Module 2 - Lesson 1
+      {
+        lessonId: lesson1_2.id,
+        question: "Quel type d'entrée permet de mesurer une température ?",
+        options: JSON.stringify([
+          "Entrée TOR",
+          "Entrée analogique",
+          "Entrée numérique série",
+          "Entrée de sécurité"
+        ]),
+        correctIndex: 1,
+        explanation: "Une entrée analogique peut mesurer des valeurs continues comme la température, la pression ou le niveau.",
+        order: 3,
+      },
+      {
+        lessonId: lesson1_2.id,
+        question: "Un bouton poussoir est relié à quelle partie de l'automate ?",
+        options: JSON.stringify([
+          "Aux sorties",
+          "Aux entrées",
+          "À la mémoire",
+          "Au CPU"
+        ]),
+        correctIndex: 1,
+        explanation: "Un bouton poussoir est un capteur, il est donc relié aux entrées de l'automate.",
+        order: 4,
+      },
+      {
+        lessonId: lesson1_2.id,
+        question: "Un voyant lumineux est commandé par :",
+        options: JSON.stringify([
+          "Une entrée",
+          "Une sortie",
+          "La mémoire",
+          "L'alimentation"
+        ]),
+        correctIndex: 1,
+        explanation: "Un voyant est un actionneur, il est commandé par une sortie de l'automate.",
+        order: 5,
+      },
+      // Quiz Module 1 - Lesson 3 (5 questions)
+      {
+        lessonId: lesson1_3.id,
+        question: "Combien de phases comporte le cycle automate ?",
+        options: JSON.stringify([
+          "2 phases",
+          "3 phases principales",
+          "5 phases",
+          "1 seule phase"
+        ]),
+        correctIndex: 1,
+        explanation: "Le cycle automate comporte 3 phases principales : lecture des entrées, exécution du programme, mise à jour des sorties.",
+        order: 1,
+      },
+      {
+        lessonId: lesson1_3.id,
+        question: "Quel est le temps de cycle typique d'un automate ?",
+        options: JSON.stringify([
+          "1 seconde",
+          "100 millisecondes",
+          "5 à 20 millisecondes",
+          "1 minute"
+        ]),
+        correctIndex: 2,
+        explanation: "Le temps de cycle typique est de quelques millisecondes (5-20 ms), ce qui permet une réaction rapide.",
+        order: 2,
+      },
+      {
+        lessonId: lesson1_3.id,
+        question: "À quel moment les entrées sont-elles lues ?",
+        options: JSON.stringify([
+          "Pendant l'exécution du programme",
+          "Au début de chaque cycle",
+          "À la fin de chaque cycle",
+          "Uniquement au démarrage"
+        ]),
+        correctIndex: 1,
+        explanation: "Les entrées sont lues au début de chaque cycle, avant l'exécution du programme.",
+        order: 3,
+      },
+      {
+        lessonId: lesson1_3.id,
+        question: "Comment le programme est-il exécuté ?",
+        options: JSON.stringify([
+          "De manière aléatoire",
+          "Du bas vers le haut",
+          "De haut en bas, ligne par ligne",
+          "Uniquement les lignes modifiées"
+        ]),
+        correctIndex: 2,
+        explanation: "Le programme est exécuté séquentiellement, de haut en bas, ligne par ligne.",
+        order: 4,
+      },
+      {
+        lessonId: lesson1_3.id,
+        question: "Qu'est-ce qui se passe si le programme est trop long ?",
+        options: JSON.stringify([
+          "L'automate s'arrête",
+          "Le temps de cycle augmente",
+          "Les entrées ne sont plus lues",
+          "La mémoire est effacée"
+        ]),
+        correctIndex: 1,
+        explanation: "Plus le programme est long, plus le temps de cycle augmente, ce qui peut ralentir la réactivité du système.",
+        order: 5,
+      },
+      // Quiz Module 2 - Lesson 1 (5 questions)
       {
         lessonId: lesson2_1.id,
         question: "Quelle est la sortie de A ET B si A=1 et B=0 ?",
@@ -1233,7 +1377,41 @@ async function main() {
         explanation: "En LADDER, les contacts en série représentent une fonction ET : le courant ne passe que si tous les contacts sont fermés.",
         order: 2,
       },
-      // Quiz Module 2 - Lesson 2
+      {
+        lessonId: lesson2_1.id,
+        question: "Quelle est la sortie de A ET B si A=1 et B=1 ?",
+        options: JSON.stringify(["0", "1", "Indéfini", "Dépend du contexte"]),
+        correctIndex: 1,
+        explanation: "Quand toutes les entrées sont à 1, la porte ET donne 1 en sortie.",
+        order: 3,
+      },
+      {
+        lessonId: lesson2_1.id,
+        question: "Quel symbole représente la fonction ET en logique ?",
+        options: JSON.stringify([
+          "A + B",
+          "A · B ou A ∧ B",
+          "A / B",
+          "A - B"
+        ]),
+        correctIndex: 1,
+        explanation: "La fonction ET s'écrit A · B (point) ou A ∧ B (chapeau) en notation logique.",
+        order: 4,
+      },
+      {
+        lessonId: lesson2_1.id,
+        question: "Pour un démarrage sécurisé avec 3 conditions (START, capot fermé, pas d'arrêt urgence), combien d'entrées à 1 faut-il ?",
+        options: JSON.stringify([
+          "Au moins 1",
+          "Au moins 2",
+          "Les 3 entrées à 1",
+          "Aucune"
+        ]),
+        correctIndex: 2,
+        explanation: "Pour une fonction ET à 3 entrées (démarrage sécurisé), TOUTES les conditions doivent être vraies.",
+        order: 5,
+      },
+      // Quiz Module 2 - Lesson 2 (5 questions)
       {
         lessonId: lesson2_2.id,
         question: "Quelle est la sortie de A OU B si A=0 et B=1 ?",
@@ -1242,7 +1420,115 @@ async function main() {
         explanation: "La porte OU donne 1 si AU MOINS une entrée est à 1. Ici B=1, donc la sortie est 1.",
         order: 1,
       },
-      // Quiz Module 3 - Lesson 1
+      {
+        lessonId: lesson2_2.id,
+        question: "En LADDER, comment représente-t-on une fonction OU ?",
+        options: JSON.stringify([
+          "Contacts en série",
+          "Contacts en parallèle",
+          "Un contact inversé",
+          "Une bobine SET"
+        ]),
+        correctIndex: 1,
+        explanation: "En LADDER, les contacts en parallèle représentent une fonction OU : le courant passe si au moins un contact est fermé.",
+        order: 2,
+      },
+      {
+        lessonId: lesson2_2.id,
+        question: "Quelle est la sortie de A OU B si A=0 et B=0 ?",
+        options: JSON.stringify(["0", "1", "Indéfini", "Dépend du contexte"]),
+        correctIndex: 0,
+        explanation: "La porte OU ne donne 0 que si TOUTES les entrées sont à 0.",
+        order: 3,
+      },
+      {
+        lessonId: lesson2_2.id,
+        question: "Quel symbole représente la fonction OU en logique ?",
+        options: JSON.stringify([
+          "A · B",
+          "A + B ou A ∨ B",
+          "A / B",
+          "A × B"
+        ]),
+        correctIndex: 1,
+        explanation: "La fonction OU s'écrit A + B (plus) ou A ∨ B (V inversé) en notation logique.",
+        order: 4,
+      },
+      {
+        lessonId: lesson2_2.id,
+        question: "Un voyant d'alarme s'allume si température trop haute OU pression trop haute. Avec T=1 et P=0, le voyant est :",
+        options: JSON.stringify([
+          "Éteint",
+          "Allumé",
+          "Clignotant",
+          "Indéterminé"
+        ]),
+        correctIndex: 1,
+        explanation: "Avec une fonction OU, il suffit qu'une seule condition soit vraie (T=1) pour que le voyant s'allume.",
+        order: 5,
+      },
+      // Quiz Module 2 - Lesson 3 (5 questions)
+      {
+        lessonId: lesson2_3.id,
+        question: "Quelle est la sortie de NON A si A=1 ?",
+        options: JSON.stringify(["0", "1", "Indéfini", "-1"]),
+        correctIndex: 0,
+        explanation: "La porte NON inverse l'entrée. Si A=1, alors NON A = 0.",
+        order: 1,
+      },
+      {
+        lessonId: lesson2_3.id,
+        question: "Comment appelle-t-on un contact qui laisse passer le courant quand il n'est PAS actionné ?",
+        options: JSON.stringify([
+          "Contact normalement ouvert (NO)",
+          "Contact normalement fermé (NF)",
+          "Contact temporisé",
+          "Contact mémorisé"
+        ]),
+        correctIndex: 1,
+        explanation: "Un contact normalement fermé (NF) laisse passer le courant au repos et bloque quand il est actionné.",
+        order: 2,
+      },
+      {
+        lessonId: lesson2_3.id,
+        question: "Quel symbole représente la fonction NON en logique ?",
+        options: JSON.stringify([
+          "A + B",
+          "Ā ou ¬A",
+          "A · B",
+          "A / B"
+        ]),
+        correctIndex: 1,
+        explanation: "La fonction NON s'écrit avec une barre au-dessus (Ā) ou le symbole ¬ devant la variable.",
+        order: 3,
+      },
+      {
+        lessonId: lesson2_3.id,
+        question: "En LADDER, comment représente-t-on une fonction NON ?",
+        options: JSON.stringify([
+          "Un contact en série",
+          "Un contact en parallèle",
+          "Un contact normalement fermé (NF)",
+          "Une bobine inversée"
+        ]),
+        correctIndex: 2,
+        explanation: "En LADDER, un contact normalement fermé --[/]-- représente la fonction NON.",
+        order: 4,
+      },
+      {
+        lessonId: lesson2_3.id,
+        question: "Le voyant 'MACHINE ARRÊTÉE' doit être allumé quand le moteur n'est PAS en marche. Quelle logique utiliser ?",
+        options: JSON.stringify([
+          "Voyant = Moteur",
+          "Voyant = NON(Moteur)",
+          "Voyant = Moteur ET Bouton",
+          "Voyant = Moteur OU Bouton"
+        ]),
+        correctIndex: 1,
+        explanation: "Le voyant s'allume quand le moteur est arrêté, donc Voyant = NON(Moteur_en_marche).",
+        order: 5,
+      },
+      // Quiz Module 3 - Lesson 1 (5 questions)
       {
         lessonId: lesson3_1.id,
         question: "Pourquoi le langage LADDER est-il populaire ?",
@@ -1256,7 +1542,257 @@ async function main() {
         explanation: "Le LADDER ressemble aux schémas électriques à relais, ce qui le rend intuitif pour les électriciens.",
         order: 1,
       },
-      // Quiz Module 6 - CNC Introduction
+      {
+        lessonId: lesson3_1.id,
+        question: "Dans quel sens le 'courant' circule-t-il en LADDER ?",
+        options: JSON.stringify([
+          "De droite à gauche",
+          "De gauche à droite",
+          "De haut en bas",
+          "Dans les deux sens"
+        ]),
+        correctIndex: 1,
+        explanation: "En LADDER, le courant logique circule de gauche à droite, de la barre d'alimentation vers les bobines.",
+        order: 2,
+      },
+      {
+        lessonId: lesson3_1.id,
+        question: "Quelle norme internationale définit le langage LADDER ?",
+        options: JSON.stringify([
+          "ISO 9001",
+          "IEC 61131-3",
+          "IEEE 802.3",
+          "EN 60204"
+        ]),
+        correctIndex: 1,
+        explanation: "La norme IEC 61131-3 définit les langages de programmation des automates, dont le LADDER.",
+        order: 3,
+      },
+      {
+        lessonId: lesson3_1.id,
+        question: "Que représente le symbole --[ ]-- en LADDER ?",
+        options: JSON.stringify([
+          "Une bobine",
+          "Un contact normalement ouvert (NO)",
+          "Un contact normalement fermé (NF)",
+          "Un temporisateur"
+        ]),
+        correctIndex: 1,
+        explanation: "Le symbole --[ ]-- représente un contact normalement ouvert qui conduit quand l'entrée est à 1.",
+        order: 4,
+      },
+      {
+        lessonId: lesson3_1.id,
+        question: "Que représente le symbole --( )-- en LADDER ?",
+        options: JSON.stringify([
+          "Un contact",
+          "Une bobine",
+          "Un temporisateur",
+          "Un compteur"
+        ]),
+        correctIndex: 1,
+        explanation: "Le symbole --( )-- représente une bobine qui s'active quand le courant l'atteint.",
+        order: 5,
+      },
+      // Quiz Module 3 - Lesson 2 (5 questions)
+      {
+        lessonId: lesson3_2.id,
+        question: "Quelle est la différence entre une bobine simple et une bobine SET ?",
+        options: JSON.stringify([
+          "Il n'y a pas de différence",
+          "La bobine SET reste active même si la condition n'est plus vraie",
+          "La bobine SET est plus rapide",
+          "La bobine SET utilise moins de mémoire"
+        ]),
+        correctIndex: 1,
+        explanation: "Une bobine SET mémorise son état : elle reste active même si la condition n'est plus vraie.",
+        order: 1,
+      },
+      {
+        lessonId: lesson3_2.id,
+        question: "Comment désactive-t-on une bobine SET ?",
+        options: JSON.stringify([
+          "Elle se désactive automatiquement",
+          "Avec une bobine RESET",
+          "En coupant l'alimentation",
+          "En utilisant un contact NF"
+        ]),
+        correctIndex: 1,
+        explanation: "Une bobine SET ne peut être désactivée qu'avec une bobine RESET sur la même variable.",
+        order: 2,
+      },
+      {
+        lessonId: lesson3_2.id,
+        question: "Quel symbole représente un contact normalement fermé ?",
+        options: JSON.stringify([
+          "--[ ]--",
+          "--[/]--",
+          "--( )--",
+          "--(S)--"
+        ]),
+        correctIndex: 1,
+        explanation: "Le symbole --[/]-- représente un contact normalement fermé (la barre oblique indique l'inversion).",
+        order: 3,
+      },
+      {
+        lessonId: lesson3_2.id,
+        question: "Dans un circuit marche/arrêt avec auto-maintien, qu'est-ce qui permet au moteur de rester en marche après avoir relâché le bouton START ?",
+        options: JSON.stringify([
+          "La bobine SET",
+          "Le contact de la sortie moteur en parallèle",
+          "Le temporisateur",
+          "Le contact NF"
+        ]),
+        correctIndex: 1,
+        explanation: "L'auto-maintien utilise un contact de la sortie moteur en parallèle avec le bouton START pour maintenir l'activation.",
+        order: 4,
+      },
+      {
+        lessonId: lesson3_2.id,
+        question: "Pourquoi utilise-t-on un contact NF pour le bouton STOP dans un circuit marche/arrêt ?",
+        options: JSON.stringify([
+          "Pour économiser de l'énergie",
+          "Pour couper le courant quand STOP est appuyé",
+          "C'est une obligation légale",
+          "Pour accélérer le programme"
+        ]),
+        correctIndex: 1,
+        explanation: "Un contact NF sur STOP coupe le courant quand on appuie sur le bouton, arrêtant ainsi le moteur.",
+        order: 5,
+      },
+      // Quiz Module 4 - Lesson 1 (5 questions)
+      {
+        lessonId: lesson4_1.id,
+        question: "Quel type de capteur détecte uniquement les métaux ?",
+        options: JSON.stringify([
+          "Capacitif",
+          "Inductif",
+          "Optique",
+          "Mécanique"
+        ]),
+        correctIndex: 1,
+        explanation: "Le capteur inductif utilise un champ magnétique et ne détecte que les matériaux métalliques.",
+        order: 1,
+      },
+      {
+        lessonId: lesson4_1.id,
+        question: "Quel capteur peut détecter tous les types de matériaux ?",
+        options: JSON.stringify([
+          "Inductif",
+          "Capacitif",
+          "Magnétique",
+          "Aucun"
+        ]),
+        correctIndex: 1,
+        explanation: "Le capteur capacitif peut détecter tout type de matériau (métal, plastique, bois, liquide, etc.).",
+        order: 2,
+      },
+      {
+        lessonId: lesson4_1.id,
+        question: "Qu'est-ce qu'un fin de course ?",
+        options: JSON.stringify([
+          "Un capteur de température",
+          "Un capteur mécanique qui détecte une position extrême",
+          "Un capteur de pression",
+          "Un capteur de vitesse"
+        ]),
+        correctIndex: 1,
+        explanation: "Un fin de course est un capteur mécanique actionné quand un élément mobile atteint une position limite.",
+        order: 3,
+      },
+      {
+        lessonId: lesson4_1.id,
+        question: "Que signifie IP67 pour un capteur ?",
+        options: JSON.stringify([
+          "Sa vitesse de commutation",
+          "Son indice de protection (étanche à la poussière et immersion)",
+          "Sa portée de détection",
+          "Son type de sortie"
+        ]),
+        correctIndex: 1,
+        explanation: "IP67 indique une protection contre la poussière (6) et l'immersion temporaire dans l'eau (7).",
+        order: 4,
+      },
+      {
+        lessonId: lesson4_1.id,
+        question: "Quelle est la caractéristique principale d'un capteur optique ?",
+        options: JSON.stringify([
+          "Il utilise un champ magnétique",
+          "Il utilise un faisceau lumineux",
+          "Il nécessite un contact physique",
+          "Il mesure la température"
+        ]),
+        correctIndex: 1,
+        explanation: "Un capteur optique utilise un faisceau lumineux (infrarouge, laser, etc.) pour détecter la présence d'un objet.",
+        order: 5,
+      },
+      // Quiz Module 5 - Lesson 1 (5 questions)
+      {
+        lessonId: lesson5_1.id,
+        question: "Que signifie GRAFCET ?",
+        options: JSON.stringify([
+          "Graphe Fonctionnel de Commande Étape-Transition",
+          "Graphique de Fonctionnement des Capteurs",
+          "Groupe de Recherche sur l'Automatisme",
+          "Graph of Functions for Control Engineering"
+        ]),
+        correctIndex: 0,
+        explanation: "GRAFCET signifie Graphe Fonctionnel de Commande Étape-Transition.",
+        order: 1,
+      },
+      {
+        lessonId: lesson5_1.id,
+        question: "Qu'est-ce qu'une étape initiale dans un GRAFCET ?",
+        options: JSON.stringify([
+          "L'étape la plus longue",
+          "L'étape active au démarrage du système",
+          "L'étape finale",
+          "Une étape sans action"
+        ]),
+        correctIndex: 1,
+        explanation: "L'étape initiale est l'étape active au démarrage. Elle est représentée par un double carré.",
+        order: 2,
+      },
+      {
+        lessonId: lesson5_1.id,
+        question: "Qu'est-ce qu'une transition dans un GRAFCET ?",
+        options: JSON.stringify([
+          "Une action à effectuer",
+          "Une condition pour passer à l'étape suivante",
+          "Un état du système",
+          "Un type de capteur"
+        ]),
+        correctIndex: 1,
+        explanation: "Une transition est une condition logique qui, lorsqu'elle est vraie, permet de passer à l'étape suivante.",
+        order: 3,
+      },
+      {
+        lessonId: lesson5_1.id,
+        question: "Quelle norme française définit le GRAFCET ?",
+        options: JSON.stringify([
+          "NF C 15-100",
+          "NF C 03-190",
+          "NF EN 60204",
+          "NF ISO 9001"
+        ]),
+        correctIndex: 1,
+        explanation: "Le GRAFCET est défini par la norme NF C 03-190, largement utilisée dans l'industrie française.",
+        order: 4,
+      },
+      {
+        lessonId: lesson5_1.id,
+        question: "Quand une transition est-elle franchissable ?",
+        options: JSON.stringify([
+          "Toujours",
+          "Quand la condition est vraie uniquement",
+          "Quand l'étape précédente est active ET la condition est vraie",
+          "Après un délai fixe"
+        ]),
+        correctIndex: 2,
+        explanation: "Une transition est franchissable si l'étape précédente est active ET si la condition de transition est vraie.",
+        order: 5,
+      },
+      // Quiz Module 6 - Lesson 1 (5 questions)
       {
         lessonId: lesson6_1.id,
         question: "Que signifie CNC ?",
@@ -1284,6 +1820,46 @@ async function main() {
         order: 2,
       },
       {
+        lessonId: lesson6_1.id,
+        question: "Quand sont apparues les premières machines CNC ?",
+        options: JSON.stringify([
+          "Dans les années 1930",
+          "Dans les années 1950",
+          "Dans les années 1970",
+          "Dans les années 1990"
+        ]),
+        correctIndex: 1,
+        explanation: "Les premières machines CNC sont apparues dans les années 1950, révolutionnant l'industrie manufacturière.",
+        order: 3,
+      },
+      {
+        lessonId: lesson6_1.id,
+        question: "Quel langage de programmation utilisent les machines CNC ?",
+        options: JSON.stringify([
+          "Python",
+          "G-Code",
+          "JavaScript",
+          "C++"
+        ]),
+        correctIndex: 1,
+        explanation: "Les machines CNC utilisent le G-Code, un langage de programmation standardisé pour contrôler les mouvements.",
+        order: 4,
+      },
+      {
+        lessonId: lesson6_1.id,
+        question: "Quelle est la précision typique d'une machine CNC ?",
+        options: JSON.stringify([
+          "Quelques millimètres",
+          "Quelques centièmes de millimètre",
+          "Quelques centimètres",
+          "Environ 1 mètre"
+        ]),
+        correctIndex: 1,
+        explanation: "Les machines CNC atteignent des tolérances de quelques centièmes de millimètre (0.01 mm).",
+        order: 5,
+      },
+      // Quiz Module 6 - Lesson 2 (5 questions)
+      {
         lessonId: lesson6_2.id,
         question: "Quelle machine est idéale pour les pièces cylindriques ?",
         options: JSON.stringify([
@@ -1296,7 +1872,59 @@ async function main() {
         explanation: "Le tour fait tourner la pièce et est idéal pour usiner des formes cylindriques.",
         order: 1,
       },
-      // Quiz Module 7 - G-Code
+      {
+        lessonId: lesson6_2.id,
+        question: "Qu'est-ce qui caractérise une fraiseuse CNC ?",
+        options: JSON.stringify([
+          "La pièce tourne",
+          "L'outil rotatif enlève la matière",
+          "Elle utilise un laser",
+          "Elle ajoute de la matière"
+        ]),
+        correctIndex: 1,
+        explanation: "Sur une fraiseuse, c'est l'outil qui tourne et se déplace pour enlever la matière de la pièce fixe.",
+        order: 2,
+      },
+      {
+        lessonId: lesson6_2.id,
+        question: "Quelle technologie utilise la découpe plasma ?",
+        options: JSON.stringify([
+          "Un jet d'eau à haute pression",
+          "Un arc électrique à haute température",
+          "Un faisceau laser",
+          "Un outil mécanique"
+        ]),
+        correctIndex: 1,
+        explanation: "La découpe plasma utilise un arc électrique qui ionise le gaz pour créer un jet très chaud capable de couper le métal.",
+        order: 3,
+      },
+      {
+        lessonId: lesson6_2.id,
+        question: "Qu'est-ce que l'électroérosion ?",
+        options: JSON.stringify([
+          "Usinage par jet d'eau",
+          "Usinage par décharges électriques",
+          "Usinage par laser",
+          "Usinage par abrasion"
+        ]),
+        correctIndex: 1,
+        explanation: "L'électroérosion utilise des décharges électriques pour éroder le matériau, idéal pour les matériaux très durs.",
+        order: 4,
+      },
+      {
+        lessonId: lesson6_2.id,
+        question: "Qu'est-ce que la fabrication additive ?",
+        options: JSON.stringify([
+          "Enlèvement de matière",
+          "Ajout de matière couche par couche (impression 3D)",
+          "Découpe par laser",
+          "Usinage par électroérosion"
+        ]),
+        correctIndex: 1,
+        explanation: "La fabrication additive (impression 3D) construit des pièces en ajoutant de la matière couche par couche.",
+        order: 5,
+      },
+      // Quiz Module 7 - Lesson 1 (5 questions)
       {
         lessonId: lesson7_1.id,
         question: "Quel code est utilisé pour le positionnement rapide ?",
@@ -1305,6 +1933,59 @@ async function main() {
         explanation: "G0 est le code de positionnement rapide. Il déplace l'outil le plus vite possible sans usinage.",
         order: 1,
       },
+      {
+        lessonId: lesson7_1.id,
+        question: "Comment s'appelle une ligne de programme G-Code ?",
+        options: JSON.stringify([
+          "Une instruction",
+          "Un bloc",
+          "Une commande",
+          "Un segment"
+        ]),
+        correctIndex: 1,
+        explanation: "Chaque ligne d'un programme G-Code s'appelle un bloc.",
+        order: 2,
+      },
+      {
+        lessonId: lesson7_1.id,
+        question: "Que représente la lettre F dans un programme G-Code ?",
+        options: JSON.stringify([
+          "La fonction auxiliaire",
+          "La vitesse d'avance (Feed)",
+          "La fréquence",
+          "Le format de fichier"
+        ]),
+        correctIndex: 1,
+        explanation: "F représente la vitesse d'avance (Feed rate), exprimée en mm/min ou pouces/min.",
+        order: 3,
+      },
+      {
+        lessonId: lesson7_1.id,
+        question: "Que représente la lettre S dans un programme G-Code ?",
+        options: JSON.stringify([
+          "La sortie",
+          "La vitesse de broche (Spindle)",
+          "Le système de coordonnées",
+          "La sécurité"
+        ]),
+        correctIndex: 1,
+        explanation: "S représente la vitesse de rotation de la broche (Spindle speed), exprimée en tr/min.",
+        order: 4,
+      },
+      {
+        lessonId: lesson7_1.id,
+        question: "Que signifie M30 en G-Code ?",
+        options: JSON.stringify([
+          "Démarrage du programme",
+          "Fin du programme",
+          "Changement d'outil",
+          "Activation de l'arrosage"
+        ]),
+        correctIndex: 1,
+        explanation: "M30 signifie fin du programme et rembobinage au début.",
+        order: 5,
+      },
+      // Quiz Module 7 - Lesson 2 (5 questions)
       {
         lessonId: lesson7_2.id,
         question: "Que fait le code M3 ?",
@@ -1318,7 +1999,59 @@ async function main() {
         explanation: "M3 met la broche en rotation dans le sens horaire.",
         order: 1,
       },
-      // Quiz Module 8 - Axes
+      {
+        lessonId: lesson7_2.id,
+        question: "Quelle est la différence entre G90 et G91 ?",
+        options: JSON.stringify([
+          "Vitesse rapide vs lente",
+          "Mode absolu vs incrémental",
+          "Mode métrique vs pouces",
+          "Broche ON vs OFF"
+        ]),
+        correctIndex: 1,
+        explanation: "G90 active le mode absolu (coordonnées par rapport à l'origine), G91 le mode incrémental (par rapport à la position actuelle).",
+        order: 2,
+      },
+      {
+        lessonId: lesson7_2.id,
+        question: "Quel code active le mode métrique ?",
+        options: JSON.stringify([
+          "G20",
+          "G21",
+          "G90",
+          "G91"
+        ]),
+        correctIndex: 1,
+        explanation: "G21 active le mode métrique (millimètres), G20 active le mode pouces.",
+        order: 3,
+      },
+      {
+        lessonId: lesson7_2.id,
+        question: "Que fait le code M5 ?",
+        options: JSON.stringify([
+          "Démarre la broche",
+          "Arrête la broche",
+          "Active l'arrosage",
+          "Change l'outil"
+        ]),
+        correctIndex: 1,
+        explanation: "M5 arrête la rotation de la broche.",
+        order: 4,
+      },
+      {
+        lessonId: lesson7_2.id,
+        question: "Que fait le code M8 ?",
+        options: JSON.stringify([
+          "Arrête l'arrosage",
+          "Active l'arrosage",
+          "Change l'outil",
+          "Fin du programme"
+        ]),
+        correctIndex: 1,
+        explanation: "M8 active le système d'arrosage (coolant ON). M9 le désactive.",
+        order: 5,
+      },
+      // Quiz Module 8 - Lesson 1 (5 questions)
       {
         lessonId: lesson8_1.id,
         question: "Quel est l'axe vertical sur une fraiseuse CNC ?",
@@ -1327,6 +2060,59 @@ async function main() {
         explanation: "L'axe Z est l'axe vertical (mouvement haut/bas).",
         order: 1,
       },
+      {
+        lessonId: lesson8_1.id,
+        question: "Qu'est-ce que l'origine pièce (W) ?",
+        options: JSON.stringify([
+          "Un point fixe sur la machine",
+          "Le point de référence défini par le programmeur sur la pièce",
+          "La position de l'outil",
+          "Le centre de la broche"
+        ]),
+        correctIndex: 1,
+        explanation: "L'origine pièce (Work) est le point de référence choisi par le programmeur pour positionner la pièce.",
+        order: 2,
+      },
+      {
+        lessonId: lesson8_1.id,
+        question: "Sur une machine 5 axes, quels sont les axes de rotation ?",
+        options: JSON.stringify([
+          "X, Y, Z",
+          "A, B, C",
+          "1, 2, 3",
+          "U, V, W"
+        ]),
+        correctIndex: 1,
+        explanation: "Les axes A, B, C sont les axes de rotation autour de X, Y, Z respectivement.",
+        order: 3,
+      },
+      {
+        lessonId: lesson8_1.id,
+        question: "Qu'est-ce que l'origine machine (M) ?",
+        options: JSON.stringify([
+          "Le point de référence de la pièce",
+          "Un point physique fixe sur la machine",
+          "La position actuelle de l'outil",
+          "Le centre du plateau"
+        ]),
+        correctIndex: 1,
+        explanation: "L'origine machine est un point physique fixe, généralement défini par les fins de course de la machine.",
+        order: 4,
+      },
+      {
+        lessonId: lesson8_1.id,
+        question: "Dans quel plan s'effectue généralement le fraisage de face ?",
+        options: JSON.stringify([
+          "Plan XZ",
+          "Plan YZ",
+          "Plan XY",
+          "Plan 3D"
+        ]),
+        correctIndex: 2,
+        explanation: "Le fraisage de face s'effectue généralement dans le plan XY (horizontal), avec l'axe Z pour la profondeur.",
+        order: 5,
+      },
+      // Quiz Module 8 - Lesson 2 (5 questions)
       {
         lessonId: lesson8_2.id,
         question: "Que fait le code G1 ?",
@@ -1353,7 +2139,46 @@ async function main() {
         explanation: "G2 effectue une interpolation circulaire dans le sens horaire. G3 est pour le sens anti-horaire.",
         order: 2,
       },
-      // Quiz Module 9 - Siemens S7-1500 Introduction
+      {
+        lessonId: lesson8_2.id,
+        question: "Que représentent I et J dans une interpolation circulaire ?",
+        options: JSON.stringify([
+          "Les coordonnées du point final",
+          "Le décalage du centre de l'arc par rapport au point de départ",
+          "Le rayon de l'arc",
+          "Les vitesses sur X et Y"
+        ]),
+        correctIndex: 1,
+        explanation: "I et J représentent le décalage du centre de l'arc par rapport au point de départ (incrémental).",
+        order: 3,
+      },
+      {
+        lessonId: lesson8_2.id,
+        question: "Pourquoi ne doit-on JAMAIS usiner pendant un G0 ?",
+        options: JSON.stringify([
+          "La machine s'arrête",
+          "La vitesse n'est pas contrôlée, risque de casse",
+          "Le programme ne compile pas",
+          "L'arrosage s'arrête"
+        ]),
+        correctIndex: 1,
+        explanation: "G0 déplace l'outil à vitesse maximale sans contrôle de l'avance, ce qui pourrait casser l'outil ou endommager la pièce.",
+        order: 4,
+      },
+      {
+        lessonId: lesson8_2.id,
+        question: "Quel code utiliser pour un arc anti-horaire ?",
+        options: JSON.stringify([
+          "G0",
+          "G1",
+          "G2",
+          "G3"
+        ]),
+        correctIndex: 3,
+        explanation: "G3 effectue une interpolation circulaire dans le sens anti-horaire.",
+        order: 5,
+      },
+      // Quiz Module 9 - Lesson 1 (5 questions)
       {
         lessonId: lesson9_1.id,
         question: "Quelle est la particularité du S7-1500 par rapport aux anciens automates Siemens ?",
@@ -1381,6 +2206,46 @@ async function main() {
         order: 2,
       },
       {
+        lessonId: lesson9_1.id,
+        question: "Quel protocole de communication industriel est intégré nativement au S7-1500 ?",
+        options: JSON.stringify([
+          "Modbus uniquement",
+          "PROFINET et PROFIBUS",
+          "Ethernet TCP uniquement",
+          "RS-232"
+        ]),
+        correctIndex: 1,
+        explanation: "Le S7-1500 intègre nativement PROFINET (Ethernet industriel) et peut communiquer en PROFIBUS.",
+        order: 3,
+      },
+      {
+        lessonId: lesson9_1.id,
+        question: "Quelle gamme d'automates le S7-1500 remplace-t-il progressivement ?",
+        options: JSON.stringify([
+          "S7-200",
+          "S7-300 et S7-400",
+          "Logo!",
+          "S5"
+        ]),
+        correctIndex: 1,
+        explanation: "Le S7-1500 remplace progressivement les S7-300 et S7-400 grâce à ses performances supérieures.",
+        order: 4,
+      },
+      {
+        lessonId: lesson9_1.id,
+        question: "Quelle fonctionnalité de sécurité est intégrée au S7-1500 ?",
+        options: JSON.stringify([
+          "Antivirus",
+          "Safety Integrated (fonctions de sécurité)",
+          "Pare-feu matériel",
+          "Cryptage AES-512"
+        ]),
+        correctIndex: 1,
+        explanation: "Safety Integrated permet d'implémenter des fonctions de sécurité (arrêt d'urgence, surveillance) directement dans l'automate.",
+        order: 5,
+      },
+      // Quiz Module 9 - Lesson 2 (5 questions)
+      {
         lessonId: lesson9_2.id,
         question: "Que signifie TIA dans TIA Portal ?",
         options: JSON.stringify([
@@ -1406,7 +2271,46 @@ async function main() {
         explanation: "La Vue du projet affiche l'arborescence complète avec tous les appareils, programmes et configurations.",
         order: 2,
       },
-      // Quiz Module 10 - TIA Portal Programming
+      {
+        lessonId: lesson9_2.id,
+        question: "Quel composant de TIA Portal permet de créer des interfaces IHM ?",
+        options: JSON.stringify([
+          "STEP 7",
+          "WinCC",
+          "SINAMICS Startdrive",
+          "SIMOTION SCOUT"
+        ]),
+        correctIndex: 1,
+        explanation: "WinCC est le composant de TIA Portal dédié à la création des interfaces homme-machine (IHM).",
+        order: 3,
+      },
+      {
+        lessonId: lesson9_2.id,
+        question: "Quelle est la différence entre la vue Portail et la vue Projet ?",
+        options: JSON.stringify([
+          "Il n'y a pas de différence",
+          "Vue Portail = simplifiée, Vue Projet = complète",
+          "Vue Portail = réseau, Vue Projet = programme",
+          "Vue Portail = compilation, Vue Projet = édition"
+        ]),
+        correctIndex: 1,
+        explanation: "La vue Portail offre une interface simplifiée pour démarrer rapidement, la vue Projet donne accès à toutes les fonctionnalités.",
+        order: 4,
+      },
+      {
+        lessonId: lesson9_2.id,
+        question: "Quel composant de TIA Portal permet de configurer les variateurs Siemens ?",
+        options: JSON.stringify([
+          "STEP 7",
+          "WinCC",
+          "SINAMICS Startdrive",
+          "Proneta"
+        ]),
+        correctIndex: 2,
+        explanation: "SINAMICS Startdrive est l'outil intégré à TIA Portal pour configurer et paramétrer les variateurs SINAMICS.",
+        order: 5,
+      },
+      // Quiz Module 10 - Lesson 1 (5 questions)
       {
         lessonId: lesson10_1.id,
         question: "Quelle est la première étape pour créer un projet TIA Portal ?",
@@ -1434,6 +2338,46 @@ async function main() {
         order: 2,
       },
       {
+        lessonId: lesson10_1.id,
+        question: "Pourquoi est-il important de choisir la référence exacte de la CPU ?",
+        options: JSON.stringify([
+          "Pour le design du projet",
+          "Les programmes ne sont pas toujours compatibles entre versions",
+          "C'est obligatoire pour la licence",
+          "Pour accélérer la compilation"
+        ]),
+        correctIndex: 1,
+        explanation: "Les programmes ne sont pas toujours compatibles entre différentes versions de CPU. Il faut choisir la référence exacte.",
+        order: 3,
+      },
+      {
+        lessonId: lesson10_1.id,
+        question: "Où se trouve l'arborescence des blocs de programme dans TIA Portal ?",
+        options: JSON.stringify([
+          "Dans le menu Outils",
+          "Dans l'arbre du projet, sous l'appareil PLC",
+          "Dans la barre des tâches",
+          "Dans les propriétés de la CPU"
+        ]),
+        correctIndex: 1,
+        explanation: "Les blocs de programme se trouvent dans l'arbre du projet, sous l'appareil PLC > Blocs de programme.",
+        order: 4,
+      },
+      {
+        lessonId: lesson10_1.id,
+        question: "Que doit-on faire avant de charger un programme dans l'automate ?",
+        options: JSON.stringify([
+          "Redémarrer l'ordinateur",
+          "Compiler le projet",
+          "Fermer TIA Portal",
+          "Effacer la mémoire"
+        ]),
+        correctIndex: 1,
+        explanation: "Il faut compiler le projet pour vérifier les erreurs et générer le code exécutable avant de le charger.",
+        order: 5,
+      },
+      // Quiz Module 10 - Lesson 2 (5 questions)
+      {
         lessonId: lesson10_2.id,
         question: "Quel langage utilise des contacts et bobines comme un schéma électrique ?",
         options: JSON.stringify([
@@ -1459,7 +2403,46 @@ async function main() {
         explanation: "SCL (Structured Control Language) est un langage textuel de haut niveau similaire au Pascal, idéal pour les algorithmes.",
         order: 2,
       },
-      // Quiz Module 11 - Data Blocks
+      {
+        lessonId: lesson10_2.id,
+        question: "Quel langage utilise des blocs graphiques reliés entre eux ?",
+        options: JSON.stringify([
+          "LAD",
+          "FBD (Function Block Diagram)",
+          "SCL",
+          "GRAPH"
+        ]),
+        correctIndex: 1,
+        explanation: "FBD utilise des blocs fonctionnels graphiques interconnectés, idéal pour le traitement du signal et la régulation.",
+        order: 3,
+      },
+      {
+        lessonId: lesson10_2.id,
+        question: "Quel langage est spécialisé pour la programmation séquentielle type GRAFCET ?",
+        options: JSON.stringify([
+          "LAD",
+          "FBD",
+          "SCL",
+          "GRAPH"
+        ]),
+        correctIndex: 3,
+        explanation: "GRAPH permet de programmer des séquences de type GRAFCET avec des étapes et transitions.",
+        order: 4,
+      },
+      {
+        lessonId: lesson10_2.id,
+        question: "Quelle norme définit les langages de programmation des automates comme LAD, FBD, SCL ?",
+        options: JSON.stringify([
+          "ISO 9001",
+          "IEC 61131-3",
+          "EN 60204",
+          "IEEE 802.3"
+        ]),
+        correctIndex: 1,
+        explanation: "La norme IEC 61131-3 définit les langages de programmation standards pour les automates programmables.",
+        order: 5,
+      },
+      // Quiz Module 11 - Lesson 1 (5 questions)
       {
         lessonId: lesson11_1.id,
         question: "Quelle est la différence entre un DB global et un DB d'instance ?",
@@ -1487,6 +2470,46 @@ async function main() {
         order: 2,
       },
       {
+        lessonId: lesson11_1.id,
+        question: "Qu'est-ce qu'un DB de recette ?",
+        options: JSON.stringify([
+          "Un DB pour les calculs",
+          "Un DB pour stocker des paramètres de production",
+          "Un DB pour les alarmes",
+          "Un DB pour la communication"
+        ]),
+        correctIndex: 1,
+        explanation: "Un DB de recette stocke des paramètres de production qui peuvent être modifiés sans toucher au programme.",
+        order: 3,
+      },
+      {
+        lessonId: lesson11_1.id,
+        question: "Qu'est-ce que l'accès optimisé aux DB dans le S7-1500 ?",
+        options: JSON.stringify([
+          "Un mode de compression des données",
+          "Un mode d'accès plus performant sans adresses fixes",
+          "Un mode de sauvegarde automatique",
+          "Un mode de cryptage"
+        ]),
+        correctIndex: 1,
+        explanation: "L'accès optimisé améliore les performances en organisant automatiquement les données sans adresses fixes.",
+        order: 4,
+      },
+      {
+        lessonId: lesson11_1.id,
+        question: "Quel type de données peut-on stocker dans un DB ?",
+        options: JSON.stringify([
+          "Uniquement des Bool",
+          "Uniquement des nombres",
+          "Tous types : Bool, Int, Real, String, Time, etc.",
+          "Uniquement des tableaux"
+        ]),
+        correctIndex: 2,
+        explanation: "Les DB peuvent stocker tous types de données : Bool, Int, Real, String, Time, Array, Struct, etc.",
+        order: 5,
+      },
+      // Quiz Module 11 - Lesson 2 (5 questions)
+      {
         lessonId: lesson11_2.id,
         question: "Quel bloc possède une mémoire (DB d'instance) ?",
         options: JSON.stringify([
@@ -1511,6 +2534,45 @@ async function main() {
         correctIndex: 2,
         explanation: "OB1 (Main) est l'Organisation Block cyclique principal, exécuté en boucle par le CPU.",
         order: 2,
+      },
+      {
+        lessonId: lesson11_2.id,
+        question: "Quelle est la différence entre un FB et un FC ?",
+        options: JSON.stringify([
+          "FC est plus rapide",
+          "FB possède une mémoire (DB d'instance), FC non",
+          "FB ne peut pas avoir de paramètres",
+          "Il n'y a pas de différence"
+        ]),
+        correctIndex: 1,
+        explanation: "Un FB possède un DB d'instance qui conserve les données entre les appels. Un FC ne conserve pas d'état.",
+        order: 3,
+      },
+      {
+        lessonId: lesson11_2.id,
+        question: "Pourquoi éviter de tout programmer dans OB1 ?",
+        options: JSON.stringify([
+          "OB1 est limité en taille",
+          "Pour structurer le code et faciliter la maintenance",
+          "OB1 ne peut pas appeler d'autres blocs",
+          "OB1 est réservé aux alarmes"
+        ]),
+        correctIndex: 1,
+        explanation: "Utiliser des FB et FC permet d'organiser le code, de le réutiliser et de faciliter la maintenance et les tests.",
+        order: 4,
+      },
+      {
+        lessonId: lesson11_2.id,
+        question: "Quel est l'avantage de réutiliser un FB avec plusieurs DB d'instance ?",
+        options: JSON.stringify([
+          "Économie de mémoire",
+          "Gérer plusieurs équipements similaires avec le même code",
+          "Améliorer les performances",
+          "Simplifier la compilation"
+        ]),
+        correctIndex: 1,
+        explanation: "Un même FB peut gérer plusieurs équipements similaires (ex: plusieurs moteurs) en utilisant des DB d'instance différents.",
+        order: 5,
       },
     ],
   })
