@@ -46,6 +46,19 @@ router.get('/', authMiddleware, async (req: AuthRequest, res: Response) => {
       // Get translated content if available
       const translation = (module as any).translations?.[0]
 
+      // Include lesson preview (titles only for locked modules)
+      const lessonsPreview = module.lessons.map((lesson) => {
+        const lessonTrans = (lesson as any).translations?.[0]
+        return {
+          id: lesson.id,
+          title: lessonTrans?.title || lesson.title,
+          order: lesson.order,
+          duration: lesson.duration,
+          xpReward: lesson.xpReward,
+          completed: lesson.progress.some((p) => p.completed),
+        }
+      })
+
       return {
         id: module.id,
         title: translation?.title || module.title,
@@ -58,6 +71,7 @@ router.get('/', authMiddleware, async (req: AuthRequest, res: Response) => {
         lessonsCount: totalLessons,
         completedLessons,
         progress,
+        lessonsPreview,
       }
     })
 

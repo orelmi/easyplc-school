@@ -3,6 +3,15 @@ import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import { api } from '../lib/api'
 
+interface LessonPreview {
+  id: string
+  title: string
+  order: number
+  duration: number
+  xpReward: number
+  completed: boolean
+}
+
 interface Module {
   id: string
   title: string
@@ -15,12 +24,26 @@ interface Module {
   lessonsCount: number
   completedLessons: number
   progress: number
+  lessonsPreview: LessonPreview[]
 }
 
 export default function Modules() {
   const { t, i18n } = useTranslation()
   const [modules, setModules] = useState<Module[]>([])
   const [loading, setLoading] = useState(true)
+  const [expandedModules, setExpandedModules] = useState<Set<string>>(new Set())
+
+  const toggleModuleExpanded = (moduleId: string) => {
+    setExpandedModules(prev => {
+      const newSet = new Set(prev)
+      if (newSet.has(moduleId)) {
+        newSet.delete(moduleId)
+      } else {
+        newSet.add(moduleId)
+      }
+      return newSet
+    })
+  }
 
   useEffect(() => {
     setLoading(true)
@@ -100,8 +123,8 @@ export default function Modules() {
                   </div>
                 </div>
 
-                {/* Action button */}
-                <div className="mt-4">
+                {/* Action button and preview toggle */}
+                <div className="mt-4 flex items-center gap-3">
                   {module.isLocked ? (
                     <button disabled className="btn bg-gray-100 text-gray-400 cursor-not-allowed">
                       Module verrouillé
@@ -119,7 +142,55 @@ export default function Modules() {
                         : 'Continuer'}
                     </Link>
                   )}
+
+                  {module.lessonsPreview && module.lessonsPreview.length > 0 && (
+                    <button
+                      onClick={() => toggleModuleExpanded(module.id)}
+                      className="btn bg-gray-100 text-gray-600 hover:bg-gray-200 flex items-center gap-2"
+                    >
+                      <span>{expandedModules.has(module.id) ? '▼' : '▶'}</span>
+                      <span>Voir les leçons</span>
+                    </button>
+                  )}
                 </div>
+
+                {/* Lessons preview (expandable) */}
+                {expandedModules.has(module.id) && module.lessonsPreview && (
+                  <div className="mt-4 border-t pt-4">
+                    <h4 className="text-sm font-semibold text-gray-700 mb-3">
+                      Contenu du module ({module.lessonsPreview.length} leçons)
+                    </h4>
+                    <div className="space-y-2">
+                      {module.lessonsPreview.map((lesson, lessonIndex) => (
+                        <div
+                          key={lesson.id}
+                          className={`flex items-center gap-3 p-2 rounded-lg ${
+                            lesson.completed ? 'bg-green-50' : 'bg-gray-50'
+                          }`}
+                        >
+                          <div
+                            className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-medium ${
+                              lesson.completed
+                                ? 'bg-green-500 text-white'
+                                : 'bg-gray-300 text-gray-600'
+                            }`}
+                          >
+                            {lesson.completed ? '✓' : lessonIndex + 1}
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <p className={`text-sm ${lesson.completed ? 'text-green-700' : 'text-gray-700'}`}>
+                              {lesson.title}
+                            </p>
+                          </div>
+                          <div className="flex items-center gap-3 text-xs text-gray-500">
+                            <span>⏱ {lesson.duration} min</span>
+                            <span>⭐ {lesson.xpReward} XP</span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>
