@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client'
 import bcrypt from 'bcryptjs'
-import { lessonTranslations, quizTranslations } from './translations.js'
+import { lessonTranslations, quizTranslations, cncLessonTranslations, cncQuizTranslations } from './translations.js'
 
 const prisma = new PrismaClient()
 // Module translations for English and Spanish
@@ -10,16 +10,34 @@ const moduleTranslations = {
     { order: 2, title: "Combinational Logic", description: "Master AND, OR, NOT logic gates and their applications" },
     { order: 3, title: "LADDER Language", description: "Learn to program in LADDER language (contact diagram)" },
     { order: 4, title: "Sensors and Actuators", description: "Understand sensors, actuators and their interfacing" },
-    { order: 5, title: "Grafcet", description: "Model sequential systems with GRAFCET" }
+    { order: 5, title: "Grafcet", description: "Model sequential systems with GRAFCET" },
+    { order: 6, title: "Introduction to CNC", description: "Discover the basics of CNC machines and their operation" },
+    { order: 7, title: "G-Code Programming", description: "Learn to program CNC machines with G-Code" },
+    { order: 8, title: "Axes and Interpolation", description: "Master coordinate systems and tool movements" }
   ],
   es: [
     { order: 1, title: "Introducción a la Automatización", description: "Descubra los fundamentos de la automatización industrial y los controladores lógicos programables" },
     { order: 2, title: "Lógica Combinacional", description: "Domine las puertas lógicas AND, OR, NOT y sus aplicaciones" },
     { order: 3, title: "Lenguaje LADDER", description: "Aprenda a programar en lenguaje LADDER (diagrama de contactos)" },
     { order: 4, title: "Sensores y Actuadores", description: "Comprenda los sensores, actuadores y su interfaz" },
-    { order: 5, title: "Grafcet", description: "Modele sistemas secuenciales con GRAFCET" }
+    { order: 5, title: "Grafcet", description: "Modele sistemas secuenciales con GRAFCET" },
+    { order: 6, title: "Introducción a CNC", description: "Descubra los fundamentos de las máquinas CNC y su funcionamiento" },
+    { order: 7, title: "Programación G-Code", description: "Aprenda a programar máquinas CNC con código G" },
+    { order: 8, title: "Ejes e Interpolación", description: "Domine los sistemas de coordenadas y movimientos de herramienta" }
   ]
 } as const
+
+// Cursus translations
+const cursusTranslations = {
+  en: [
+    { order: 1, title: "Industrial Automation", description: "Complete learning path for industrial automation and PLC programming" },
+    { order: 2, title: "CNC Machining", description: "Learn to program and operate CNC machines" }
+  ],
+  es: [
+    { order: 1, title: "Automatización Industrial", description: "Ruta de aprendizaje completa para automatización industrial y programación de PLCs" },
+    { order: 2, title: "Mecanizado CNC", description: "Aprenda a programar y operar máquinas CNC" }
+  ]
+}
 
 const rewardTranslations: Record<string, Record<string, { name: string; description: string }>> = {
   en: {
@@ -52,6 +70,9 @@ const rewardTranslations: Record<string, Record<string, { name: string; descript
 
 async function main() {
   // Clear existing data
+  await prisma.cursusTranslation.deleteMany()
+  await prisma.cursusModule.deleteMany()
+  await prisma.cursus.deleteMany()
   await prisma.quizTranslation.deleteMany()
   await prisma.rewardTranslation.deleteMany()
   await prisma.lessonTranslation.deleteMany()
@@ -126,9 +147,116 @@ async function main() {
     },
   })
 
-  
+  // Create CNC Modules
+  const module6 = await prisma.module.create({
+    data: {
+      title: "Introduction à la CNC",
+      description: "Découvrez les bases des machines à commande numérique",
+      order: 6,
+      icon: "⚙️",
+      color: "#06b6d4",
+      isLocked: false,
+      requiredXp: 0,
+    },
+  })
+
+  const module7 = await prisma.module.create({
+    data: {
+      title: "Programmation G-Code",
+      description: "Apprenez à programmer les machines CNC avec le G-Code",
+      order: 7,
+      icon: "📝",
+      color: "#ec4899",
+      isLocked: true,
+      requiredXp: 300,
+    },
+  })
+
+  const module8 = await prisma.module.create({
+    data: {
+      title: "Axes et interpolation",
+      description: "Maîtrisez les systèmes de coordonnées et les mouvements d'outil",
+      order: 8,
+      icon: "📐",
+      color: "#14b8a6",
+      isLocked: true,
+      requiredXp: 600,
+    },
+  })
+
+  // Create Cursus
+  const cursusAutomatisme = await prisma.cursus.create({
+    data: {
+      title: "Automatisme industriel",
+      description: "Parcours complet pour maîtriser l'automatisation industrielle et la programmation d'automates",
+      icon: "🏭",
+      color: "#3b82f6",
+      order: 1,
+    },
+  })
+
+  const cursusCNC = await prisma.cursus.create({
+    data: {
+      title: "Commande numérique (CNC)",
+      description: "Apprenez à programmer et piloter les machines à commande numérique",
+      icon: "⚙️",
+      color: "#06b6d4",
+      order: 2,
+    },
+  })
+
+  // Create Cursus Translations
+  for (const lang of ['en', 'es'] as const) {
+    const cursusAutoTrans = cursusTranslations[lang].find(t => t.order === 1)
+    const cursusCNCTrans = cursusTranslations[lang].find(t => t.order === 2)
+
+    if (cursusAutoTrans) {
+      await prisma.cursusTranslation.create({
+        data: {
+          cursusId: cursusAutomatisme.id,
+          language: lang,
+          title: cursusAutoTrans.title,
+          description: cursusAutoTrans.description
+        }
+      })
+    }
+    if (cursusCNCTrans) {
+      await prisma.cursusTranslation.create({
+        data: {
+          cursusId: cursusCNC.id,
+          language: lang,
+          title: cursusCNCTrans.title,
+          description: cursusCNCTrans.description
+        }
+      })
+    }
+  }
+
+  // Associate Modules to Cursus Automatisme
+  await prisma.cursusModule.createMany({
+    data: [
+      { cursusId: cursusAutomatisme.id, moduleId: module1.id, order: 1, isRequired: true },
+      { cursusId: cursusAutomatisme.id, moduleId: module2.id, order: 2, isRequired: true },
+      { cursusId: cursusAutomatisme.id, moduleId: module3.id, order: 3, isRequired: true },
+      { cursusId: cursusAutomatisme.id, moduleId: module4.id, order: 4, isRequired: true },
+      { cursusId: cursusAutomatisme.id, moduleId: module5.id, order: 5, isRequired: true },
+    ]
+  })
+
+  // Associate Modules to Cursus CNC
+  await prisma.cursusModule.createMany({
+    data: [
+      { cursusId: cursusCNC.id, moduleId: module1.id, order: 1, isRequired: true },  // Shared foundation
+      { cursusId: cursusCNC.id, moduleId: module2.id, order: 2, isRequired: true },  // Shared foundation
+      { cursusId: cursusCNC.id, moduleId: module4.id, order: 3, isRequired: true },  // Shared foundation
+      { cursusId: cursusCNC.id, moduleId: module6.id, order: 4, isRequired: true },
+      { cursusId: cursusCNC.id, moduleId: module7.id, order: 5, isRequired: true },
+      { cursusId: cursusCNC.id, moduleId: module8.id, order: 6, isRequired: true },
+    ]
+  })
+
   // Create Module Translations
-  const modules = [module1, module2, module3, module4, module5]
+  const modules = [module1, module2, module3, module4, module5, module6, module7, module8]
   for (const lang of ['en', 'es'] as const) {
     for (const module of modules) {
       const trans = moduleTranslations[lang].find(t => t.order === modules.indexOf(module) + 1)
@@ -469,6 +597,199 @@ async function main() {
     },
   })
 
+  // Create Lessons for Module 6 (CNC Introduction)
+  const lesson6_1 = await prisma.lesson.create({
+    data: {
+      moduleId: module6.id,
+      title: "Qu'est-ce qu'une machine CNC ?",
+      description: "Découvrez les bases des machines à commande numérique",
+      order: 1,
+      xpReward: 60,
+      duration: 12,
+      content: JSON.stringify({
+        sections: [
+          {
+            type: "text",
+            content: "# Les machines CNC\n\nUne **machine CNC** (Commande Numérique par Calculateur) est un outil de fabrication piloté par un programme informatique. Elle automatise l'usinage de pièces avec une grande précision."
+          },
+          {
+            type: "info",
+            content: "Les premières machines CNC sont apparues dans les années 1950, révolutionnant l'industrie manufacturière."
+          },
+          {
+            type: "text",
+            content: "## Comment ça fonctionne ?\n\nLa machine CNC suit des instructions écrites en **G-code**, un langage de programmation standardisé. Ces instructions contrôlent :\n\n- Les mouvements de l'outil selon différents axes\n- La vitesse de rotation de la broche\n- La vitesse d'avance\n- Les changements d'outil"
+          },
+          {
+            type: "text",
+            content: "## Avantages de la CNC\n\n- **Précision** : Tolérances de quelques centièmes de millimètre\n- **Répétabilité** : Pièces identiques à chaque fois\n- **Productivité** : Fonctionnement continu 24h/24\n- **Complexité** : Usinage possible de formes complexes"
+          }
+        ]
+      }),
+    },
+  })
+
+  const lesson6_2 = await prisma.lesson.create({
+    data: {
+      moduleId: module6.id,
+      title: "Types de machines CNC",
+      description: "Découvrez les différents types de machines CNC et leurs applications",
+      order: 2,
+      xpReward: 60,
+      duration: 12,
+      content: JSON.stringify({
+        sections: [
+          {
+            type: "text",
+            content: "# Types de machines CNC\n\nIl existe de nombreux types de machines CNC, chacune conçue pour des applications spécifiques."
+          },
+          {
+            type: "text",
+            content: "## Fraiseuse CNC\n\nLa fraiseuse utilise un outil rotatif qui enlève la matière. Elle peut :\n- Usiner des surfaces planes\n- Créer des rainures et des poches\n- Percer des trous\n- Réaliser des formes 3D complexes"
+          },
+          {
+            type: "text",
+            content: "## Tour CNC\n\nLe tour fait tourner la pièce pendant que l'outil enlève la matière. Idéal pour :\n- Les pièces cylindriques\n- Les filetages\n- Les cônes et sphères\n- L'usinage intérieur et extérieur"
+          },
+          {
+            type: "text",
+            content: "## Autres types\n\n| Machine | Application |\n|---------|-------------|\n| Découpe laser | Découpe de précision de tôles |\n| Découpe plasma | Découpe de métal épais |\n| Électroérosion | Usinage de matériaux durs |\n| Imprimante 3D | Fabrication additive |"
+          }
+        ]
+      }),
+    },
+  })
+
+  // Create Lessons for Module 7 (G-Code Programming)
+  const lesson7_1 = await prisma.lesson.create({
+    data: {
+      moduleId: module7.id,
+      title: "Structure d'un programme G-Code",
+      description: "Apprenez comment est organisé un programme CNC",
+      order: 1,
+      xpReward: 70,
+      duration: 15,
+      content: JSON.stringify({
+        sections: [
+          {
+            type: "text",
+            content: "# Structure d'un programme G-Code\n\nUn programme G-code est une série d'instructions qui indiquent à la machine CNC ce qu'elle doit faire."
+          },
+          {
+            type: "text",
+            content: "## Lignes et blocs\n\nChaque ligne d'un programme s'appelle un **bloc**. Un bloc peut contenir :\n\n- Un numéro de ligne (N)\n- Des codes préparatoires (G)\n- Des coordonnées (X, Y, Z)\n- Une vitesse d'avance (F)\n- Une vitesse de broche (S)\n- Un outil (T)\n- Une fonction auxiliaire (M)"
+          },
+          {
+            type: "text",
+            content: "## Exemple de programme\n\n```gcode\nN10 G21 G90       ; Mode métrique, absolu\nN20 G0 X0 Y0 Z10  ; Positionnement rapide\nN30 M3 S1500      ; Broche ON, 1500 tr/min\nN40 G1 Z-5 F100   ; Plongée à 100 mm/min\nN50 G1 X50 F200   ; Déplacement linéaire\nN60 G0 Z10        ; Remontée\nN70 M5            ; Broche OFF\nN80 M30           ; Fin du programme\n```"
+          },
+          {
+            type: "info",
+            content: "Les commentaires sont généralement indiqués par un point-virgule (;) ou des parenthèses."
+          }
+        ]
+      }),
+    },
+  })
+
+  const lesson7_2 = await prisma.lesson.create({
+    data: {
+      moduleId: module7.id,
+      title: "Codes G et M essentiels",
+      description: "Maîtrisez les codes fondamentaux pour la programmation CNC",
+      order: 2,
+      xpReward: 80,
+      duration: 18,
+      content: JSON.stringify({
+        sections: [
+          {
+            type: "text",
+            content: "# Codes G et M essentiels\n\nLes codes G (préparatoires) et codes M (auxiliaires) sont la base de la programmation CNC."
+          },
+          {
+            type: "text",
+            content: "## Principaux codes G\n\n| Code | Fonction |\n|------|----------|\n| G0 | Positionnement rapide |\n| G1 | Interpolation linéaire |\n| G2 | Interpolation circulaire horaire |\n| G3 | Interpolation circulaire anti-horaire |\n| G17 | Sélection plan XY |\n| G20 | Mode pouces |\n| G21 | Mode métrique |\n| G28 | Retour à l'origine |\n| G90 | Mode absolu |\n| G91 | Mode incrémental |"
+          },
+          {
+            type: "text",
+            content: "## Principaux codes M\n\n| Code | Fonction |\n|------|----------|\n| M0 | Arrêt programme |\n| M3 | Broche ON (horaire) |\n| M4 | Broche ON (anti-horaire) |\n| M5 | Broche OFF |\n| M6 | Changement d'outil |\n| M8 | Arrosage ON |\n| M9 | Arrosage OFF |\n| M30 | Fin du programme |"
+          },
+          {
+            type: "warning",
+            content: "Les codes peuvent varier légèrement selon les fabricants de machines. Vérifiez toujours la documentation spécifique."
+          }
+        ]
+      }),
+    },
+  })
+
+  // Create Lessons for Module 8 (Axes and Interpolation)
+  const lesson8_1 = await prisma.lesson.create({
+    data: {
+      moduleId: module8.id,
+      title: "Système de coordonnées",
+      description: "Comprenez le système de coordonnées utilisé en CNC",
+      order: 1,
+      xpReward: 70,
+      duration: 15,
+      content: JSON.stringify({
+        sections: [
+          {
+            type: "text",
+            content: "# Système de coordonnées CNC\n\nLes machines CNC utilisent un système de coordonnées **cartésien** pour positionner l'outil par rapport à la pièce."
+          },
+          {
+            type: "text",
+            content: "## Les trois axes principaux\n\n- **Axe X** : Déplacement horizontal (gauche/droite)\n- **Axe Y** : Déplacement horizontal (avant/arrière)\n- **Axe Z** : Déplacement vertical (haut/bas)\n\nLa direction positive de Z est généralement vers la broche."
+          },
+          {
+            type: "text",
+            content: "## Points de référence\n\n### Origine machine (M)\nPoint physique fixe sur la machine.\n\n### Origine pièce (W)\nPoint de référence pour la pièce, défini par le programmeur.\n\n### Position outil (T)\nPoint contrôlé par le programme, généralement la pointe de l'outil."
+          },
+          {
+            type: "info",
+            content: "Sur les machines 5 axes, les axes de rotation A, B et C s'ajoutent aux axes linéaires X, Y, Z."
+          }
+        ]
+      }),
+    },
+  })
+
+  const lesson8_2 = await prisma.lesson.create({
+    data: {
+      moduleId: module8.id,
+      title: "Interpolation linéaire et circulaire",
+      description: "Maîtrisez les déplacements d'outil G0, G1, G2, G3",
+      order: 2,
+      xpReward: 80,
+      duration: 18,
+      content: JSON.stringify({
+        sections: [
+          {
+            type: "text",
+            content: "# Interpolation d'outil\n\nL'interpolation est le mouvement calculé entre deux points. Le contrôleur CNC calcule toutes les positions intermédiaires."
+          },
+          {
+            type: "text",
+            content: "## Positionnement rapide (G0)\n\n```gcode\nG0 X100 Y50 Z10\n```\n\nLa machine se déplace le plus vite possible en ligne droite. **Pas d'enlèvement de matière** pendant un G0 !"
+          },
+          {
+            type: "text",
+            content: "## Interpolation linéaire (G1)\n\n```gcode\nG1 X100 Y50 F200\n```\n\nDéplacement contrôlé en ligne droite à la vitesse d'avance spécifiée (F). Utilisé pour l'usinage."
+          },
+          {
+            type: "text",
+            content: "## Interpolation circulaire\n\n```gcode\nG2 X50 Y50 I25 J0  ; Arc horaire\nG3 X50 Y50 I25 J0  ; Arc anti-horaire\n```\n\n- **G2** : Sens horaire\n- **G3** : Sens anti-horaire\n- **I, J, K** : Décalage du centre de l'arc (relatif au point de départ)"
+          },
+          {
+            type: "warning",
+            content: "Vérifiez toujours la vitesse d'avance avant d'usiner. Une vitesse trop élevée peut endommager l'outil ou la pièce !"
+          }
+        ]
+      }),
+    },
+  })
+
   // Create Quizzes
   await prisma.quiz.createMany({
     data: [
@@ -571,6 +892,103 @@ async function main() {
         explanation: "Le LADDER ressemble aux schémas électriques à relais, ce qui le rend intuitif pour les électriciens.",
         order: 1,
       },
+      // Quiz Module 6 - CNC Introduction
+      {
+        lessonId: lesson6_1.id,
+        question: "Que signifie CNC ?",
+        options: JSON.stringify([
+          "Commande Numérique par Calculateur",
+          "Centrale Numérique de Commande",
+          "Contrôle Numérique de Coupe",
+          "Centre Numérique de Calcul"
+        ]),
+        correctIndex: 0,
+        explanation: "CNC signifie Commande Numérique par Calculateur (Computer Numerical Control en anglais).",
+        order: 1,
+      },
+      {
+        lessonId: lesson6_1.id,
+        question: "Quel est l'avantage principal d'une machine CNC ?",
+        options: JSON.stringify([
+          "Elle est moins chère",
+          "Haute précision et répétabilité",
+          "Elle n'a pas besoin d'électricité",
+          "Elle est plus petite"
+        ]),
+        correctIndex: 1,
+        explanation: "Les machines CNC offrent une haute précision (centièmes de millimètre) et peuvent produire des pièces identiques à chaque fois.",
+        order: 2,
+      },
+      {
+        lessonId: lesson6_2.id,
+        question: "Quelle machine est idéale pour les pièces cylindriques ?",
+        options: JSON.stringify([
+          "La fraiseuse",
+          "Le tour CNC",
+          "La découpeuse laser",
+          "L'imprimante 3D"
+        ]),
+        correctIndex: 1,
+        explanation: "Le tour fait tourner la pièce et est idéal pour usiner des formes cylindriques.",
+        order: 1,
+      },
+      // Quiz Module 7 - G-Code
+      {
+        lessonId: lesson7_1.id,
+        question: "Quel code est utilisé pour le positionnement rapide ?",
+        options: JSON.stringify(["G1", "G0", "M3", "G2"]),
+        correctIndex: 1,
+        explanation: "G0 est le code de positionnement rapide. Il déplace l'outil le plus vite possible sans usinage.",
+        order: 1,
+      },
+      {
+        lessonId: lesson7_2.id,
+        question: "Que fait le code M3 ?",
+        options: JSON.stringify([
+          "Arrête le programme",
+          "Met la broche en marche (sens horaire)",
+          "Active l'arrosage",
+          "Déplace l'axe Z"
+        ]),
+        correctIndex: 1,
+        explanation: "M3 met la broche en rotation dans le sens horaire.",
+        order: 1,
+      },
+      // Quiz Module 8 - Axes
+      {
+        lessonId: lesson8_1.id,
+        question: "Quel est l'axe vertical sur une fraiseuse CNC ?",
+        options: JSON.stringify(["Axe X", "Axe Y", "Axe Z", "Axe A"]),
+        correctIndex: 2,
+        explanation: "L'axe Z est l'axe vertical (mouvement haut/bas).",
+        order: 1,
+      },
+      {
+        lessonId: lesson8_2.id,
+        question: "Que fait le code G1 ?",
+        options: JSON.stringify([
+          "Déplacement rapide",
+          "Interpolation linéaire à vitesse contrôlée",
+          "Déplacement circulaire",
+          "Arrêt du programme"
+        ]),
+        correctIndex: 1,
+        explanation: "G1 effectue une interpolation linéaire à une vitesse d'avance contrôlée, utilisé pour l'usinage.",
+        order: 1,
+      },
+      {
+        lessonId: lesson8_2.id,
+        question: "G2 effectue une interpolation circulaire dans quel sens ?",
+        options: JSON.stringify([
+          "Sens anti-horaire",
+          "Sens horaire",
+          "Sens vertical",
+          "Dépend de la machine"
+        ]),
+        correctIndex: 1,
+        explanation: "G2 effectue une interpolation circulaire dans le sens horaire. G3 est pour le sens anti-horaire.",
+        order: 2,
+      },
     ],
   })
 
@@ -664,7 +1082,9 @@ async function main() {
   const allLessons = await prisma.lesson.findMany()
   for (const lesson of allLessons) {
     for (const lang of ['en', 'es'] as const) {
+      // Try regular translations first, then CNC translations
       const trans = lessonTranslations[lang][lesson.title as keyof typeof lessonTranslations['en']]
+        || cncLessonTranslations[lang][lesson.title as keyof typeof cncLessonTranslations['en']]
       if (trans) {
         await prisma.lessonTranslation.create({
           data: {
@@ -683,7 +1103,9 @@ async function main() {
   const allQuizzes = await prisma.quiz.findMany()
   for (const quiz of allQuizzes) {
     for (const lang of ['en', 'es'] as const) {
+      // Try regular translations first, then CNC translations
       const trans = quizTranslations[lang][quiz.question as keyof typeof quizTranslations['en']]
+        || cncQuizTranslations[lang][quiz.question as keyof typeof cncQuizTranslations['en']]
       if (trans) {
         await prisma.quizTranslation.create({
           data: {

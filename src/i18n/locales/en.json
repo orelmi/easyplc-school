@@ -18,6 +18,7 @@
   },
   "nav": {
     "dashboard": "Dashboard",
+    "cursus": "Learning Paths",
     "modules": "Modules",
     "rewards": "Rewards",
     "leaderboard": "Leaderboard",
@@ -184,5 +185,20 @@
     "copyright": "© {{year}} EasyPLC School",
     "allRights": "All rights reserved",
     "openSource": "Open source project"
+  },
+  "cursus": {
+    "title": "Learning Paths",
+    "subtitle": "Choose your specialization",
+    "modules": "modules",
+    "lessons": "lessons",
+    "progress": "Progress",
+    "startNow": "Start",
+    "sharedModules": "Shared foundational modules",
+    "sharedModulesDescription": "Some modules are shared across multiple paths and form the foundation of your knowledge.",
+    "notFound": "Learning path not found",
+    "backToList": "Back to paths",
+    "modulesInPath": "Modules in this path",
+    "lessonsCompleted": "lessons completed",
+    "required": "Required"
   }
 }

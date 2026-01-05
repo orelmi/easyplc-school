@@ -7,12 +7,11 @@ Plateforme open source d'apprentissage de l'automatisme industriel et des automa
 ## Table des matières
 
 - [Captures d'écran](#captures-décran)
+- [Parcours d'apprentissage](#parcours-dapprentissage)
 - [Contenu pédagogique](#contenu-pédagogique)
-  - [Module 1 : Introduction à l'automatisme](#module-1--introduction-à-lautomatisme-)
-  - [Module 2 : Logique combinatoire](#module-2--logique-combinatoire-)
-  - [Module 3 : Le langage LADDER](#module-3--le-langage-ladder-)
-  - [Module 4 : Capteurs et actionneurs](#module-4--capteurs-et-actionneurs-)
-  - [Module 5 : GRAFCET](#module-5--grafcet-)
+  - [Modules fondamentaux](#modules-fondamentaux-partagés)
+  - [Modules Automatisme](#modules-automatisme)
+  - [Modules CNC](#modules-cnc)
 - [Fonctionnalités](#fonctionnalités)
 - [Installation](#installation)
 - [Compte démo](#compte-démo)
@@ -31,6 +30,49 @@ Plateforme open source d'apprentissage de l'automatisme industriel et des automa
 ### Module d'apprentissage
 ![Exemple d'un module](public/module1.png)
 
+### Parcours d'apprentissage
+![Parcours d'apprentissage](public/learning-path.png)
+
+---
+
+## Parcours d'apprentissage
+
+EasyPLC School propose deux parcours de spécialisation avec un socle commun de modules fondamentaux :
+
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                         PARCOURS D'APPRENTISSAGE                             │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                              │
+│   🏭 AUTOMATISME INDUSTRIEL            🔧 COMMANDE NUMÉRIQUE (CNC)          │
+│   ━━━━━━━━━━━━━━━━━━━━━━━━            ━━━━━━━━━━━━━━━━━━━━━━━━━━            │
+│                                                                              │
+│   ├── Introduction à l'automatisme *   ├── Introduction à l'automatisme *  │
+│   ├── Logique combinatoire *           ├── Logique combinatoire *          │
+│   ├── Capteurs et actionneurs *        ├── Capteurs et actionneurs *       │
+│   ├── Le langage LADDER                ├── Introduction à la CNC           │
+│   └── GRAFCET                          ├── Programmation G-Code            │
+│                                        └── Axes et interpolation           │
+│                                                                              │
+│   * Modules fondamentaux partagés entre les deux parcours                   │
+│                                                                              │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
+
+### Parcours Automatisme industriel 🏭
+
+Ce parcours couvre les bases de l'automatisation industrielle avec les automates programmables (PLC). Il inclut :
+- 5 modules progressifs
+- 10 leçons au total
+- Focus sur le LADDER et le GRAFCET
+
+### Parcours Commande numérique (CNC) 🔧
+
+Ce parcours se spécialise dans la programmation des machines à commande numérique :
+- 6 modules (3 fondamentaux + 3 spécialisés)
+- Apprentissage du G-Code
+- Maîtrise des systèmes d'axes
+
 ---
 
 ## Contenu pédagogique
@@ -44,6 +86,10 @@ EasyPLC School propose un parcours complet pour maîtriser les fondamentaux de l
 - Professionnels cherchant à consolider leurs bases
 
 ---
+
+## Modules fondamentaux (partagés)
+
+Ces modules constituent le socle commun des deux parcours d'apprentissage.
 
 ### Module 1 : Introduction à l'automatisme 🔌
 
@@ -351,6 +397,10 @@ CAPTEURS MÉCANIQUES                    CAPTEURS DE PROXIMITÉ
 
 ---
 
+## Modules Automatisme
+
+Ces modules sont spécifiques au parcours Automatisme industriel.
+
 ### Module 5 : GRAFCET 📊
 
 > **Objectif** : Modéliser et programmer des systèmes séquentiels
@@ -446,6 +496,203 @@ CAPTEURS MÉCANIQUES                    CAPTEURS DE PROXIMITÉ
 | # | Leçon | Durée | XP | Description |
 |---|-------|-------|-----|-------------|
 | 1 | Introduction au GRAFCET | 20 min | 80 | Étapes, transitions, actions |
+
+---
+
+## Modules CNC
+
+Ces modules sont spécifiques au parcours Commande numérique (CNC).
+
+### Module 6 : Introduction à la CNC 🔧
+
+> **Objectif** : Découvrir les machines à commande numérique et leur fonctionnement
+
+#### Qu'est-ce qu'une machine CNC ?
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                    MACHINE À COMMANDE NUMÉRIQUE                   │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                   │
+│   ┌─────────────────┐      ┌─────────────────┐                   │
+│   │    COMMANDE     │      │      PARTIE     │                   │
+│   │   NUMÉRIQUE     │─────▶│    OPÉRATIVE    │                   │
+│   │   (Programme)   │      │   (Mécanique)   │                   │
+│   └─────────────────┘      └─────────────────┘                   │
+│          │                         │                              │
+│          │    Programme G-Code     │                              │
+│          │    ─────────────────    │                              │
+│          │    G00 X50 Y30          │                              │
+│          │    G01 Z-5 F200         │                              │
+│          │    G02 X80 Y30 R15      │                              │
+│          │                         │                              │
+│          ▼                         ▼                              │
+│   ┌─────────────────┐      ┌─────────────────┐                   │
+│   │ • Trajectoires  │      │ • Axes X, Y, Z  │                   │
+│   │ • Vitesses      │      │ • Broche        │                   │
+│   │ • Outils        │      │ • Table         │                   │
+│   └─────────────────┘      └─────────────────┘                   │
+│                                                                   │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+#### Types de machines CNC
+
+```
+FRAISEUSE CNC                    TOUR CNC                    DÉCOUPE LASER
+━━━━━━━━━━━━━                    ━━━━━━━━                    ━━━━━━━━━━━━━
+
+    Z                               Z                            Faisceau
+    ↑                               ↑                            laser
+    │  ┌───┐                        │                              │
+    │  │ ▼ │ Broche                 │    ─────                     ▼
+    │  └───┘                        │   (     )                  ┌───┐
+    │    │                          │    ─────  Pièce            │ ○ │
+────┼────┼────→ X                   └─────────→ X               ─┴───┴─
+    │    │                              Mandrin                   Table
+   Table avec                                                     X-Y
+   pièce fixée
+```
+
+#### Leçons du module
+
+| # | Leçon | Durée | XP | Description |
+|---|-------|-------|-----|-------------|
+| 1 | Qu'est-ce qu'une machine CNC ? | 12 min | 60 | Découverte des machines à commande numérique |
+| 2 | Types de machines CNC | 15 min | 70 | Fraiseuses, tours, découpe laser et plus |
+
+---
+
+### Module 7 : Programmation G-Code 📝
+
+> **Objectif** : Maîtriser le langage de programmation des machines CNC
+
+#### Structure d'un programme G-Code
+
+```
+Programme G-Code type :
+━━━━━━━━━━━━━━━━━━━━━━
+
+%                          ← Début de programme
+O0001                      ← Numéro de programme
+(PIECE EXEMPLE)            ← Commentaire
+
+N10 G21 G90                ← Configuration : mm, absolu
+N20 G00 X0 Y0 Z5           ← Positionnement rapide
+N30 M03 S1200              ← Broche ON, 1200 tr/min
+N40 G01 Z-2 F100           ← Plongée à -2mm, avance 100
+N50 G01 X50 F200           ← Usinage vers X=50
+N60 G01 Y30                ← Usinage vers Y=30
+N70 G00 Z5                 ← Remontée rapide
+N80 M05                    ← Broche OFF
+N90 G00 X0 Y0              ← Retour origine
+N100 M30                   ← Fin de programme
+%
+```
+
+#### Codes G essentiels
+
+| Code | Fonction | Exemple |
+|------|----------|---------|
+| G00 | Déplacement rapide | `G00 X50 Y30` |
+| G01 | Interpolation linéaire | `G01 X100 F200` |
+| G02 | Arc horaire | `G02 X50 Y50 R25` |
+| G03 | Arc anti-horaire | `G03 X50 Y50 R25` |
+| G90 | Mode absolu | Coordonnées depuis l'origine |
+| G91 | Mode relatif | Coordonnées depuis position actuelle |
+
+#### Codes M essentiels
+
+| Code | Fonction |
+|------|----------|
+| M03 | Broche sens horaire |
+| M04 | Broche sens anti-horaire |
+| M05 | Arrêt broche |
+| M30 | Fin de programme |
+
+#### Leçons du module
+
+| # | Leçon | Durée | XP | Description |
+|---|-------|-------|-----|-------------|
+| 1 | Structure d'un programme G-Code | 15 min | 70 | Organisation et syntaxe de base |
+| 2 | Codes G et M essentiels | 18 min | 80 | Les commandes fondamentales |
+
+---
+
+### Module 8 : Axes et interpolation 📐
+
+> **Objectif** : Comprendre les systèmes de coordonnées et les mouvements en CNC
+
+#### Système de coordonnées
+
+```
+                    Z+
+                    │
+                    │
+                    │
+                    │
+                    │
+     Y+            │
+      ╲            │
+       ╲           │
+        ╲          │
+         ╲         │
+          ╲        O─────────────── X+
+           ╲
+            ╲
+
+    Repère cartésien 3 axes
+    ━━━━━━━━━━━━━━━━━━━━━━━
+    O = Origine pièce (ou machine)
+    X = Axe longitudinal
+    Y = Axe transversal
+    Z = Axe vertical (profondeur)
+```
+
+#### Types d'interpolation
+
+```
+INTERPOLATION LINÉAIRE (G01)          INTERPOLATION CIRCULAIRE (G02/G03)
+━━━━━━━━━━━━━━━━━━━━━━━━━━            ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+      B●                                      ●B
+       ╲                                   ╱     ╲
+        ╲                                ╱         ╲
+         ╲                              ╱     R     ╲
+          ╲                            ●─────────────●
+           ╲                          A    Centre    C
+            ●A
+
+  Trajectoire en ligne droite         Trajectoire en arc de cercle
+  de A vers B                         G02 : sens horaire
+  G01 X... Y... F...                  G03 : sens anti-horaire
+```
+
+#### Exemple de trajectoire
+
+```
+    Y
+    ↑
+  50├───────────●B
+    │          ╱│
+    │        ╱  │
+  30├──────●A   │
+    │      │    │
+    │      │    │
+    └──────┼────┼────→ X
+          30   50
+
+Programme :
+G00 X30 Y30     (aller en A rapide)
+G01 X50 Y50 F200 (usiner vers B)
+```
+
+#### Leçons du module
+
+| # | Leçon | Durée | XP | Description |
+|---|-------|-------|-----|-------------|
+| 1 | Système de coordonnées | 12 min | 60 | Repères et origines machine/pièce |
+| 2 | Interpolation linéaire et circulaire | 18 min | 80 | G01, G02, G03 en détail |
 
 ---
 
@@ -568,7 +815,8 @@ Ce compte a déjà :
 easyplc-school/
 ├── prisma/
 │   ├── schema.prisma    # Schéma de la base de données
-│   └── seed.ts          # Script de peuplement + contenu pédagogique
+│   ├── seed.ts          # Script de peuplement + contenu pédagogique
+│   └── translations.ts  # Traductions des leçons et quiz (EN/ES)
 ├── server/
 │   ├── index.ts         # Point d'entrée du serveur
 │   ├── middleware/
@@ -580,14 +828,18 @@ easyplc-school/
 │       ├── lessons.ts   # Routes des leçons
 │       ├── progress.ts  # Routes de progression
 │       ├── rewards.ts   # Routes des récompenses
-│       └── leaderboard.ts # Routes du classement
+│       ├── leaderboard.ts # Routes du classement
+│       └── cursus.ts    # Routes des parcours d'apprentissage
 ├── src/
 │   ├── components/
-│   │   └── Layout.tsx   # Layout principal
+│   │   ├── Layout.tsx   # Layout principal
+│   │   └── LanguageSelector.tsx # Sélecteur de langue
 │   ├── pages/
 │   │   ├── Login.tsx
 │   │   ├── Register.tsx
 │   │   ├── Dashboard.tsx
+│   │   ├── CursusSelect.tsx  # Sélection du parcours
+│   │   ├── CursusDetail.tsx  # Détail d'un parcours
 │   │   ├── Modules.tsx
 │   │   ├── ModuleDetail.tsx
 │   │   ├── Lesson.tsx
@@ -598,6 +850,9 @@ easyplc-school/
 │   │   └── authStore.ts # Store Zustand
 │   ├── lib/
 │   │   └── api.ts       # Client API
+│   ├── i18n/
+│   │   ├── index.ts     # Configuration i18n
+│   │   └── locales/     # Fichiers de traduction (fr, en, es)
 │   ├── App.tsx
 │   ├── main.tsx
 │   └── index.css
@@ -621,6 +876,12 @@ easyplc-school/
 | GET | `/api/modules/:id` | Détail d'un module |
 | GET | `/api/lessons/:id` | Contenu d'une leçon |
 | POST | `/api/lessons/:id/submit` | Soumettre un quiz |
+
+### Parcours (Cursus)
+| Méthode | Endpoint | Description |
+|---------|----------|-------------|
+| GET | `/api/cursus` | Liste des parcours avec progression |
+| GET | `/api/cursus/:id` | Détail d'un parcours avec modules |
 
 ### Progression & Récompenses
 | Méthode | Endpoint | Description |
@@ -656,8 +917,10 @@ Ce projet est open source et accueille les contributions de la communauté !
 - [ ] Créer un éditeur GRAFCET visuel
 - [ ] Ajouter des animations pour les schémas LADDER
 - [ ] Implémenter un mode examen
-- [ ] Ajouter le support multi-langues (EN, ES, DE)
+- [x] ~~Ajouter le support multi-langues (EN, ES, DE)~~ ✅ FR, EN, ES disponibles
+- [x] ~~Ajouter des parcours d'apprentissage~~ ✅ Automatisme et CNC
 - [ ] Créer des exercices de programmation pratiques
+- [ ] Ajouter un simulateur G-Code interactif
 
 ### Enrichir le contenu pédagogique
 

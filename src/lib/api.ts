@@ -82,4 +82,8 @@ export const api = {
       method: 'PATCH',
       body: JSON.stringify(data),
     }),
+
+  // Cursus
+  getCursus: () => fetchWithAuth(withLang('/cursus')),
+  getCursusById: (id: string) => fetchWithAuth(withLang(`/cursus/${id}`)),
 }

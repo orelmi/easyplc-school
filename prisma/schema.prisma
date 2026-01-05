@@ -25,6 +25,45 @@ model User {
   quizAttempts  QuizAttempt[]
 }
 
+model Cursus {
+  id          String   @id @default(uuid())
+  title       String
+  description String
+  icon        String
+  color       String
+  order       Int
+  createdAt   DateTime @default(now())
+
+  modules      CursusModule[]
+  translations CursusTranslation[]
+}
+
+model CursusModule {
+  id         String  @id @default(uuid())
+  cursusId   String
+  moduleId   String
+  order      Int
+  isRequired Boolean @default(true)
+
+  cursus Cursus @relation(fields: [cursusId], references: [id], onDelete: Cascade)
+  module Module @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+
+  @@unique([cursusId, moduleId])
+}
+
+model CursusTranslation {
+  id          String @id @default(uuid())
+  cursusId    String
+  language    String
+  title       String
+  description String
+  createdAt   DateTime @default(now())
+
+  cursus Cursus @relation(fields: [cursusId], references: [id], onDelete: Cascade)
+
+  @@unique([cursusId, language])
+}
+
 model Module {
   id          String    @id @default(uuid())
   title       String
@@ -36,8 +75,9 @@ model Module {
   requiredXp  Int       @default(0)
   createdAt   DateTime  @default(now())
 
-  lessons      Lesson[]
-  translations ModuleTranslation[]
+  lessons       Lesson[]
+  translations  ModuleTranslation[]
+  cursusModules CursusModule[]
 }
 
 model ModuleTranslation {

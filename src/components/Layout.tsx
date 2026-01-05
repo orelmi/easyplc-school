@@ -15,6 +15,7 @@ export default function Layout() {
 
   const navItems = [
     { to: '/dashboard', label: t('nav.dashboard'), icon: '📊' },
+    { to: '/cursus', label: t('nav.cursus'), icon: '🎓' },
     { to: '/modules', label: t('nav.modules'), icon: '📚' },
     { to: '/rewards', label: t('nav.rewards'), icon: '🏆' },
     { to: '/leaderboard', label: t('nav.leaderboard'), icon: '🥇' },

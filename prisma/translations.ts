@@ -514,6 +514,404 @@ export const lessonTranslations = {
   }
 }
 
+// CNC Module translations for English and Spanish
+export const cncLessonTranslations = {
+  en: {
+    // Module 6 - Introduction to CNC
+    "Qu'est-ce qu'une machine CNC ?": {
+      title: "What is a CNC Machine?",
+      description: "Discover the basics of Computer Numerical Control machines",
+      content: JSON.stringify({
+        sections: [
+          {
+            type: "text",
+            content: "# CNC Machines\n\nA **CNC machine** (Computer Numerical Control) is a manufacturing tool controlled by a computer program. It automates the machining of parts with high precision."
+          },
+          {
+            type: "info",
+            content: "The first CNC machines appeared in the 1950s, revolutionizing the manufacturing industry."
+          },
+          {
+            type: "text",
+            content: "## How does it work?\n\nThe CNC machine follows instructions written in **G-code**, a standardized programming language. These instructions control:\n\n- Tool movements along different axes\n- Spindle rotation speed\n- Feed rate\n- Tool changes"
+          },
+          {
+            type: "text",
+            content: "## Advantages of CNC\n\n- **Precision**: Tolerances of a few hundredths of a millimeter\n- **Repeatability**: Identical parts every time\n- **Productivity**: Continuous operation 24/7\n- **Complexity**: Possible machining of complex shapes"
+          }
+        ]
+      })
+    },
+    "Types de machines CNC": {
+      title: "Types of CNC Machines",
+      description: "Discover the different types of CNC machines and their applications",
+      content: JSON.stringify({
+        sections: [
+          {
+            type: "text",
+            content: "# Types of CNC Machines\n\nThere are many types of CNC machines, each designed for specific applications."
+          },
+          {
+            type: "text",
+            content: "## CNC Milling Machine\n\nThe milling machine uses a rotating tool that removes material. It can:\n- Machine flat surfaces\n- Create grooves and pockets\n- Drill holes\n- Make complex 3D shapes"
+          },
+          {
+            type: "text",
+            content: "## CNC Lathe\n\nThe lathe rotates the part while the tool removes material. Ideal for:\n- Cylindrical parts\n- Threads\n- Cones and spheres\n- Interior and exterior machining"
+          },
+          {
+            type: "text",
+            content: "## Other Types\n\n| Machine | Application |\n|---------|-------------|\n| Laser cutter | Precision cutting of sheets |\n| Plasma cutter | Cutting thick metal |\n| EDM | Hard material machining |\n| 3D printer | Additive manufacturing |"
+          }
+        ]
+      })
+    },
+    // Module 7 - G-Code Programming
+    "Structure d'un programme G-Code": {
+      title: "Structure of a G-Code Program",
+      description: "Learn how a CNC program is organized",
+      content: JSON.stringify({
+        sections: [
+          {
+            type: "text",
+            content: "# G-Code Program Structure\n\nA G-code program is a series of instructions that tell the CNC machine what to do."
+          },
+          {
+            type: "text",
+            content: "## Lines and Blocks\n\nEach line of a program is called a **block**. A block can contain:\n\n- A line number (N)\n- Preparatory codes (G)\n- Coordinates (X, Y, Z)\n- Feed rate (F)\n- Spindle speed (S)\n- Tool (T)\n- Miscellaneous function (M)"
+          },
+          {
+            type: "text",
+            content: "## Example Program\n\n```gcode\nN10 G21 G90       ; Metric mode, absolute\nN20 G0 X0 Y0 Z10  ; Rapid positioning\nN30 M3 S1500      ; Spindle ON, 1500 RPM\nN40 G1 Z-5 F100   ; Plunge at 100 mm/min\nN50 G1 X50 F200   ; Linear move\nN60 G0 Z10        ; Retract\nN70 M5            ; Spindle OFF\nN80 M30           ; End of program\n```"
+          },
+          {
+            type: "info",
+            content: "Comments are usually indicated by a semicolon (;) or parentheses."
+          }
+        ]
+      })
+    },
+    "Codes G et M essentiels": {
+      title: "Essential G and M Codes",
+      description: "Master the fundamental codes for CNC programming",
+      content: JSON.stringify({
+        sections: [
+          {
+            type: "text",
+            content: "# Essential G and M Codes\n\nG codes (Preparatory) and M codes (Miscellaneous) are the basis of CNC programming."
+          },
+          {
+            type: "text",
+            content: "## Main G Codes\n\n| Code | Function |\n|------|----------|\n| G0 | Rapid positioning |\n| G1 | Linear interpolation |\n| G2 | Circular interpolation CW |\n| G3 | Circular interpolation CCW |\n| G17 | XY plane selection |\n| G20 | Inch mode |\n| G21 | Metric mode |\n| G28 | Return to home |\n| G90 | Absolute mode |\n| G91 | Incremental mode |"
+          },
+          {
+            type: "text",
+            content: "## Main M Codes\n\n| Code | Function |\n|------|----------|\n| M0 | Program stop |\n| M3 | Spindle ON (CW) |\n| M4 | Spindle ON (CCW) |\n| M5 | Spindle OFF |\n| M6 | Tool change |\n| M8 | Coolant ON |\n| M9 | Coolant OFF |\n| M30 | End of program |"
+          },
+          {
+            type: "warning",
+            content: "Codes may vary slightly between machine manufacturers. Always check the specific documentation."
+          }
+        ]
+      })
+    },
+    // Module 8 - Axes and Interpolation
+    "Système de coordonnées": {
+      title: "Coordinate System",
+      description: "Understand the coordinate system used in CNC",
+      content: JSON.stringify({
+        sections: [
+          {
+            type: "text",
+            content: "# CNC Coordinate System\n\nCNC machines use a **Cartesian** coordinate system to position the tool relative to the part."
+          },
+          {
+            type: "text",
+            content: "## The Three Main Axes\n\n- **X axis**: Horizontal movement (left/right)\n- **Y axis**: Horizontal movement (forward/backward)\n- **Z axis**: Vertical movement (up/down)\n\nThe positive direction of Z is generally toward the spindle."
+          },
+          {
+            type: "text",
+            content: "## Reference Points\n\n### Machine Origin (M)\nFixed physical point on the machine.\n\n### Work Origin (W)\nReference point for the part, defined by the programmer.\n\n### Tool Position (T)\nPoint controlled by the program, usually the tool tip."
+          },
+          {
+            type: "info",
+            content: "On 5-axis machines, rotational axes A, B, and C are added to the linear axes X, Y, Z."
+          }
+        ]
+      })
+    },
+    "Interpolation linéaire et circulaire": {
+      title: "Linear and Circular Interpolation",
+      description: "Master G0, G1, G2, G3 tool movements",
+      content: JSON.stringify({
+        sections: [
+          {
+            type: "text",
+            content: "# Tool Interpolation\n\nInterpolation is the calculated movement between two points. The CNC controller calculates all intermediate positions."
+          },
+          {
+            type: "text",
+            content: "## Rapid Positioning (G0)\n\n```gcode\nG0 X100 Y50 Z10\n```\n\nThe machine moves as fast as possible in a straight line. **No material removal** during G0!"
+          },
+          {
+            type: "text",
+            content: "## Linear Interpolation (G1)\n\n```gcode\nG1 X100 Y50 F200\n```\n\nControlled movement in a straight line at the specified feed rate (F). Used for machining."
+          },
+          {
+            type: "text",
+            content: "## Circular Interpolation\n\n```gcode\nG2 X50 Y50 I25 J0  ; Clockwise arc\nG3 X50 Y50 I25 J0  ; Counter-clockwise arc\n```\n\n- **G2**: Clockwise\n- **G3**: Counter-clockwise\n- **I, J, K**: Arc center offset (relative to start point)"
+          },
+          {
+            type: "warning",
+            content: "Always verify the feed rate before machining. A rate that is too high can damage the tool or the part!"
+          }
+        ]
+      })
+    }
+  },
+  es: {
+    // Module 6 - Introduction to CNC
+    "Qu'est-ce qu'une machine CNC ?": {
+      title: "¿Qué es una máquina CNC?",
+      description: "Descubra los fundamentos de las máquinas de Control Numérico Computarizado",
+      content: JSON.stringify({
+        sections: [
+          {
+            type: "text",
+            content: "# Máquinas CNC\n\nUna **máquina CNC** (Control Numérico Computarizado) es una herramienta de fabricación controlada por un programa de computadora. Automatiza el mecanizado de piezas con alta precisión."
+          },
+          {
+            type: "info",
+            content: "Las primeras máquinas CNC aparecieron en la década de 1950, revolucionando la industria manufacturera."
+          },
+          {
+            type: "text",
+            content: "## ¿Cómo funciona?\n\nLa máquina CNC sigue instrucciones escritas en **código G**, un lenguaje de programación estandarizado. Estas instrucciones controlan:\n\n- Movimientos de la herramienta en diferentes ejes\n- Velocidad de rotación del husillo\n- Velocidad de avance\n- Cambios de herramienta"
+          },
+          {
+            type: "text",
+            content: "## Ventajas del CNC\n\n- **Precisión**: Tolerancias de unas centésimas de milímetro\n- **Repetibilidad**: Piezas idénticas cada vez\n- **Productividad**: Funcionamiento continuo 24/7\n- **Complejidad**: Mecanizado posible de formas complejas"
+          }
+        ]
+      })
+    },
+    "Types de machines CNC": {
+      title: "Tipos de máquinas CNC",
+      description: "Descubra los diferentes tipos de máquinas CNC y sus aplicaciones",
+      content: JSON.stringify({
+        sections: [
+          {
+            type: "text",
+            content: "# Tipos de máquinas CNC\n\nExisten muchos tipos de máquinas CNC, cada una diseñada para aplicaciones específicas."
+          },
+          {
+            type: "text",
+            content: "## Fresadora CNC\n\nLa fresadora utiliza una herramienta giratoria que elimina material. Puede:\n- Mecanizar superficies planas\n- Crear ranuras y cavidades\n- Taladrar agujeros\n- Hacer formas 3D complejas"
+          },
+          {
+            type: "text",
+            content: "## Torno CNC\n\nEl torno hace girar la pieza mientras la herramienta elimina material. Ideal para:\n- Piezas cilíndricas\n- Roscas\n- Conos y esferas\n- Mecanizado interior y exterior"
+          },
+          {
+            type: "text",
+            content: "## Otros tipos\n\n| Máquina | Aplicación |\n|---------|-------------|\n| Corte láser | Corte de precisión de chapas |\n| Corte plasma | Corte de metal grueso |\n| Electroerosión | Mecanizado de material duro |\n| Impresora 3D | Fabricación aditiva |"
+          }
+        ]
+      })
+    },
+    // Module 7 - G-Code Programming
+    "Structure d'un programme G-Code": {
+      title: "Estructura de un programa G-Code",
+      description: "Aprenda cómo se organiza un programa CNC",
+      content: JSON.stringify({
+        sections: [
+          {
+            type: "text",
+            content: "# Estructura de un programa G-Code\n\nUn programa G-code es una serie de instrucciones que le dicen a la máquina CNC qué hacer."
+          },
+          {
+            type: "text",
+            content: "## Líneas y bloques\n\nCada línea de un programa se llama **bloque**. Un bloque puede contener:\n\n- Un número de línea (N)\n- Códigos preparatorios (G)\n- Coordenadas (X, Y, Z)\n- Velocidad de avance (F)\n- Velocidad del husillo (S)\n- Herramienta (T)\n- Función auxiliar (M)"
+          },
+          {
+            type: "text",
+            content: "## Programa de ejemplo\n\n```gcode\nN10 G21 G90       ; Modo métrico, absoluto\nN20 G0 X0 Y0 Z10  ; Posicionamiento rápido\nN30 M3 S1500      ; Husillo ON, 1500 RPM\nN40 G1 Z-5 F100   ; Penetración a 100 mm/min\nN50 G1 X50 F200   ; Movimiento lineal\nN60 G0 Z10        ; Retracción\nN70 M5            ; Husillo OFF\nN80 M30           ; Fin del programa\n```"
+          },
+          {
+            type: "info",
+            content: "Los comentarios generalmente se indican con un punto y coma (;) o paréntesis."
+          }
+        ]
+      })
+    },
+    "Codes G et M essentiels": {
+      title: "Códigos G y M esenciales",
+      description: "Domine los códigos fundamentales para la programación CNC",
+      content: JSON.stringify({
+        sections: [
+          {
+            type: "text",
+            content: "# Códigos G y M esenciales\n\nLos códigos G (Preparatorios) y códigos M (Auxiliares) son la base de la programación CNC."
+          },
+          {
+            type: "text",
+            content: "## Principales códigos G\n\n| Código | Función |\n|------|----------|\n| G0 | Posicionamiento rápido |\n| G1 | Interpolación lineal |\n| G2 | Interpolación circular horaria |\n| G3 | Interpolación circular antihoraria |\n| G17 | Selección plano XY |\n| G20 | Modo pulgadas |\n| G21 | Modo métrico |\n| G28 | Retorno a origen |\n| G90 | Modo absoluto |\n| G91 | Modo incremental |"
+          },
+          {
+            type: "text",
+            content: "## Principales códigos M\n\n| Código | Función |\n|------|----------|\n| M0 | Parada del programa |\n| M3 | Husillo ON (horario) |\n| M4 | Husillo ON (antihorario) |\n| M5 | Husillo OFF |\n| M6 | Cambio de herramienta |\n| M8 | Refrigerante ON |\n| M9 | Refrigerante OFF |\n| M30 | Fin del programa |"
+          },
+          {
+            type: "warning",
+            content: "Los códigos pueden variar ligeramente entre fabricantes de máquinas. Siempre verifique la documentación específica."
+          }
+        ]
+      })
+    },
+    // Module 8 - Axes and Interpolation
+    "Système de coordonnées": {
+      title: "Sistema de coordenadas",
+      description: "Comprenda el sistema de coordenadas utilizado en CNC",
+      content: JSON.stringify({
+        sections: [
+          {
+            type: "text",
+            content: "# Sistema de coordenadas CNC\n\nLas máquinas CNC utilizan un sistema de coordenadas **cartesiano** para posicionar la herramienta respecto a la pieza."
+          },
+          {
+            type: "text",
+            content: "## Los tres ejes principales\n\n- **Eje X**: Movimiento horizontal (izquierda/derecha)\n- **Eje Y**: Movimiento horizontal (adelante/atrás)\n- **Eje Z**: Movimiento vertical (arriba/abajo)\n\nLa dirección positiva de Z generalmente es hacia el husillo."
+          },
+          {
+            type: "text",
+            content: "## Puntos de referencia\n\n### Origen máquina (M)\nPunto físico fijo en la máquina.\n\n### Origen pieza (W)\nPunto de referencia para la pieza, definido por el programador.\n\n### Posición herramienta (T)\nPunto controlado por el programa, generalmente la punta de la herramienta."
+          },
+          {
+            type: "info",
+            content: "En máquinas de 5 ejes, los ejes de rotación A, B y C se añaden a los ejes lineales X, Y, Z."
+          }
+        ]
+      })
+    },
+    "Interpolation linéaire et circulaire": {
+      title: "Interpolación lineal y circular",
+      description: "Domine los movimientos de herramienta G0, G1, G2, G3",
+      content: JSON.stringify({
+        sections: [
+          {
+            type: "text",
+            content: "# Interpolación de herramienta\n\nLa interpolación es el movimiento calculado entre dos puntos. El controlador CNC calcula todas las posiciones intermedias."
+          },
+          {
+            type: "text",
+            content: "## Posicionamiento rápido (G0)\n\n```gcode\nG0 X100 Y50 Z10\n```\n\nLa máquina se mueve lo más rápido posible en línea recta. ¡**Sin arranque de material** durante G0!"
+          },
+          {
+            type: "text",
+            content: "## Interpolación lineal (G1)\n\n```gcode\nG1 X100 Y50 F200\n```\n\nMovimiento controlado en línea recta a la velocidad de avance especificada (F). Utilizado para mecanizado."
+          },
+          {
+            type: "text",
+            content: "## Interpolación circular\n\n```gcode\nG2 X50 Y50 I25 J0  ; Arco horario\nG3 X50 Y50 I25 J0  ; Arco antihorario\n```\n\n- **G2**: Sentido horario\n- **G3**: Sentido antihorario\n- **I, J, K**: Desplazamiento del centro del arco (relativo al punto inicial)"
+          },
+          {
+            type: "warning",
+            content: "¡Siempre verifique la velocidad de avance antes de mecanizar. Una velocidad demasiado alta puede dañar la herramienta o la pieza!"
+          }
+        ]
+      })
+    }
+  }
+}
+
+// CNC Quiz translations
+export const cncQuizTranslations = {
+  en: {
+    "Que signifie CNC ?": {
+      question: "What does CNC stand for?",
+      options: ["Computer Numerical Control", "Central Numeric Computer", "Controlled Numeric Cutting", "Computer Network Control"],
+      explanation: "CNC stands for Computer Numerical Control."
+    },
+    "Quel est l'avantage principal d'une machine CNC ?": {
+      question: "What is the main advantage of a CNC machine?",
+      options: ["It's cheaper", "High precision and repeatability", "It doesn't need electricity", "It's smaller"],
+      explanation: "CNC machines offer high precision (hundredths of a millimeter) and can produce identical parts repeatedly."
+    },
+    "Quelle machine est idéale pour les pièces cylindriques ?": {
+      question: "Which machine is ideal for cylindrical parts?",
+      options: ["Milling machine", "CNC Lathe", "Laser cutter", "3D printer"],
+      explanation: "The lathe rotates the part and is ideal for machining cylindrical shapes."
+    },
+    "Quel code est utilisé pour le positionnement rapide ?": {
+      question: "Which code is used for rapid positioning?",
+      options: ["G1", "G0", "M3", "G2"],
+      explanation: "G0 is the rapid positioning code. It moves the tool as fast as possible without machining."
+    },
+    "Que fait le code M3 ?": {
+      question: "What does the M3 code do?",
+      options: ["Stops the program", "Turns the spindle ON clockwise", "Activates coolant", "Moves the Z axis"],
+      explanation: "M3 turns the spindle ON in the clockwise direction."
+    },
+    "Quel est l'axe vertical sur une fraiseuse CNC ?": {
+      question: "What is the vertical axis on a CNC milling machine?",
+      options: ["X axis", "Y axis", "Z axis", "A axis"],
+      explanation: "The Z axis is the vertical axis (up/down movement)."
+    },
+    "Que fait le code G1 ?": {
+      question: "What does the G1 code do?",
+      options: ["Rapid move", "Linear interpolation at controlled speed", "Circular move", "Program stop"],
+      explanation: "G1 performs linear interpolation at a controlled feed rate, used for machining."
+    },
+    "G2 effectue une interpolation circulaire dans quel sens ?": {
+      question: "G2 performs circular interpolation in which direction?",
+      options: ["Counter-clockwise", "Clockwise", "Vertical", "Depends on the machine"],
+      explanation: "G2 performs clockwise circular interpolation. G3 is for counter-clockwise."
+    }
+  },
+  es: {
+    "Que signifie CNC ?": {
+      question: "¿Qué significa CNC?",
+      options: ["Control Numérico Computarizado", "Computadora Numérica Central", "Corte Numérico Controlado", "Control de Red de Computadoras"],
+      explanation: "CNC significa Control Numérico Computarizado."
+    },
+    "Quel est l'avantage principal d'une machine CNC ?": {
+      question: "¿Cuál es la principal ventaja de una máquina CNC?",
+      options: ["Es más barata", "Alta precisión y repetibilidad", "No necesita electricidad", "Es más pequeña"],
+      explanation: "Las máquinas CNC ofrecen alta precisión (centésimas de milímetro) y pueden producir piezas idénticas repetidamente."
+    },
+    "Quelle machine est idéale pour les pièces cylindriques ?": {
+      question: "¿Qué máquina es ideal para piezas cilíndricas?",
+      options: ["Fresadora", "Torno CNC", "Cortadora láser", "Impresora 3D"],
+      explanation: "El torno hace girar la pieza y es ideal para mecanizar formas cilíndricas."
+    },
+    "Quel code est utilisé pour le positionnement rapide ?": {
+      question: "¿Qué código se usa para el posicionamiento rápido?",
+      options: ["G1", "G0", "M3", "G2"],
+      explanation: "G0 es el código de posicionamiento rápido. Mueve la herramienta lo más rápido posible sin mecanizar."
+    },
+    "Que fait le code M3 ?": {
+      question: "¿Qué hace el código M3?",
+      options: ["Detiene el programa", "Enciende el husillo en sentido horario", "Activa el refrigerante", "Mueve el eje Z"],
+      explanation: "M3 enciende el husillo en sentido horario."
+    },
+    "Quel est l'axe vertical sur une fraiseuse CNC ?": {
+      question: "¿Cuál es el eje vertical en una fresadora CNC?",
+      options: ["Eje X", "Eje Y", "Eje Z", "Eje A"],
+      explanation: "El eje Z es el eje vertical (movimiento arriba/abajo)."
+    },
+    "Que fait le code G1 ?": {
+      question: "¿Qué hace el código G1?",
+      options: ["Movimiento rápido", "Interpolación lineal a velocidad controlada", "Movimiento circular", "Parada del programa"],
+      explanation: "G1 realiza interpolación lineal a una velocidad de avance controlada, utilizado para mecanizado."
+    },
+    "G2 effectue une interpolation circulaire dans quel sens ?": {
+      question: "¿G2 realiza interpolación circular en qué sentido?",
+      options: ["Antihorario", "Horario", "Vertical", "Depende de la máquina"],
+      explanation: "G2 realiza interpolación circular en sentido horario. G3 es para antihorario."
+    }
+  }
+}
+
 // Quiz translations for English and Spanish
 export const quizTranslations = {
   en: {

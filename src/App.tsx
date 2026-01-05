@@ -10,6 +10,8 @@ import Lesson from './pages/Lesson'
 import Rewards from './pages/Rewards'
 import Leaderboard from './pages/Leaderboard'
 import Profile from './pages/Profile'
+import CursusSelect from './pages/CursusSelect'
+import CursusDetail from './pages/CursusDetail'
 
 function PrivateRoute({ children }: { children: React.ReactNode }) {
   const { user, isLoading } = useAuthStore()
@@ -68,6 +70,8 @@ export default function App() {
       >
         <Route index element={<Navigate to="/dashboard" replace />} />
         <Route path="dashboard" element={<Dashboard />} />
+        <Route path="cursus" element={<CursusSelect />} />
+        <Route path="cursus/:id" element={<CursusDetail />} />
         <Route path="modules" element={<Modules />} />
         <Route path="modules/:id" element={<ModuleDetail />} />
         <Route path="lessons/:id" element={<Lesson />} />
