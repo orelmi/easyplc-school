@@ -6,8 +6,13 @@ Plateforme open source d'apprentissage de l'automatisme industriel et des automa
 
 ## Table des matières
 
-- [Contenu pédagogique](#contenu-pédagogique)
 - [Captures d'écran](#captures-décran)
+- [Contenu pédagogique](#contenu-pédagogique)
+  - [Module 1 : Introduction à l'automatisme](#module-1--introduction-à-lautomatisme-)
+  - [Module 2 : Logique combinatoire](#module-2--logique-combinatoire-)
+  - [Module 3 : Le langage LADDER](#module-3--le-langage-ladder-)
+  - [Module 4 : Capteurs et actionneurs](#module-4--capteurs-et-actionneurs-)
+  - [Module 5 : GRAFCET](#module-5--grafcet-)
 - [Fonctionnalités](#fonctionnalités)
 - [Installation](#installation)
 - [Compte démo](#compte-démo)
@@ -18,45 +23,6 @@ Plateforme open source d'apprentissage de l'automatisme industriel et des automa
 - [Contribuer](#contribuer)
 - [Licence](#licence)
 
-## Contenu pédagogique
-
-### Objectifs d'apprentissage
-
-EasyPLC School vise à former les apprenants aux fondamentaux de l'automatisme industriel, depuis les concepts de base jusqu'à la programmation d'automates. La plateforme s'adresse aux :
-
-- Étudiants en génie électrique, maintenance industrielle ou automatisme
-- Techniciens souhaitant se reconvertir vers l'automatisme
-- Professionnels cherchant à consolider leurs bases
-
-### Programme des modules
-
-| Module | Thème | Compétences acquises |
-|--------|-------|---------------------|
-| 1. Introduction à l'automatisme | Découverte des PLC | Comprendre le rôle et l'architecture d'un automate |
-| 2. Logique combinatoire | Portes logiques ET, OU, NON | Maîtriser les opérations logiques fondamentales |
-| 3. Langage LADDER | Schéma à contacts | Lire et écrire des programmes en langage LADDER |
-| 4. Capteurs et actionneurs | Interfaçage physique | Connecter un automate au monde réel |
-| 5. GRAFCET | Systèmes séquentiels | Modéliser et programmer des séquences automatisées |
-
-### Approche pédagogique
-
-Chaque leçon est structurée pour favoriser l'apprentissage :
-
-- **Théorie** : Définitions, concepts et principes fondamentaux
-- **Tableaux de vérité** : Visualisation des opérations logiques
-- **Exemples industriels** : Cas pratiques issus du terrain (convoyeurs, démarrage moteur, etc.)
-- **Quiz interactifs** : Questions à choix multiples avec explications détaillées
-- **Encarts pédagogiques** : Astuces (💡) et points d'attention (⚠️)
-
-### Enrichir le contenu
-
-Le contenu pédagogique est défini dans le fichier `prisma/seed.ts`. Vous pouvez contribuer en :
-
-- Ajoutant de nouvelles leçons ou modules
-- Proposant des exercices pratiques supplémentaires
-- Améliorant les explications existantes
-- Traduisant le contenu dans d'autres langues
-
 ## Captures d'écran
 
 ### Vue d'ensemble
@@ -65,21 +31,430 @@ Le contenu pédagogique est défini dans le fichier `prisma/seed.ts`. Vous pouve
 ### Module d'apprentissage
 ![Exemple d'un module](public/module1.png)
 
+---
+
+## Contenu pédagogique
+
+EasyPLC School propose un parcours complet pour maîtriser les fondamentaux de l'automatisme industriel. Chaque module est conçu pour être progressif, avec des leçons théoriques, des schémas explicatifs et des quiz de validation.
+
+### Public cible
+
+- Étudiants en génie électrique, maintenance industrielle ou automatisme
+- Techniciens souhaitant se reconvertir vers l'automatisme
+- Professionnels cherchant à consolider leurs bases
+
+---
+
+### Module 1 : Introduction à l'automatisme 🔌
+
+> **Objectif** : Comprendre ce qu'est un automate programmable et son rôle dans l'industrie
+
+#### Architecture d'un automate (PLC)
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    AUTOMATE PROGRAMMABLE                      │
+│  ┌─────────────────────────────────────────────────────────┐  │
+│  │                                                         │  │
+│  │  ┌─────────┐    ┌─────────────┐    ┌─────────────────┐ │  │
+│  │  │         │    │             │    │                 │ │  │
+│  │  │ ENTRÉES │───▶│     CPU     │───▶│    SORTIES      │ │  │
+│  │  │  (I)    │    │  (Programme)│    │      (Q)        │ │  │
+│  │  │         │    │             │    │                 │ │  │
+│  │  └─────────┘    └─────────────┘    └─────────────────┘ │  │
+│  │       ▲               │                    │           │  │
+│  │       │          ┌────┴────┐               ▼           │  │
+│  │       │          │ MÉMOIRE │         ┌─────────┐       │  │
+│  │       │          └─────────┘         │ALIMENT. │       │  │
+│  │       │                              └─────────┘       │  │
+│  └───────┼──────────────────────────────────────────────┘  │
+│          │                                      │           │
+└──────────┼──────────────────────────────────────┼───────────┘
+           │                                      │
+    ┌──────┴──────┐                      ┌───────┴───────┐
+    │  CAPTEURS   │                      │  ACTIONNEURS  │
+    │ - Boutons   │                      │ - Moteurs     │
+    │ - Détecteurs│                      │ - Vannes      │
+    │ - Sondes    │                      │ - Voyants     │
+    └─────────────┘                      └───────────────┘
+```
+
+#### Leçons du module
+
+| # | Leçon | Durée | XP | Description |
+|---|-------|-------|-----|-------------|
+| 1 | Qu'est-ce qu'un automate programmable ? | 10 min | 50 | Découverte du PLC et son rôle industriel |
+| 2 | Les entrées et sorties (E/S) | 12 min | 60 | Comprendre l'interface avec le monde physique |
+| 3 | Le cycle automate | 15 min | 70 | Fonctionnement cyclique : lecture → exécution → écriture |
+
+#### Le cycle automate
+
+```
+        ┌────────────────────────────────────────┐
+        │                                        │
+        ▼                                        │
+┌───────────────┐                                │
+│   LECTURE     │  Lire l'état de toutes        │
+│   ENTRÉES     │  les entrées (capteurs)       │
+└───────┬───────┘                                │
+        │                                        │
+        ▼                                        │
+┌───────────────┐                                │
+│  EXÉCUTION    │  Exécuter le programme        │
+│  PROGRAMME    │  ligne par ligne              │
+└───────┬───────┘                                │
+        │                                        │
+        ▼                                        │
+┌───────────────┐                                │
+│   ÉCRITURE    │  Mettre à jour les            │
+│   SORTIES     │  sorties (actionneurs)        │
+└───────┬───────┘                                │
+        │                                        │
+        └────────────────────────────────────────┘
+                  Temps de cycle : 5-20 ms
+```
+
+---
+
+### Module 2 : Logique combinatoire 🔀
+
+> **Objectif** : Maîtriser les portes logiques fondamentales ET, OU, NON
+
+#### Les trois portes logiques de base
+
+```
+    PORTE ET (AND)              PORTE OU (OR)              PORTE NON (NOT)
+    ─────────────               ─────────────               ──────────────
+
+    A ──┐                       A ──┐                            ┌──o── S
+        │ ┌───┐                     │ ┌───┐                  A ──┤
+    B ──┴─┤ & ├── S             B ──┴─┤≥1 ├── S                  └─────
+          └───┘                       └───┘
+                                                            S = NON A
+    S = A ET B                  S = A OU B                  (inversion)
+    (tous à 1)                  (au moins 1)
+```
+
+#### Tables de vérité
+
+**Porte ET (AND)**
+| A | B | A ET B |
+|:-:|:-:|:------:|
+| 0 | 0 | **0**  |
+| 0 | 1 | **0**  |
+| 1 | 0 | **0**  |
+| 1 | 1 | **1**  |
+
+**Porte OU (OR)**
+| A | B | A OU B |
+|:-:|:-:|:------:|
+| 0 | 0 | **0**  |
+| 0 | 1 | **1**  |
+| 1 | 0 | **1**  |
+| 1 | 1 | **1**  |
+
+**Porte NON (NOT)**
+| A | NON A |
+|:-:|:-----:|
+| 0 | **1** |
+| 1 | **0** |
+
+#### Exemple industriel : Démarrage sécurisé d'un moteur
+
+```
+Conditions de démarrage :
+━━━━━━━━━━━━━━━━━━━━━━━━
+
+    ┌─────────────────┐
+    │  Bouton START   │──┐
+    │    (appuyé)     │  │
+    └─────────────────┘  │
+                         │    ┌─────┐
+    ┌─────────────────┐  ├────┤     │
+    │ Capot sécurité  │──┤    │ ET  ├───▶ MOTEUR DÉMARRE
+    │    (fermé)      │  ├────┤     │
+    └─────────────────┘  │    └─────┘
+                         │
+    ┌─────────────────┐  │
+    │  Arrêt urgence  │──┘
+    │ (NON enclenché) │
+    └─────────────────┘
+
+Le moteur démarre UNIQUEMENT si les 3 conditions sont réunies !
+```
+
+#### Leçons du module
+
+| # | Leçon | Durée | XP | Description |
+|---|-------|-------|-----|-------------|
+| 1 | La porte ET (AND) | 12 min | 60 | Fonction ET et contacts en série |
+| 2 | La porte OU (OR) | 12 min | 60 | Fonction OU et contacts en parallèle |
+| 3 | La porte NON (NOT) | 10 min | 50 | Inversion et contacts normalement fermés |
+
+---
+
+### Module 3 : Le langage LADDER 🪜
+
+> **Objectif** : Lire et écrire des programmes en langage LADDER (schéma à contacts)
+
+#### Principe du LADDER
+
+Le LADDER (échelle) est un langage graphique qui ressemble aux schémas électriques. Le "courant" circule de gauche à droite.
+
+```
+    Barre         Contacts              Bobine         Barre
+    gauche                                            droite
+      │                                                 │
+      │     ┌─────┐          ┌─────┐         ┌───┐     │
+      ├─────┤ I0.0├──────────┤ I0.1├─────────┤Q0.0├────┤
+      │     └──┬──┘          └──┬──┘         └─┬─┘     │
+      │        │                │              │       │
+      │     Contact          Contact        Bobine     │
+      │       NO               NO                      │
+      │                                                │
+```
+
+#### Éléments de base
+
+```
+CONTACTS                              BOBINES
+
+  ──┤ ├──   Contact NO               ──( )──   Bobine simple
+            (Normalement Ouvert)               (activée si courant)
+
+  ──┤/├──   Contact NF               ──(S)──   Bobine SET
+            (Normalement Fermé)                (mémorisation)
+
+                                     ──(R)──   Bobine RESET
+                                               (remise à zéro)
+```
+
+#### Exemple : Fonction ET en LADDER
+
+```
+Équation logique : Q0.0 = I0.0 ET I0.1
+
+      │                                         │
+      │     ┌─────┐          ┌─────┐   ┌─────┐  │
+      ├─────┤ I0.0├──────────┤ I0.1├───┤ Q0.0├──┤
+      │     └─────┘          └─────┘   └─────┘  │
+      │    (Bouton 1)       (Bouton 2) (Voyant) │
+      │                                         │
+
+Le voyant s'allume si Bouton 1 ET Bouton 2 sont appuyés
+```
+
+#### Exemple : Fonction OU en LADDER
+
+```
+Équation logique : Q0.0 = I0.0 OU I0.1
+
+      │     ┌─────┐                    ┌─────┐  │
+      ├─────┤ I0.0├────────────────────┤ Q0.0├──┤
+      │     └─────┘                    └──┬──┘  │
+      │         │                         │     │
+      │     ┌───┴───┐                     │     │
+      ├─────┤  I0.1 ├─────────────────────┘     │
+      │     └───────┘                           │
+      │                                         │
+
+Le voyant s'allume si Bouton 1 OU Bouton 2 est appuyé
+```
+
+#### Exemple : Auto-maintien (mémorisation)
+
+```
+Marche/Arrêt d'un moteur avec mémorisation :
+
+      │     ┌─────┐   ┌─────┐          ┌─────┐  │
+      ├─────┤START├───┤STOP ├──────────┤MOTOR├──┤
+      │     └─────┘   └──/──┘          └──┬──┘  │
+      │         │        NF               │     │
+      │     ┌───┴────────────────────┐    │     │
+      ├─────┤        MOTOR           ├────┘     │
+      │     └────────────────────────┘          │
+      │          (auto-maintien)                │
+
+1. Appui sur START → MOTOR s'active
+2. MOTOR reste actif (auto-maintien)
+3. Appui sur STOP → MOTOR se désactive
+```
+
+#### Leçons du module
+
+| # | Leçon | Durée | XP | Description |
+|---|-------|-------|-----|-------------|
+| 1 | Introduction au langage LADDER | 15 min | 70 | Structure et symboles de base |
+| 2 | Contacts et bobines | 18 min | 80 | Contacts NO/NF, bobines SET/RESET |
+
+---
+
+### Module 4 : Capteurs et actionneurs 📡
+
+> **Objectif** : Connecter un automate au monde physique
+
+#### Types de capteurs TOR (Tout Ou Rien)
+
+```
+CAPTEURS MÉCANIQUES                    CAPTEURS DE PROXIMITÉ
+━━━━━━━━━━━━━━━━━━━                    ━━━━━━━━━━━━━━━━━━━━━
+
+┌─────────────────┐                    ┌─────────────────┐
+│  FIN DE COURSE  │                    │    INDUCTIF     │
+│                 │                    │   ┌───────┐     │
+│    ┌────┐       │                    │   │ ~~~   │     │  Détecte
+│  ──┤    ├──     │                    │   │  ○    │◀────│  les MÉTAUX
+│    └────┘       │                    │   └───────┘     │
+└─────────────────┘                    └─────────────────┘
+
+┌─────────────────┐                    ┌─────────────────┐
+│ BOUTON POUSSOIR │                    │   CAPACITIF     │
+│                 │                    │   ┌───────┐     │
+│      ┌─┐        │                    │   │  ≋≋   │     │  Détecte
+│    ──┤ ├──      │                    │   │  ○    │◀────│  TOUT matériau
+│      └─┘        │                    │   └───────┘     │
+└─────────────────┘                    └─────────────────┘
+
+                                       ┌─────────────────┐
+                                       │    OPTIQUE      │
+                                       │                 │
+                                       │  ▶━━━━━━━◀      │  Faisceau
+                                       │  Émetteur Récep.│  lumineux
+                                       └─────────────────┘
+```
+
+#### Câblage type d'un capteur
+
+```
+           ┌────────────────────────────────────┐
+           │           AUTOMATE                 │
+           │                                    │
+           │  ┌─────┐  ┌─────┐  ┌─────┐        │
+           │  │ I0.0│  │ I0.1│  │ I0.2│  ...   │
+           │  └──┬──┘  └──┬──┘  └──┬──┘        │
+           │     │        │        │           │
+           └─────┼────────┼────────┼───────────┘
+                 │        │        │
+            ┌────┴───┐ ┌──┴────┐ ┌─┴─────┐
+            │Capteur │ │Capteur│ │Capteur│
+            │   1    │ │   2   │ │   3   │
+            └────────┘ └───────┘ └───────┘
+
+       💡 Chaque capteur est connecté à une entrée de l'automate
+```
+
+#### Leçons du module
+
+| # | Leçon | Durée | XP | Description |
+|---|-------|-------|-----|-------------|
+| 1 | Les capteurs TOR | 15 min | 70 | Capteurs mécaniques et de proximité |
+
+---
+
+### Module 5 : GRAFCET 📊
+
+> **Objectif** : Modéliser et programmer des systèmes séquentiels
+
+#### Structure du GRAFCET
+
+```
+    ╔═══════════════════════════════════════════════════════╗
+    ║                    GRAFCET                             ║
+    ║   Graphe Fonctionnel de Commande Étape-Transition     ║
+    ╚═══════════════════════════════════════════════════════╝
+
+         ┌─────┐
+         │  0  │◀──── Étape initiale (double carré)
+         └──┬──┘
+            │
+         ───┴───  ◀── Transition (condition)
+         départ
+            │
+         ┌──┴──┐
+         │  1  │───── Action : Avancer vérin
+         └──┬──┘
+            │
+         ───┴───
+         fin av.
+            │
+         ┌──┴──┐
+         │  2  │───── Action : Reculer vérin
+         └──┬──┘
+            │
+         ───┴───
+         fin rec.
+            │
+            └────────▶ Retour à l'étape 0
+```
+
+#### Éléments du GRAFCET
+
+```
+ÉTAPE                           TRANSITION                 ACTION
+━━━━━                           ━━━━━━━━━━                 ━━━━━━
+
+┌─────┐
+│  n  │  Étape normale           ────┬────                │  n  │── Action
+└─────┘                         condition                 └─────┘
+                                     │
+╔═════╗
+║  0  ║  Étape initiale         Exemples :
+╚═════╝  (active au départ)     - "bouton appuyé"
+                                - "capteur = 1"
+                                - "tempo écoulée"
+```
+
+#### Exemple : Cycle d'un vérin
+
+```
+    Vérin simple effet avec 2 capteurs de position
+
+    ┌──────────────────────────────────────────┐
+    │  [a]                               [b]   │
+    │   ○━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━○    │
+    │        ◀══════════════════════▶          │
+    │              Piston mobile               │
+    └──────────────────────────────────────────┘
+        a = capteur rentré       b = capteur sorti
+
+
+                    GRAFCET
+
+                    ╔═════╗
+                    ║  0  ║──── Attente
+                    ╚══╤══╝
+                       │
+                    ───┴─── dcy (départ cycle)
+                       │
+                    ┌──┴──┐
+                    │  1  │──── Sortir vérin (V+)
+                    └──┬──┘
+                       │
+                    ───┴─── b (vérin sorti)
+                       │
+                    ┌──┴──┐
+                    │  2  │──── Rentrer vérin (V-)
+                    └──┬──┘
+                       │
+                    ───┴─── a (vérin rentré)
+                       │
+                       └────▶ Retour étape 0
+```
+
+#### Leçons du module
+
+| # | Leçon | Durée | XP | Description |
+|---|-------|-------|-----|-------------|
+| 1 | Introduction au GRAFCET | 20 min | 80 | Étapes, transitions, actions |
+
+---
+
 ## Fonctionnalités
 
 ### Système d'utilisateurs
 - Inscription et connexion sécurisées (JWT)
 - Profil utilisateur personnalisable
 - Suivi de progression individuel
-
-### Apprentissage progressif
-5 modules d'apprentissage couvrant les fondamentaux de l'automatisme :
-
-1. **Introduction à l'automatisme** - Découverte des automates programmables (PLC)
-2. **Logique combinatoire** - Portes logiques ET, OU, NON
-3. **Langage LADDER** - Programmation en schéma à contacts
-4. **Capteurs et actionneurs** - Interfaçage avec le monde physique
-5. **GRAFCET** - Modélisation des systèmes séquentiels
 
 ### Système de gamification
 - **Points XP** : Gagnez des points en complétant les leçons
@@ -101,6 +476,8 @@ Le contenu pédagogique est défini dans le fichier `prisma/seed.ts`. Vous pouve
 | Trophée obtenu | 150-200 XP bonus |
 
 Le niveau est calculé selon la formule : XP total = 50 × niveau × (niveau + 1)
+
+---
 
 ## Installation
 
@@ -281,6 +658,14 @@ Ce projet est open source et accueille les contributions de la communauté !
 - [ ] Implémenter un mode examen
 - [ ] Ajouter le support multi-langues (EN, ES, DE)
 - [ ] Créer des exercices de programmation pratiques
+
+### Enrichir le contenu pédagogique
+
+Le contenu des leçons est défini dans `prisma/seed.ts`. Pour ajouter du contenu :
+
+1. Ouvrez le fichier `prisma/seed.ts`
+2. Ajoutez vos leçons en suivant la structure existante
+3. Relancez `npm run db:seed` pour appliquer les changements
 
 ## Licence
 
