@@ -204,7 +204,12 @@
     "backToList": "Retour aux parcours",
     "modulesInPath": "Modules du parcours",
     "lessonsCompleted": "leçons terminées",
-    "required": "Requis"
+    "required": "Requis",
+    "viewProgram": "Voir le programme",
+    "program": "Programme",
+    "fullProgram": "Programme complet du parcours",
+    "backToCursus": "Retour au parcours",
+    "completed": "terminé"
   },
   "simulator": {
     "title": "Simulateur G-Code",

@@ -204,7 +204,12 @@
     "backToList": "Back to paths",
     "modulesInPath": "Modules in this path",
     "lessonsCompleted": "lessons completed",
-    "required": "Required"
+    "required": "Required",
+    "viewProgram": "View program",
+    "program": "Program",
+    "fullProgram": "Full learning path program",
+    "backToCursus": "Back to path",
+    "completed": "completed"
   },
   "simulator": {
     "title": "G-Code Simulator",

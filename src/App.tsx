@@ -12,6 +12,7 @@ import Leaderboard from './pages/Leaderboard'
 import Profile from './pages/Profile'
 import CursusSelect from './pages/CursusSelect'
 import CursusDetail from './pages/CursusDetail'
+import CursusProgram from './pages/CursusProgram'
 import GCodeSimulator from './pages/GCodeSimulator'
 import PLCSimulator from './pages/PLCSimulator'
 import GRAFCETEditor from './pages/GRAFCETEditor'
@@ -75,6 +76,7 @@ export default function App() {
         <Route path="dashboard" element={<Dashboard />} />
         <Route path="cursus" element={<CursusSelect />} />
         <Route path="cursus/:id" element={<CursusDetail />} />
+        <Route path="cursus/:id/program" element={<CursusProgram />} />
         <Route path="modules" element={<Modules />} />
         <Route path="modules/:id" element={<ModuleDetail />} />
         <Route path="lessons/:id" element={<Lesson />} />

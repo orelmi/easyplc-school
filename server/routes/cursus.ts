@@ -94,6 +94,9 @@ router.get('/:id', authMiddleware, async (req: AuthRequest, res: Response) => {
                     progress: {
                       where: { userId: req.userId },
                     },
+                    translations: {
+                      where: { language: lang },
+                    },
                   },
                 },
                 translations: {

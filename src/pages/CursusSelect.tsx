@@ -42,9 +42,8 @@ export default function CursusSelect() {
 
       <div className="grid gap-6 md:grid-cols-2">
         {cursusList.map((cursus) => (
-          <Link
+          <div
             key={cursus.id}
-            to={`/cursus/${cursus.id}`}
             className="card hover:shadow-lg transition-shadow"
           >
             <div className="flex items-start gap-4">
@@ -96,9 +95,25 @@ export default function CursusSelect() {
                     </span>
                   </div>
                 )}
+
+                <div className="flex items-center gap-2 mt-4">
+                  <Link
+                    to={`/cursus/${cursus.id}`}
+                    className="btn btn-primary btn-sm"
+                    style={{ backgroundColor: cursus.color }}
+                  >
+                    {cursus.progress > 0 ? t('modules.continue') : t('modules.start')}
+                  </Link>
+                  <Link
+                    to={`/cursus/${cursus.id}/program`}
+                    className="btn btn-secondary btn-sm"
+                  >
+                    {t('cursus.viewProgram')}
+                  </Link>
+                </div>
               </div>
             </div>
-          </Link>
+          </div>
         ))}
       </div>
 

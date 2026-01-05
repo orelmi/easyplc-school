@@ -204,7 +204,12 @@
     "backToList": "Volver a las rutas",
     "modulesInPath": "Módulos en esta ruta",
     "lessonsCompleted": "lecciones completadas",
-    "required": "Requerido"
+    "required": "Requerido",
+    "viewProgram": "Ver programa",
+    "program": "Programa",
+    "fullProgram": "Programa completo de la ruta",
+    "backToCursus": "Volver a la ruta",
+    "completed": "completado"
   },
   "simulator": {
     "title": "Simulador G-Code",
