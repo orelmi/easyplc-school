@@ -1,6 +1,13 @@
 import { useAuthStore } from '../store/authStore'
+import i18n from '../i18n'
 
 const API_URL = '/api'
+
+function withLang(endpoint: string): string {
+  const lang = i18n.language || 'fr'
+  const separator = endpoint.includes('?') ? '&' : '?'
+  return `${endpoint}${separator}lang=${lang}`
+}
 
 async function fetchWithAuth(endpoint: string, options: RequestInit = {}) {
   const token = useAuthStore.getState().token
