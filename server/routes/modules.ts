@@ -85,6 +85,9 @@ router.get('/:id', authMiddleware, async (req: AuthRequest, res: Response) => {
               where: { userId: req.userId },
             },
             quizzes: true,
+            translations: {
+              where: { language: lang }
+            },
           },
         },
         translations: {
@@ -107,17 +110,20 @@ router.get('/:id', authMiddleware, async (req: AuthRequest, res: Response) => {
       return res.status(403).json({ error: 'Module verrouillé', requiredXp: module.requiredXp })
     }
 
-    const lessonsWithProgress = module.lessons.map((lesson) => ({
-      id: lesson.id,
-      title: lesson.title,
-      description: lesson.description,
-      order: lesson.order,
-      xpReward: lesson.xpReward,
-      duration: lesson.duration,
-      quizCount: lesson.quizzes.length,
-      completed: lesson.progress.some((p) => p.completed),
-      score: lesson.progress[0]?.score || null,
-    }))
+    const lessonsWithProgress = module.lessons.map((lesson) => {
+      const lessonTrans = (lesson as any).translations?.[0]
+      return {
+        id: lesson.id,
+        title: lessonTrans?.title || lesson.title,
+        description: lessonTrans?.description || lesson.description,
+        order: lesson.order,
+        xpReward: lesson.xpReward,
+        duration: lesson.duration,
+        quizCount: lesson.quizzes.length,
+        completed: lesson.progress.some((p) => p.completed),
+        score: lesson.progress[0]?.score || null,
+      }
+    })
 
     // Get translated content if available
     const translation = (module as any).translations?.[0]
