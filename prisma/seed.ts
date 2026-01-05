@@ -4497,6 +4497,270 @@ async function main() {
         explanation: "Plus le programme est long, plus le temps de cycle augmente, ce qui peut ralentir la réactivité du système.",
         order: 5,
       },
+      // Quiz Module 1 - Lesson 4 (5 questions) - Les marques et fabricants
+      {
+        lessonId: lesson1_4.id,
+        question: "Quel fabricant d'automates a environ 30% de parts de marché mondial ?",
+        options: JSON.stringify([
+          "Allen-Bradley",
+          "Siemens",
+          "Schneider Electric",
+          "Omron"
+        ]),
+        correctIndex: 1,
+        explanation: "Siemens est le leader mondial avec environ 30% de parts de marché.",
+        order: 1,
+      },
+      {
+        lessonId: lesson1_4.id,
+        question: "Quel est le logiciel de programmation de Siemens ?",
+        options: JSON.stringify([
+          "Unity Pro",
+          "TIA Portal",
+          "RSLogix",
+          "GX Works"
+        ]),
+        correctIndex: 1,
+        explanation: "TIA Portal (Totally Integrated Automation Portal) est l'environnement de programmation de Siemens.",
+        order: 2,
+      },
+      {
+        lessonId: lesson1_4.id,
+        question: "Quelle est la gamme haut de gamme de Siemens ?",
+        options: JSON.stringify([
+          "S7-300",
+          "S7-1200",
+          "S7-1500",
+          "LOGO!"
+        ]),
+        correctIndex: 2,
+        explanation: "Le S7-1500 est la gamme haute performance de Siemens, offrant les meilleures performances.",
+        order: 3,
+      },
+      {
+        lessonId: lesson1_4.id,
+        question: "Quel fabricant français propose la gamme Modicon ?",
+        options: JSON.stringify([
+          "Siemens",
+          "Schneider Electric",
+          "Omron",
+          "ABB"
+        ]),
+        correctIndex: 1,
+        explanation: "Schneider Electric, champion français, propose la gamme Modicon.",
+        order: 4,
+      },
+      {
+        lessonId: lesson1_4.id,
+        question: "Quel critère influence souvent le choix d'un fabricant d'automates ?",
+        options: JSON.stringify([
+          "La couleur de l'automate",
+          "Le secteur d'activité et les compétences disponibles",
+          "Le poids de l'automate",
+          "Le prix uniquement"
+        ]),
+        correctIndex: 1,
+        explanation: "Le choix dépend du secteur, de la région et des compétences disponibles dans l'entreprise.",
+        order: 5,
+      },
+      // Quiz Module 1 - Lesson 5 (5 questions) - L'adressage des E/S
+      {
+        lessonId: lesson1_5.id,
+        question: "Que signifie %I0.3 en notation Siemens ?",
+        options: JSON.stringify([
+          "Sortie 3 de l'octet 0",
+          "Entrée bit 3 de l'octet 0",
+          "Mémoire interne 3",
+          "Entrée mot 3"
+        ]),
+        correctIndex: 1,
+        explanation: "%I0.3 signifie Entrée (I) bit 3 de l'octet 0.",
+        order: 1,
+      },
+      {
+        lessonId: lesson1_5.id,
+        question: "Quelle lettre désigne une sortie en notation IEC ?",
+        options: JSON.stringify([
+          "I",
+          "Q",
+          "M",
+          "S"
+        ]),
+        correctIndex: 1,
+        explanation: "Q (Query/Output) désigne les sorties, I les entrées, M la mémoire interne.",
+        order: 2,
+      },
+      {
+        lessonId: lesson1_5.id,
+        question: "Que représente %IW0 en notation Siemens ?",
+        options: JSON.stringify([
+          "Un bit d'entrée",
+          "Un mot d'entrée (16 bits)",
+          "Une sortie",
+          "Un octet de mémoire"
+        ]),
+        correctIndex: 1,
+        explanation: "W = Word (mot de 16 bits), donc %IW0 est un mot d'entrée.",
+        order: 3,
+      },
+      {
+        lessonId: lesson1_5.id,
+        question: "Quelle bonne pratique est recommandée pour l'adressage ?",
+        options: JSON.stringify([
+          "Utiliser uniquement des adresses numériques",
+          "Utiliser des noms symboliques comme Bouton_Start",
+          "Ne pas documenter les adresses",
+          "Changer les adresses fréquemment"
+        ]),
+        correctIndex: 1,
+        explanation: "Les noms symboliques (Bouton_Start plutôt que %I0.0) rendent le programme plus lisible.",
+        order: 4,
+      },
+      {
+        lessonId: lesson1_5.id,
+        question: "Quelle notation utilise Allen-Bradley pour les entrées ?",
+        options: JSON.stringify([
+          "%I0.0",
+          "I:0/0",
+          "E0.0",
+          "IN[0]"
+        ]),
+        correctIndex: 1,
+        explanation: "Allen-Bradley utilise la notation I:module/bit, par exemple I:0/0.",
+        order: 5,
+      },
+      // Quiz Module 1 - Lesson 6 (5 questions) - Sécurité et normes
+      {
+        lessonId: lesson1_6.id,
+        question: "Quelle norme définit la sécurité des machines - équipement électrique ?",
+        options: JSON.stringify([
+          "EN 60947",
+          "EN 60204-1",
+          "EN 62061",
+          "EN ISO 9001"
+        ]),
+        correctIndex: 1,
+        explanation: "EN 60204-1 définit la sécurité des machines concernant l'équipement électrique.",
+        order: 1,
+      },
+      {
+        lessonId: lesson1_6.id,
+        question: "Combien de niveaux de performance (PL) définit la norme EN ISO 13849 ?",
+        options: JSON.stringify([
+          "3 niveaux",
+          "4 niveaux",
+          "5 niveaux (a à e)",
+          "10 niveaux"
+        ]),
+        correctIndex: 2,
+        explanation: "La norme définit 5 niveaux : PL a (risque faible) à PL e (risque très élevé).",
+        order: 2,
+      },
+      {
+        lessonId: lesson1_6.id,
+        question: "Pourquoi les circuits d'arrêt d'urgence utilisent-ils un double canal ?",
+        options: JSON.stringify([
+          "Pour économiser de l'énergie",
+          "Pour la redondance et la sécurité",
+          "Pour la vitesse",
+          "Pour réduire les coûts"
+        ]),
+        correctIndex: 1,
+        explanation: "Le double canal assure la redondance : si un canal est défaillant, l'autre assure la sécurité.",
+        order: 3,
+      },
+      {
+        lessonId: lesson1_6.id,
+        question: "Quel type d'automate est requis pour les fonctions de sécurité critiques ?",
+        options: JSON.stringify([
+          "N'importe quel automate",
+          "Un automate de sécurité (ex: S7-1500F)",
+          "Un micro-automate",
+          "Un automate virtuel"
+        ]),
+        correctIndex: 1,
+        explanation: "Les automates de sécurité (F = Failsafe) ont une architecture redondante certifiée SIL 3 / PL e.",
+        order: 4,
+      },
+      {
+        lessonId: lesson1_6.id,
+        question: "Quel fabricant propose les relais de sécurité PNOZ ?",
+        options: JSON.stringify([
+          "Siemens",
+          "Schneider",
+          "Pilz",
+          "ABB"
+        ]),
+        correctIndex: 2,
+        explanation: "Pilz est spécialisé dans la sécurité et propose les relais PNOZ et automates PSS.",
+        order: 5,
+      },
+      // Quiz Module 1 - Lesson 7 (5 questions) - Communication et réseaux
+      {
+        lessonId: lesson1_7.id,
+        question: "Quel niveau de la pyramide CIM gère les commandes en temps réel ?",
+        options: JSON.stringify([
+          "Niveau entreprise",
+          "Niveau atelier",
+          "Niveau terrain",
+          "Niveau gestion"
+        ]),
+        correctIndex: 2,
+        explanation: "Le niveau terrain gère les capteurs, actionneurs et la commande en temps réel.",
+        order: 1,
+      },
+      {
+        lessonId: lesson1_7.id,
+        question: "Quel protocole est le plus utilisé pour la communication terrain ?",
+        options: JSON.stringify([
+          "HTTP",
+          "PROFINET / Ethernet/IP",
+          "FTP",
+          "SMTP"
+        ]),
+        correctIndex: 1,
+        explanation: "PROFINET (Siemens) et Ethernet/IP (Allen-Bradley) sont les standards industriels actuels.",
+        order: 2,
+      },
+      {
+        lessonId: lesson1_7.id,
+        question: "Quel est l'avantage principal de PROFINET par rapport à PROFIBUS ?",
+        options: JSON.stringify([
+          "Moins cher",
+          "Plus lent",
+          "Basé sur Ethernet, plus rapide et flexible",
+          "Plus ancien"
+        ]),
+        correctIndex: 2,
+        explanation: "PROFINET utilise Ethernet industriel, offrant plus de vitesse et de flexibilité.",
+        order: 3,
+      },
+      {
+        lessonId: lesson1_7.id,
+        question: "Que signifie IHM dans le contexte industriel ?",
+        options: JSON.stringify([
+          "Interface Homme Machine",
+          "Indicateur Haute Mesure",
+          "Installation Hydraulique Motorisée",
+          "Identifiant Haute Mémoire"
+        ]),
+        correctIndex: 0,
+        explanation: "IHM signifie Interface Homme Machine, l'écran de supervision et commande.",
+        order: 4,
+      },
+      {
+        lessonId: lesson1_7.id,
+        question: "Quel bus de terrain était dominant avant Ethernet industriel ?",
+        options: JSON.stringify([
+          "USB",
+          "PROFIBUS / DeviceNet",
+          "HDMI",
+          "WiFi"
+        ]),
+        correctIndex: 1,
+        explanation: "PROFIBUS (Siemens) et DeviceNet (Allen-Bradley) dominaient avant l'arrivée d'Ethernet industriel.",
+        order: 5,
+      },
       // Quiz Module 2 - Lesson 1 (5 questions)
       {
         lessonId: lesson2_1.id,
@@ -4670,6 +4934,270 @@ async function main() {
         explanation: "Le voyant s'allume quand le moteur est arrêté, donc Voyant = NON(Moteur_en_marche).",
         order: 5,
       },
+      // Quiz Module 2 - Lesson 4 (5 questions) - NAND et NOR
+      {
+        lessonId: lesson2_4.id,
+        question: "Que signifie NAND ?",
+        options: JSON.stringify([
+          "NOT AND (NON-ET)",
+          "NOT ANOTHER",
+          "NEUTRAL AND",
+          "NEGATIVE AND"
+        ]),
+        correctIndex: 0,
+        explanation: "NAND signifie NOT AND, soit NON-ET en français. C'est l'inverse de la fonction ET.",
+        order: 1,
+      },
+      {
+        lessonId: lesson2_4.id,
+        question: "Quelle est la sortie de A NAND B si A=1 et B=1 ?",
+        options: JSON.stringify([
+          "1",
+          "0",
+          "Indéfini",
+          "-1"
+        ]),
+        correctIndex: 1,
+        explanation: "NAND est l'inverse de ET. Si A=1 et B=1, ET=1, donc NAND=0.",
+        order: 2,
+      },
+      {
+        lessonId: lesson2_4.id,
+        question: "Quelle est la sortie de A NOR B si A=0 et B=0 ?",
+        options: JSON.stringify([
+          "0",
+          "1",
+          "Indéfini",
+          "-1"
+        ]),
+        correctIndex: 1,
+        explanation: "NOR est l'inverse de OU. Si A=0 et B=0, OU=0, donc NOR=1.",
+        order: 3,
+      },
+      {
+        lessonId: lesson2_4.id,
+        question: "Pourquoi la porte NAND est-elle appelée 'porte universelle' ?",
+        options: JSON.stringify([
+          "Elle est utilisée partout",
+          "Elle peut recréer toutes les autres fonctions logiques",
+          "Elle est la plus rapide",
+          "Elle consomme moins d'énergie"
+        ]),
+        correctIndex: 1,
+        explanation: "Avec des portes NAND uniquement, on peut recréer ET, OU, NON et toutes les autres fonctions.",
+        order: 4,
+      },
+      {
+        lessonId: lesson2_4.id,
+        question: "Quelle est la formule de NAND(A,B) ?",
+        options: JSON.stringify([
+          "A ET B",
+          "NON(A ET B)",
+          "A OU B",
+          "NON(A) ET NON(B)"
+        ]),
+        correctIndex: 1,
+        explanation: "NAND(A,B) = NON(A ET B), c'est l'inverse de la fonction ET.",
+        order: 5,
+      },
+      // Quiz Module 2 - Lesson 5 (5 questions) - XOR
+      {
+        lessonId: lesson2_5.id,
+        question: "Quelle est la sortie de A XOR B si A=1 et B=1 ?",
+        options: JSON.stringify([
+          "1",
+          "0",
+          "Indéfini",
+          "2"
+        ]),
+        correctIndex: 1,
+        explanation: "XOR donne 1 si exactement une entrée est à 1. Ici les deux sont à 1, donc XOR=0.",
+        order: 1,
+      },
+      {
+        lessonId: lesson2_5.id,
+        question: "Quelle est la sortie de A XOR B si A=0 et B=1 ?",
+        options: JSON.stringify([
+          "0",
+          "1",
+          "Indéfini",
+          "-1"
+        ]),
+        correctIndex: 1,
+        explanation: "XOR donne 1 si exactement une entrée est à 1. Ici B=1 uniquement, donc XOR=1.",
+        order: 2,
+      },
+      {
+        lessonId: lesson2_5.id,
+        question: "Quel symbole représente la fonction XOR ?",
+        options: JSON.stringify([
+          "A · B",
+          "A + B",
+          "A ⊕ B",
+          "A ÷ B"
+        ]),
+        correctIndex: 2,
+        explanation: "Le symbole ⊕ (cercle avec un plus) représente la fonction XOR.",
+        order: 3,
+      },
+      {
+        lessonId: lesson2_5.id,
+        question: "Quelle application utilise couramment la fonction XOR ?",
+        options: JSON.stringify([
+          "Démarrage moteur",
+          "Commande va-et-vient (interrupteur d'escalier)",
+          "Alarme incendie",
+          "Climatisation"
+        ]),
+        correctIndex: 1,
+        explanation: "Le va-et-vient (deux interrupteurs pour une lampe) utilise la logique XOR.",
+        order: 4,
+      },
+      {
+        lessonId: lesson2_5.id,
+        question: "Comment peut-on exprimer XOR avec ET, OU et NON ?",
+        options: JSON.stringify([
+          "A ET B",
+          "(A OU B) ET NON(A ET B)",
+          "A OU NON(B)",
+          "NON(A) OU B"
+        ]),
+        correctIndex: 1,
+        explanation: "XOR = (A OU B) ET NON(A ET B), soit 'un ou l'autre mais pas les deux'.",
+        order: 5,
+      },
+      // Quiz Module 2 - Lesson 6 (5 questions) - Simplification
+      {
+        lessonId: lesson2_6.id,
+        question: "Que vaut A ET 1 selon l'algèbre de Boole ?",
+        options: JSON.stringify([
+          "0",
+          "1",
+          "A",
+          "NON(A)"
+        ]),
+        correctIndex: 2,
+        explanation: "C'est la propriété d'identité : A ET 1 = A.",
+        order: 1,
+      },
+      {
+        lessonId: lesson2_6.id,
+        question: "Que vaut A OU NON(A) ?",
+        options: JSON.stringify([
+          "0",
+          "1",
+          "A",
+          "Indéterminé"
+        ]),
+        correctIndex: 1,
+        explanation: "C'est la propriété de complémentarité : A OU NON(A) = 1 (toujours vrai).",
+        order: 2,
+      },
+      {
+        lessonId: lesson2_6.id,
+        question: "Selon le théorème de De Morgan, NON(A ET B) équivaut à ?",
+        options: JSON.stringify([
+          "NON(A) ET NON(B)",
+          "NON(A) OU NON(B)",
+          "A OU B",
+          "A ET B"
+        ]),
+        correctIndex: 1,
+        explanation: "De Morgan : NON(A ET B) = NON(A) OU NON(B).",
+        order: 3,
+      },
+      {
+        lessonId: lesson2_6.id,
+        question: "Que vaut A OU (A ET B) selon la propriété d'absorption ?",
+        options: JSON.stringify([
+          "B",
+          "A ET B",
+          "A",
+          "1"
+        ]),
+        correctIndex: 2,
+        explanation: "Absorption : A OU (A ET B) = A. Le terme (A ET B) est 'absorbé' par A.",
+        order: 4,
+      },
+      {
+        lessonId: lesson2_6.id,
+        question: "Quel est l'avantage de simplifier une équation logique ?",
+        options: JSON.stringify([
+          "Rendre le programme plus long",
+          "Moins de composants, moins de coût, meilleure fiabilité",
+          "Utiliser plus de mémoire",
+          "Ralentir le système"
+        ]),
+        correctIndex: 1,
+        explanation: "Une équation simplifiée nécessite moins de composants, réduit les coûts et améliore la fiabilité.",
+        order: 5,
+      },
+      // Quiz Module 2 - Lesson 7 (5 questions) - Karnaugh
+      {
+        lessonId: lesson2_7.id,
+        question: "À quoi sert un tableau de Karnaugh ?",
+        options: JSON.stringify([
+          "À programmer un automate",
+          "À simplifier graphiquement les fonctions logiques",
+          "À dessiner des schémas électriques",
+          "À calculer des temps de cycle"
+        ]),
+        correctIndex: 1,
+        explanation: "Le tableau de Karnaugh est une méthode graphique pour simplifier les fonctions logiques.",
+        order: 1,
+      },
+      {
+        lessonId: lesson2_7.id,
+        question: "Combien de cases a un tableau de Karnaugh à 2 variables ?",
+        options: JSON.stringify([
+          "2 cases",
+          "4 cases",
+          "8 cases",
+          "16 cases"
+        ]),
+        correctIndex: 1,
+        explanation: "Avec 2 variables, il y a 2² = 4 combinaisons possibles, donc 4 cases.",
+        order: 2,
+      },
+      {
+        lessonId: lesson2_7.id,
+        question: "Quelle taille de groupe est valide dans un tableau de Karnaugh ?",
+        options: JSON.stringify([
+          "3 cases",
+          "5 cases",
+          "2, 4, 8 ou 16 cases (puissances de 2)",
+          "N'importe quel nombre"
+        ]),
+        correctIndex: 2,
+        explanation: "Les groupes doivent contenir un nombre de cases égal à une puissance de 2.",
+        order: 3,
+      },
+      {
+        lessonId: lesson2_7.id,
+        question: "Dans un tableau de Karnaugh, les bords sont-ils adjacents ?",
+        options: JSON.stringify([
+          "Non, jamais",
+          "Oui, le tableau est cyclique",
+          "Seulement en horizontal",
+          "Seulement en vertical"
+        ]),
+        correctIndex: 1,
+        explanation: "Le tableau de Karnaugh est cyclique : les bords gauche/droit et haut/bas sont adjacents.",
+        order: 4,
+      },
+      {
+        lessonId: lesson2_7.id,
+        question: "Pour combien de variables le tableau de Karnaugh devient-il peu pratique ?",
+        options: JSON.stringify([
+          "2 variables",
+          "3 variables",
+          "5 variables et plus",
+          "Il est toujours pratique"
+        ]),
+        correctIndex: 2,
+        explanation: "À partir de 5 variables, on utilise plutôt des logiciels ou la méthode de Quine-McCluskey.",
+        order: 5,
+      },
       // Quiz Module 3 - Lesson 1 (5 questions)
       {
         lessonId: lesson3_1.id,
@@ -4802,6 +5330,336 @@ async function main() {
         explanation: "Un contact NF sur STOP coupe le courant quand on appuie sur le bouton, arrêtant ainsi le moteur.",
         order: 5,
       },
+      // Quiz Module 3 - Lesson 3 (5 questions) - Circuit marche/arrêt
+      {
+        lessonId: lesson3_3.id,
+        question: "Dans un circuit marche/arrêt avec auto-maintien, quel élément permet de maintenir le moteur en marche après avoir relâché START ?",
+        options: JSON.stringify([
+          "Le bouton STOP",
+          "Le contact du moteur en parallèle avec START",
+          "Le temporisateur",
+          "La bobine inversée"
+        ]),
+        correctIndex: 1,
+        explanation: "Le contact du moteur en parallèle avec START permet l'auto-maintien : le moteur reste alimenté via son propre contact.",
+        order: 1,
+      },
+      {
+        lessonId: lesson3_3.id,
+        question: "Pourquoi utilise-t-on un contact normalement fermé (NF) pour le bouton STOP ?",
+        options: JSON.stringify([
+          "Pour économiser de l'énergie",
+          "Pour la sécurité - si le fil est coupé, le moteur s'arrête",
+          "Pour la vitesse de réaction",
+          "C'est moins cher"
+        ]),
+        correctIndex: 1,
+        explanation: "Un contact NF assure la sécurité : si le fil est coupé ou le bouton défaillant, le circuit s'ouvre et le moteur s'arrête.",
+        order: 2,
+      },
+      {
+        lessonId: lesson3_3.id,
+        question: "Quelle est la priorité dans un circuit marche/arrêt standard ?",
+        options: JSON.stringify([
+          "START a la priorité sur STOP",
+          "STOP a la priorité sur START",
+          "Ils ont la même priorité",
+          "Cela dépend du programme"
+        ]),
+        correctIndex: 1,
+        explanation: "STOP a toujours la priorité pour des raisons de sécurité. Le contact NF de STOP est en série avec tout le circuit.",
+        order: 3,
+      },
+      {
+        lessonId: lesson3_3.id,
+        question: "Comment appelle-t-on le principe du relais à accrochage utilisé dans ce circuit ?",
+        options: JSON.stringify([
+          "Auto-maintien",
+          "Auto-destruction",
+          "Auto-régulation",
+          "Auto-calibration"
+        ]),
+        correctIndex: 0,
+        explanation: "L'auto-maintien (ou relais à accrochage) permet au circuit de rester actif après une impulsion de démarrage.",
+        order: 4,
+      },
+      {
+        lessonId: lesson3_3.id,
+        question: "Ce circuit est la base de quel pourcentage des commandes de moteurs en industrie ?",
+        options: JSON.stringify([
+          "10%",
+          "50%",
+          "90%",
+          "100%"
+        ]),
+        correctIndex: 2,
+        explanation: "Le circuit marche/arrêt avec auto-maintien est la base d'environ 90% des commandes de moteurs industriels.",
+        order: 5,
+      },
+      // Quiz Module 3 - Lesson 4 (5 questions) - Temporisateurs
+      {
+        lessonId: lesson3_4.id,
+        question: "Que fait un temporisateur TON ?",
+        options: JSON.stringify([
+          "La sortie passe à 1 immédiatement",
+          "La sortie passe à 1 après un délai si l'entrée reste à 1",
+          "La sortie reste à 1 après que l'entrée passe à 0",
+          "La sortie génère des impulsions"
+        ]),
+        correctIndex: 1,
+        explanation: "TON (Timer ON Delay) : la sortie s'active après le délai défini, si l'entrée reste à 1.",
+        order: 1,
+      },
+      {
+        lessonId: lesson3_4.id,
+        question: "Que fait un temporisateur TOF ?",
+        options: JSON.stringify([
+          "Retarde l'activation",
+          "Maintient la sortie pendant un temps après que l'entrée passe à 0",
+          "Génère une impulsion",
+          "Compte des événements"
+        ]),
+        correctIndex: 1,
+        explanation: "TOF (Timer OFF Delay) : la sortie reste à 1 pendant le délai défini après que l'entrée passe à 0.",
+        order: 2,
+      },
+      {
+        lessonId: lesson3_4.id,
+        question: "Quelle est l'application typique d'un TOF ?",
+        options: JSON.stringify([
+          "Anti-rebond de bouton",
+          "Maintien d'une ventilation après arrêt machine",
+          "Comptage de pièces",
+          "Démarrage progressif"
+        ]),
+        correctIndex: 1,
+        explanation: "TOF est souvent utilisé pour maintenir une ventilation ou un éclairage après l'arrêt de la machine.",
+        order: 3,
+      },
+      {
+        lessonId: lesson3_4.id,
+        question: "Que fait un temporisateur TP (Pulse) ?",
+        options: JSON.stringify([
+          "Génère une impulsion de durée fixe",
+          "Retarde l'activation",
+          "Compte des événements",
+          "Mesure une température"
+        ]),
+        correctIndex: 0,
+        explanation: "TP génère une impulsion de durée fixe (définie par PT) quand l'entrée passe à 1.",
+        order: 4,
+      },
+      {
+        lessonId: lesson3_4.id,
+        question: "Comment note-t-on un temps de 5 secondes dans un temporisateur ?",
+        options: JSON.stringify([
+          "5000",
+          "T#5s",
+          "5 SEC",
+          "PT=5"
+        ]),
+        correctIndex: 1,
+        explanation: "La notation standard IEC est T#5s (T# suivi de la durée et de l'unité).",
+        order: 5,
+      },
+      // Quiz Module 3 - Lesson 5 (5 questions) - Compteurs
+      {
+        lessonId: lesson3_5.id,
+        question: "Que signifie CTU ?",
+        options: JSON.stringify([
+          "Counter Total Universal",
+          "Count Up (compteur incrémental)",
+          "Control Timer Unit",
+          "Counter Time Unit"
+        ]),
+        correctIndex: 1,
+        explanation: "CTU signifie Count Up, un compteur qui incrémente à chaque front montant sur l'entrée CU.",
+        order: 1,
+      },
+      {
+        lessonId: lesson3_5.id,
+        question: "Quand la sortie Q d'un compteur CTU passe-t-elle à 1 ?",
+        options: JSON.stringify([
+          "Quand CV = 0",
+          "Quand CV >= PV (valeur présélectionnée)",
+          "Après un délai",
+          "Quand CU passe à 1"
+        ]),
+        correctIndex: 1,
+        explanation: "La sortie Q devient vraie quand la valeur courante CV atteint ou dépasse la valeur présélectionnée PV.",
+        order: 2,
+      },
+      {
+        lessonId: lesson3_5.id,
+        question: "Quel compteur est idéal pour un système de dosage (compte à rebours) ?",
+        options: JSON.stringify([
+          "CTU (Count Up)",
+          "CTD (Count Down)",
+          "CTUD",
+          "TON"
+        ]),
+        correctIndex: 1,
+        explanation: "CTD (Count Down) décrémente depuis PV et s'arrête quand CV=0, parfait pour le dosage.",
+        order: 3,
+      },
+      {
+        lessonId: lesson3_5.id,
+        question: "Que permet de faire un compteur CTUD ?",
+        options: JSON.stringify([
+          "Compter uniquement vers le haut",
+          "Compter uniquement vers le bas",
+          "Compter dans les deux sens (up et down)",
+          "Mesurer le temps"
+        ]),
+        correctIndex: 2,
+        explanation: "CTUD (Count Up/Down) peut incrémenter (CU) ou décrémenter (CD), utile pour la gestion de stock.",
+        order: 4,
+      },
+      {
+        lessonId: lesson3_5.id,
+        question: "Comment remet-on un compteur CTU à zéro ?",
+        options: JSON.stringify([
+          "En coupant l'alimentation",
+          "Automatiquement après PV",
+          "Avec l'entrée Reset (R)",
+          "Ce n'est pas possible"
+        ]),
+        correctIndex: 2,
+        explanation: "L'entrée Reset (R) remet la valeur courante CV à zéro et la sortie Q à 0.",
+        order: 5,
+      },
+      // Quiz Module 3 - Lesson 6 (5 questions) - Fronts
+      {
+        lessonId: lesson3_6.id,
+        question: "Qu'est-ce qu'un front montant ?",
+        options: JSON.stringify([
+          "Un signal qui reste à 1",
+          "Le moment où un signal passe de 0 à 1",
+          "Un signal qui oscille",
+          "Un signal analogique"
+        ]),
+        correctIndex: 1,
+        explanation: "Le front montant est l'instant où le signal passe de l'état 0 à l'état 1.",
+        order: 1,
+      },
+      {
+        lessonId: lesson3_6.id,
+        question: "Pendant combien de cycles la sortie d'une détection de front est-elle à 1 ?",
+        options: JSON.stringify([
+          "Tant que l'entrée est à 1",
+          "Un seul cycle automate",
+          "5 cycles",
+          "Jusqu'au reset"
+        ]),
+        correctIndex: 1,
+        explanation: "La détection de front génère une impulsion d'un seul cycle automate.",
+        order: 2,
+      },
+      {
+        lessonId: lesson3_6.id,
+        question: "Quel symbole représente la détection de front montant en LADDER ?",
+        options: JSON.stringify([
+          "--[ ]--",
+          "--[/]--",
+          "--[P]-- ou R_TRIG",
+          "--( )--"
+        ]),
+        correctIndex: 2,
+        explanation: "Le symbole [P] ou l'instruction R_TRIG représente la détection de front montant.",
+        order: 3,
+      },
+      {
+        lessonId: lesson3_6.id,
+        question: "Pourquoi utilise-t-on la détection de front pour le comptage ?",
+        options: JSON.stringify([
+          "Pour compter plus vite",
+          "Pour compter une seule fois par appui (pas plusieurs fois)",
+          "Pour économiser de la mémoire",
+          "Pour simplifier le programme"
+        ]),
+        correctIndex: 1,
+        explanation: "Sans détection de front, le compteur s'incrémenterait à chaque cycle tant que le bouton est appuyé.",
+        order: 4,
+      },
+      {
+        lessonId: lesson3_6.id,
+        question: "Quelle est l'application d'une fonction toggle (bascule) ?",
+        options: JSON.stringify([
+          "Mesurer le temps",
+          "Inverser un état à chaque appui sur un bouton",
+          "Compter des pièces",
+          "Démarrer un moteur"
+        ]),
+        correctIndex: 1,
+        explanation: "La fonction toggle inverse l'état à chaque front montant, comme un interrupteur ON/OFF.",
+        order: 5,
+      },
+      // Quiz Module 3 - Lesson 7 (5 questions) - Blocs fonctionnels
+      {
+        lessonId: lesson3_7.id,
+        question: "Quelle est la différence principale entre FC et FB ?",
+        options: JSON.stringify([
+          "FC est plus rapide",
+          "FB conserve ses données entre les appels (mémoire), FC non",
+          "FC est plus récent",
+          "Il n'y a pas de différence"
+        ]),
+        correctIndex: 1,
+        explanation: "Un FB (Function Block) possède une mémoire persistante, contrairement à une FC (Function).",
+        order: 1,
+      },
+      {
+        lessonId: lesson3_7.id,
+        question: "Pourquoi utilise-t-on des blocs fonctionnels ?",
+        options: JSON.stringify([
+          "Pour rendre le programme plus long",
+          "Pour la lisibilité, la maintenance et la réutilisation",
+          "Parce que c'est obligatoire",
+          "Pour ralentir l'exécution"
+        ]),
+        correctIndex: 1,
+        explanation: "Les blocs fonctionnels améliorent la lisibilité, facilitent la maintenance et permettent la réutilisation du code.",
+        order: 2,
+      },
+      {
+        lessonId: lesson3_7.id,
+        question: "Qu'est-ce qu'une instance de FB ?",
+        options: JSON.stringify([
+          "Une copie du code",
+          "Un FB utilisé avec ses propres données",
+          "Un FB supprimé",
+          "Un FB désactivé"
+        ]),
+        correctIndex: 1,
+        explanation: "Une instance est une utilisation du FB avec son propre jeu de données. Même code, données différentes.",
+        order: 3,
+      },
+      {
+        lessonId: lesson3_7.id,
+        question: "Quel type de bloc est le point d'entrée du programme (Main) ?",
+        options: JSON.stringify([
+          "FC (Function)",
+          "FB (Function Block)",
+          "OB (Organization Block)",
+          "DB (Data Block)"
+        ]),
+        correctIndex: 2,
+        explanation: "OB1 (Organization Block) est le bloc principal qui est appelé cycliquement par l'automate.",
+        order: 4,
+      },
+      {
+        lessonId: lesson3_7.id,
+        question: "Les temporisateurs et compteurs sont-ils des FC ou des FB ?",
+        options: JSON.stringify([
+          "Des FC car ils n'ont pas besoin de mémoire",
+          "Des FB car ils conservent leur état entre les cycles",
+          "Ni l'un ni l'autre",
+          "Ça dépend du fabricant"
+        ]),
+        correctIndex: 1,
+        explanation: "Les timers et compteurs sont des FB car ils doivent mémoriser leur état (valeur courante, sortie, etc.).",
+        order: 5,
+      },
       // Quiz Module 4 - Lesson 1 (5 questions)
       {
         lessonId: lesson4_1.id,
@@ -4868,6 +5726,336 @@ async function main() {
         explanation: "Un capteur optique utilise un faisceau lumineux (infrarouge, laser, etc.) pour détecter la présence d'un objet.",
         order: 5,
       },
+      // Quiz Module 4 - Lesson 2 (5 questions) - Capteurs analogiques
+      {
+        lessonId: lesson4_2.id,
+        question: "Quel signal est privilégié en industrie pour les longues distances ?",
+        options: JSON.stringify([
+          "0-10V",
+          "4-20mA",
+          "0-5V",
+          "RS232"
+        ]),
+        correctIndex: 1,
+        explanation: "Le signal 4-20mA est privilégié car il est immunisé au bruit et permet de détecter une coupure de fil (0mA).",
+        order: 1,
+      },
+      {
+        lessonId: lesson4_2.id,
+        question: "Pourquoi le signal 4-20mA commence-t-il à 4mA et non à 0mA ?",
+        options: JSON.stringify([
+          "Pour économiser de l'énergie",
+          "Pour détecter une coupure de fil (0mA = défaut)",
+          "C'est une norme historique",
+          "Pour la compatibilité"
+        ]),
+        correctIndex: 1,
+        explanation: "4mA minimum indique que le capteur est alimenté. 0mA signifie un défaut (fil coupé).",
+        order: 2,
+      },
+      {
+        lessonId: lesson4_2.id,
+        question: "Qu'est-ce qu'une PT100 ?",
+        options: JSON.stringify([
+          "Un capteur de pression",
+          "Une sonde de température à résistance de platine",
+          "Un capteur optique",
+          "Un variateur de vitesse"
+        ]),
+        correctIndex: 1,
+        explanation: "PT100 est une sonde de température à résistance de platine (100Ω à 0°C).",
+        order: 3,
+      },
+      {
+        lessonId: lesson4_2.id,
+        question: "Que signifie une résolution de 12 bits pour un convertisseur analogique ?",
+        options: JSON.stringify([
+          "12 entrées analogiques",
+          "4096 niveaux de mesure possibles",
+          "12 sorties",
+          "12 volts maximum"
+        ]),
+        correctIndex: 1,
+        explanation: "12 bits = 2^12 = 4096 niveaux, donc une résolution de 1/4096 de la plage.",
+        order: 4,
+      },
+      {
+        lessonId: lesson4_2.id,
+        question: "Quel type de capteur mesure un débit par effet électromagnétique ?",
+        options: JSON.stringify([
+          "Débitmètre Coriolis",
+          "Débitmètre électromagnétique",
+          "Débitmètre vortex",
+          "Débitmètre à ultrasons"
+        ]),
+        correctIndex: 1,
+        explanation: "Le débitmètre électromagnétique mesure le débit des liquides conducteurs par induction.",
+        order: 5,
+      },
+      // Quiz Module 4 - Lesson 3 (5 questions) - PNP vs NPN
+      {
+        lessonId: lesson4_3.id,
+        question: "Quelle technologie est majoritaire en Europe ?",
+        options: JSON.stringify([
+          "NPN",
+          "PNP",
+          "Les deux également",
+          "Aucune"
+        ]),
+        correctIndex: 1,
+        explanation: "En Europe, le standard est PNP (sourcing). NPN est plus courant au Japon.",
+        order: 1,
+      },
+      {
+        lessonId: lesson4_3.id,
+        question: "Dans un capteur PNP, quel signal est fourni quand le capteur est actif ?",
+        options: JSON.stringify([
+          "0V",
+          "+24V",
+          "Un signal alternatif",
+          "Aucun signal"
+        ]),
+        correctIndex: 1,
+        explanation: "PNP 'fournit' du +24V à l'entrée quand il est actif (sourcing = source de courant).",
+        order: 2,
+      },
+      {
+        lessonId: lesson4_3.id,
+        question: "Dans un capteur NPN, le signal actif correspond à ?",
+        options: JSON.stringify([
+          "+24V",
+          "0V (relié à la masse)",
+          "12V",
+          "Signal flottant"
+        ]),
+        correctIndex: 1,
+        explanation: "NPN 'tire' l'entrée vers 0V quand il est actif (sinking = puits de courant).",
+        order: 3,
+      },
+      {
+        lessonId: lesson4_3.id,
+        question: "Peut-on mélanger des capteurs PNP et NPN sur le même automate ?",
+        options: JSON.stringify([
+          "Oui, sans problème",
+          "Non, jamais",
+          "Oui, si l'automate le permet",
+          "Seulement avec un adaptateur"
+        ]),
+        correctIndex: 2,
+        explanation: "Certains automates ont des entrées universelles, sinon il faut vérifier la compatibilité.",
+        order: 4,
+      },
+      {
+        lessonId: lesson4_3.id,
+        question: "Quel fil est commun dans un câblage PNP 3 fils ?",
+        options: JSON.stringify([
+          "+24V et signal sur le même fil",
+          "0V et signal sur le même fil",
+          "+24V seul",
+          "Aucun"
+        ]),
+        correctIndex: 2,
+        explanation: "En PNP 3 fils : +24V, 0V et signal. Le +24V alimente le capteur et est la source du signal.",
+        order: 5,
+      },
+      // Quiz Module 4 - Lesson 4 (5 questions) - Actionneurs électriques
+      {
+        lessonId: lesson4_4.id,
+        question: "Quel est le moteur le plus répandu en industrie ?",
+        options: JSON.stringify([
+          "Moteur à courant continu",
+          "Moteur asynchrone triphasé",
+          "Moteur brushless",
+          "Moteur pas à pas"
+        ]),
+        correctIndex: 1,
+        explanation: "Le moteur asynchrone triphasé est le plus répandu : simple, robuste et économique.",
+        order: 1,
+      },
+      {
+        lessonId: lesson4_4.id,
+        question: "Quelle est la fonction d'un contacteur ?",
+        options: JSON.stringify([
+          "Varier la vitesse",
+          "Commander le moteur en TOR (marche/arrêt)",
+          "Protéger contre les surcharges",
+          "Mesurer le courant"
+        ]),
+        correctIndex: 1,
+        explanation: "Le contacteur est un interrupteur de puissance commandé électriquement pour la commutation TOR.",
+        order: 2,
+      },
+      {
+        lessonId: lesson4_4.id,
+        question: "Quelle est la fonction du relais thermique ?",
+        options: JSON.stringify([
+          "Commander le moteur",
+          "Varier la vitesse",
+          "Protéger contre les surcharges",
+          "Mesurer la température ambiante"
+        ]),
+        correctIndex: 2,
+        explanation: "Le relais thermique protège le moteur contre les surcharges en détectant l'échauffement.",
+        order: 3,
+      },
+      {
+        lessonId: lesson4_4.id,
+        question: "Qu'est-ce qu'un variateur de vitesse ?",
+        options: JSON.stringify([
+          "Un capteur de vitesse",
+          "Un équipement qui contrôle la vitesse et le couple du moteur",
+          "Un type de moteur",
+          "Un fusible spécial"
+        ]),
+        correctIndex: 1,
+        explanation: "Le variateur de vitesse (VFD) permet de contrôler la vitesse et le couple d'un moteur.",
+        order: 4,
+      },
+      {
+        lessonId: lesson4_4.id,
+        question: "Quel équipement permet un positionnement précis ?",
+        options: JSON.stringify([
+          "Moteur asynchrone seul",
+          "Contacteur",
+          "Servomoteur",
+          "Disjoncteur"
+        ]),
+        correctIndex: 2,
+        explanation: "Le servomoteur avec son encodeur permet un positionnement précis et un contrôle de trajectoire.",
+        order: 5,
+      },
+      // Quiz Module 4 - Lesson 5 (5 questions) - Actionneurs pneumatiques
+      {
+        lessonId: lesson4_5.id,
+        question: "Quelle pression est standard en pneumatique industrielle ?",
+        options: JSON.stringify([
+          "1 bar",
+          "6 bar",
+          "20 bar",
+          "100 bar"
+        ]),
+        correctIndex: 1,
+        explanation: "6 bar (600 kPa) est la pression standard en pneumatique industrielle.",
+        order: 1,
+      },
+      {
+        lessonId: lesson4_5.id,
+        question: "Quelle est la différence entre un vérin simple effet et double effet ?",
+        options: JSON.stringify([
+          "Le simple effet est plus rapide",
+          "Le double effet a deux sens motorisés",
+          "Le simple effet est plus puissant",
+          "Il n'y a pas de différence"
+        ]),
+        correctIndex: 1,
+        explanation: "Simple effet : un sens motorisé, retour par ressort. Double effet : deux sens motorisés par air.",
+        order: 2,
+      },
+      {
+        lessonId: lesson4_5.id,
+        question: "Que signifie la notation 5/2 pour un distributeur ?",
+        options: JSON.stringify([
+          "5 volts, 2 ampères",
+          "5 orifices, 2 positions",
+          "5 bar, 2 litres",
+          "5 entrées, 2 sorties"
+        ]),
+        correctIndex: 1,
+        explanation: "5/2 signifie 5 orifices et 2 positions. C'est le distributeur standard pour vérin double effet.",
+        order: 3,
+      },
+      {
+        lessonId: lesson4_5.id,
+        question: "Quel distributeur utilise-t-on pour un vérin simple effet ?",
+        options: JSON.stringify([
+          "5/2",
+          "3/2",
+          "5/3",
+          "4/2"
+        ]),
+        correctIndex: 1,
+        explanation: "Un distributeur 3/2 (3 orifices, 2 positions) suffit pour un vérin simple effet.",
+        order: 4,
+      },
+      {
+        lessonId: lesson4_5.id,
+        question: "Qu'est-ce qu'un distributeur 5/3 permet de faire ?",
+        options: JSON.stringify([
+          "Commander 3 vérins",
+          "Avoir une position intermédiaire (arrêt en position)",
+          "Augmenter la pression",
+          "Réduire le débit"
+        ]),
+        correctIndex: 1,
+        explanation: "5/3 a une 3ème position centrale permettant d'arrêter le vérin en position intermédiaire.",
+        order: 5,
+      },
+      // Quiz Module 4 - Lesson 6 (5 questions) - Câblage
+      {
+        lessonId: lesson4_6.id,
+        question: "Pourquoi sépare-t-on les circuits de puissance et de commande ?",
+        options: JSON.stringify([
+          "Pour économiser des câbles",
+          "Pour éviter les interférences électromagnétiques",
+          "C'est une préférence esthétique",
+          "Pour utiliser moins de goulottes"
+        ]),
+        correctIndex: 1,
+        explanation: "La séparation évite que les signaux de puissance perturbent les signaux de commande (CEM).",
+        order: 1,
+      },
+      {
+        lessonId: lesson4_6.id,
+        question: "Quelle couleur de fil est utilisée pour le neutre ?",
+        options: JSON.stringify([
+          "Noir",
+          "Bleu",
+          "Rouge",
+          "Vert-jaune"
+        ]),
+        correctIndex: 1,
+        explanation: "Le bleu est la couleur normalisée pour le neutre en installation électrique.",
+        order: 2,
+      },
+      {
+        lessonId: lesson4_6.id,
+        question: "Quelle couleur est réservée à la terre (PE) ?",
+        options: JSON.stringify([
+          "Bleu",
+          "Rouge",
+          "Vert-jaune",
+          "Noir"
+        ]),
+        correctIndex: 2,
+        explanation: "Le vert-jaune est exclusivement réservé au conducteur de protection (terre).",
+        order: 3,
+      },
+      {
+        lessonId: lesson4_6.id,
+        question: "Que doit-on toujours faire avant d'intervenir sur le câblage ?",
+        options: JSON.stringify([
+          "Prendre une photo",
+          "Couper l'alimentation et consigner",
+          "Appeler un collègue",
+          "Vérifier la météo"
+        ]),
+        correctIndex: 1,
+        explanation: "Couper l'alimentation et consigner (cadenasser) est obligatoire pour la sécurité.",
+        order: 4,
+      },
+      {
+        lessonId: lesson4_6.id,
+        question: "Pourquoi utilise-t-on des câbles blindés pour les signaux analogiques ?",
+        options: JSON.stringify([
+          "Pour résister à la chaleur",
+          "Pour protéger contre les interférences électromagnétiques",
+          "Pour la flexibilité",
+          "Pour la couleur"
+        ]),
+        correctIndex: 1,
+        explanation: "Le blindage protège les signaux analogiques sensibles contre les perturbations électromagnétiques.",
+        order: 5,
+      },
       // Quiz Module 5 - Lesson 1 (5 questions)
       {
         lessonId: lesson5_1.id,
@@ -4932,6 +6120,402 @@ async function main() {
         ]),
         correctIndex: 2,
         explanation: "Une transition est franchissable si l'étape précédente est active ET si la condition de transition est vraie.",
+        order: 5,
+      },
+      // Quiz Module 5 - Lesson 2 (5 questions) - Étapes et transitions
+      {
+        lessonId: lesson5_2.id,
+        question: "Comment représente-t-on une étape initiale dans un GRAFCET ?",
+        options: JSON.stringify([
+          "Un carré simple",
+          "Un double carré (carré dans un carré)",
+          "Un cercle",
+          "Un triangle"
+        ]),
+        correctIndex: 1,
+        explanation: "L'étape initiale est représentée par un double carré pour la distinguer des étapes normales.",
+        order: 1,
+      },
+      {
+        lessonId: lesson5_2.id,
+        question: "Que signifie la notation t/5/3s dans une transition ?",
+        options: JSON.stringify([
+          "Transition 5, durée 3s",
+          "Temporisation : 3s après activation de l'étape 5",
+          "5 transitions en 3 secondes",
+          "Transition numéro 53"
+        ]),
+        correctIndex: 1,
+        explanation: "t/5/3s signifie une temporisation de 3 secondes après l'activation de l'étape 5.",
+        order: 2,
+      },
+      {
+        lessonId: lesson5_2.id,
+        question: "Que représente le symbole ↑a dans une transition ?",
+        options: JSON.stringify([
+          "a est toujours vrai",
+          "Front montant sur a",
+          "Front descendant sur a",
+          "a est désactivé"
+        ]),
+        correctIndex: 1,
+        explanation: "↑a représente un front montant (passage de 0 à 1) sur la variable a.",
+        order: 3,
+      },
+      {
+        lessonId: lesson5_2.id,
+        question: "Quelle est la signification de la réceptivité '= 1' ?",
+        options: JSON.stringify([
+          "La transition n'est jamais franchissable",
+          "La transition est toujours franchissable",
+          "Il faut appuyer sur le bouton 1",
+          "L'étape dure 1 seconde"
+        ]),
+        correctIndex: 1,
+        explanation: "= 1 signifie 'toujours vrai', la transition est franchissable dès que l'étape est active.",
+        order: 4,
+      },
+      {
+        lessonId: lesson5_2.id,
+        question: "Comment note-t-on une condition 'a ET b' dans une transition ?",
+        options: JSON.stringify([
+          "a + b",
+          "a · b ou a ∧ b",
+          "a - b",
+          "a / b"
+        ]),
+        correctIndex: 1,
+        explanation: "a · b (point) ou a ∧ b (chapeau) représente la fonction ET en notation GRAFCET.",
+        order: 5,
+      },
+      // Quiz Module 5 - Lesson 3 (5 questions) - Types d'actions
+      {
+        lessonId: lesson5_3.id,
+        question: "Qu'est-ce qu'une action continue dans un GRAFCET ?",
+        options: JSON.stringify([
+          "Une action qui dure 1 seconde",
+          "Une action active tant que l'étape est active",
+          "Une action qui reste active après avoir quitté l'étape",
+          "Une action conditionnelle"
+        ]),
+        correctIndex: 1,
+        explanation: "L'action continue est active tant que l'étape est active. Elle s'arrête quand on quitte l'étape.",
+        order: 1,
+      },
+      {
+        lessonId: lesson5_3.id,
+        question: "Que signifie le préfixe S dans une action GRAFCET ?",
+        options: JSON.stringify([
+          "Stop",
+          "SET (activation mémorisée)",
+          "Slow (lent)",
+          "Signal"
+        ]),
+        correctIndex: 1,
+        explanation: "S = SET, l'action est activée et reste active même après avoir quitté l'étape.",
+        order: 2,
+      },
+      {
+        lessonId: lesson5_3.id,
+        question: "Comment désactive-t-on une action SET ?",
+        options: JSON.stringify([
+          "Elle se désactive automatiquement",
+          "Avec une action RESET (R)",
+          "En coupant l'alimentation",
+          "Avec une temporisation"
+        ]),
+        correctIndex: 1,
+        explanation: "Une action SET reste active jusqu'à ce qu'elle soit désactivée par une action RESET (R).",
+        order: 3,
+      },
+      {
+        lessonId: lesson5_3.id,
+        question: "Que signifie 'C capteur : Moteur' dans une étape ?",
+        options: JSON.stringify([
+          "Le capteur commande le moteur",
+          "L'action Moteur est conditionnelle à la variable capteur",
+          "Le capteur est connecté au moteur",
+          "C'est une erreur de syntaxe"
+        ]),
+        correctIndex: 1,
+        explanation: "C = Condition. L'action n'est active que si l'étape est active ET la condition est vraie.",
+        order: 4,
+      },
+      {
+        lessonId: lesson5_3.id,
+        question: "Que signifie D t : Action dans un GRAFCET ?",
+        options: JSON.stringify([
+          "Delete action",
+          "Action retardée (Delay) - s'active après le temps t",
+          "Double action",
+          "Direct action"
+        ]),
+        correctIndex: 1,
+        explanation: "D = Delay (retard). L'action ne s'active qu'après le temps t depuis l'activation de l'étape.",
+        order: 5,
+      },
+      // Quiz Module 5 - Lesson 4 (5 questions) - Divergences et convergences
+      {
+        lessonId: lesson5_4.id,
+        question: "Qu'est-ce qu'une divergence en OU ?",
+        options: JSON.stringify([
+          "Toutes les branches sont activées simultanément",
+          "Une seule branche est activée selon la condition",
+          "Aucune branche n'est activée",
+          "Les branches s'exécutent en boucle"
+        ]),
+        correctIndex: 1,
+        explanation: "En divergence OU, une seule branche est choisie selon la condition de transition vraie.",
+        order: 1,
+      },
+      {
+        lessonId: lesson5_4.id,
+        question: "Comment représente-t-on une divergence en ET (parallélisme) ?",
+        options: JSON.stringify([
+          "Un trait simple horizontal",
+          "Une double barre horizontale",
+          "Un cercle",
+          "Un losange"
+        ]),
+        correctIndex: 1,
+        explanation: "La double barre horizontale indique une divergence/convergence en ET (parallélisme).",
+        order: 2,
+      },
+      {
+        lessonId: lesson5_4.id,
+        question: "Que se passe-t-il à une convergence en ET ?",
+        options: JSON.stringify([
+          "La première branche terminée continue",
+          "On attend que TOUTES les branches soient terminées",
+          "On quitte immédiatement",
+          "Une seule branche est sélectionnée"
+        ]),
+        correctIndex: 1,
+        explanation: "La convergence ET est une synchronisation : on attend que toutes les branches soient terminées.",
+        order: 3,
+      },
+      {
+        lessonId: lesson5_4.id,
+        question: "Pourquoi les conditions en divergence OU doivent-elles être mutuellement exclusives ?",
+        options: JSON.stringify([
+          "Pour économiser de la mémoire",
+          "Pour éviter l'ambiguïté (deux branches activées)",
+          "C'est une préférence de style",
+          "Pour la vitesse d'exécution"
+        ]),
+        correctIndex: 1,
+        explanation: "Si deux conditions sont vraies simultanément, on ne sait pas quelle branche choisir (ambiguïté).",
+        order: 4,
+      },
+      {
+        lessonId: lesson5_4.id,
+        question: "Combien de branches peuvent être actives simultanément dans une divergence en ET ?",
+        options: JSON.stringify([
+          "Une seule",
+          "Deux maximum",
+          "Toutes les branches",
+          "Aucune"
+        ]),
+        correctIndex: 2,
+        explanation: "Dans une divergence ET, toutes les branches sont activées simultanément (parallélisme).",
+        order: 5,
+      },
+      // Quiz Module 5 - Lesson 5 (5 questions) - Macro-étapes
+      {
+        lessonId: lesson5_5.id,
+        question: "Qu'est-ce qu'une macro-étape dans un GRAFCET ?",
+        options: JSON.stringify([
+          "Une étape très grande",
+          "Une étape qui contient une séquence complète",
+          "Une étape rapide",
+          "Une étape sans action"
+        ]),
+        correctIndex: 1,
+        explanation: "Une macro-étape regroupe une séquence complète de GRAFCET pour simplifier le schéma principal.",
+        order: 1,
+      },
+      {
+        lessonId: lesson5_5.id,
+        question: "Quel est l'avantage principal des macro-étapes ?",
+        options: JSON.stringify([
+          "Elles sont plus rapides",
+          "Lisibilité et modularité du programme",
+          "Elles consomment moins de mémoire",
+          "Elles sont obligatoires"
+        ]),
+        correctIndex: 1,
+        explanation: "Les macro-étapes améliorent la lisibilité en masquant les détails et permettent la réutilisation.",
+        order: 2,
+      },
+      {
+        lessonId: lesson5_5.id,
+        question: "Qu'est-ce que l'étape E dans une macro-étape ?",
+        options: JSON.stringify([
+          "L'étape d'erreur",
+          "L'étape d'entrée de la macro",
+          "L'étape d'exécution",
+          "L'étape d'échappement"
+        ]),
+        correctIndex: 1,
+        explanation: "E = Entrée, c'est la première étape de la séquence contenue dans la macro-étape.",
+        order: 3,
+      },
+      {
+        lessonId: lesson5_5.id,
+        question: "Quel GRAFCET est prioritaire dans la hiérarchie ?",
+        options: JSON.stringify([
+          "GRAFCET de production",
+          "GRAFCET de sécurité",
+          "GRAFCET de conduite",
+          "GRAFCET de défaut"
+        ]),
+        correctIndex: 1,
+        explanation: "Le GRAFCET de sécurité (arrêts d'urgence) est toujours prioritaire sur les autres.",
+        order: 4,
+      },
+      {
+        lessonId: lesson5_5.id,
+        question: "Une macro-étape peut-elle être appelée plusieurs fois dans un programme ?",
+        options: JSON.stringify([
+          "Non, jamais",
+          "Oui, c'est l'un de ses avantages (réutilisation)",
+          "Seulement deux fois",
+          "Uniquement en mode manuel"
+        ]),
+        correctIndex: 1,
+        explanation: "La réutilisation est un avantage clé : une macro peut être appelée plusieurs fois.",
+        order: 5,
+      },
+      // Quiz Module 5 - Lesson 6 (5 questions) - Traduction LADDER
+      {
+        lessonId: lesson5_6.id,
+        question: "En LADDER, comment représente-t-on une étape GRAFCET ?",
+        options: JSON.stringify([
+          "Par un temporisateur",
+          "Par un bit mémoire (variable booléenne)",
+          "Par une entrée physique",
+          "Par une sortie analogique"
+        ]),
+        correctIndex: 1,
+        explanation: "Chaque étape devient un bit mémoire (ex: X0, X1, M0, M1...) qui vaut 1 quand l'étape est active.",
+        order: 1,
+      },
+      {
+        lessonId: lesson5_6.id,
+        question: "Comment active-t-on une étape Xi en LADDER ?",
+        options: JSON.stringify([
+          "Avec un temporisateur",
+          "Quand l'étape précédente est active ET la transition est vraie",
+          "Automatiquement au démarrage",
+          "Avec une entrée analogique"
+        ]),
+        correctIndex: 1,
+        explanation: "Xi s'active quand Xi-1 est active ET que la condition de transition est vraie.",
+        order: 2,
+      },
+      {
+        lessonId: lesson5_6.id,
+        question: "Quelle méthode utilise-t-on souvent pour les étapes en LADDER ?",
+        options: JSON.stringify([
+          "Temporisateurs uniquement",
+          "SET/RESET (mémorisation)",
+          "Contacts uniquement",
+          "Compteurs"
+        ]),
+        correctIndex: 1,
+        explanation: "SET active l'étape, RESET la désactive. C'est la méthode la plus claire pour les GRAFCET.",
+        order: 3,
+      },
+      {
+        lessonId: lesson5_6.id,
+        question: "Comment traduit-on une action continue de l'étape 5 ?",
+        options: JSON.stringify([
+          "SET Moteur quand X5 est actif",
+          "Contact X5 en série avec la bobine Moteur",
+          "Temporisateur de 5 secondes",
+          "Compteur à 5"
+        ]),
+        correctIndex: 1,
+        explanation: "Une action continue utilise un contact de l'étape : quand X5=1, la bobine est alimentée.",
+        order: 4,
+      },
+      {
+        lessonId: lesson5_6.id,
+        question: "Comment traduit-on une action SET dans une étape ?",
+        options: JSON.stringify([
+          "Avec un contact simple",
+          "Avec un front montant [P] et une bobine SET",
+          "Avec un temporisateur",
+          "Avec un compteur"
+        ]),
+        correctIndex: 1,
+        explanation: "On utilise un front [P] sur l'étape pour ne SET qu'une fois à l'activation.",
+        order: 5,
+      },
+      // Quiz Module 5 - Lesson 7 (5 questions) - Exemple complet
+      {
+        lessonId: lesson5_7.id,
+        question: "Dans l'exemple de remplissage, quelle est la première condition pour démarrer ?",
+        options: JSON.stringify([
+          "Le vérin est sorti",
+          "Présence d'une bouteille ET bouton départ cycle",
+          "La vanne est ouverte",
+          "Le temporisateur est terminé"
+        ]),
+        correctIndex: 1,
+        explanation: "La transition 0→1 nécessite : présence bouteille ET bouton départ cycle (dcy).",
+        order: 1,
+      },
+      {
+        lessonId: lesson5_7.id,
+        question: "Combien de temps dure le remplissage dans l'exemple ?",
+        options: JSON.stringify([
+          "1 seconde",
+          "3 secondes",
+          "5 secondes",
+          "10 secondes"
+        ]),
+        correctIndex: 1,
+        explanation: "La transition t/1/3s indique un remplissage de 3 secondes après l'activation de l'étape 1.",
+        order: 2,
+      },
+      {
+        lessonId: lesson5_7.id,
+        question: "Quelle action est associée à l'étape 2 (évacuation) ?",
+        options: JSON.stringify([
+          "Ouverture de la vanne",
+          "Sortie du vérin évacuation",
+          "Retour du vérin",
+          "Arrêt du système"
+        ]),
+        correctIndex: 1,
+        explanation: "L'étape 2 active la sortie 'Evacuation' qui pousse la bouteille avec le vérin.",
+        order: 3,
+      },
+      {
+        lessonId: lesson5_7.id,
+        question: "Quelle est la condition pour passer de l'étape 2 à l'étape 3 ?",
+        options: JSON.stringify([
+          "Temporisation de 3s",
+          "Fin de course vérin sorti",
+          "Présence bouteille",
+          "Bouton départ cycle"
+        ]),
+        correctIndex: 1,
+        explanation: "La transition utilise le capteur 'verin_sorti' qui détecte que le vérin a atteint sa position.",
+        order: 4,
+      },
+      {
+        lessonId: lesson5_7.id,
+        question: "Que manque-t-il souvent dans un GRAFCET de production réel ?",
+        options: JSON.stringify([
+          "Les étapes",
+          "Les transitions",
+          "La gestion des modes (auto/manu) et les sécurités",
+          "Les actions"
+        ]),
+        correctIndex: 2,
+        explanation: "En production réelle, on ajoute la gestion des modes, des défauts et des sécurités.",
         order: 5,
       },
       // Quiz Module 6 - Lesson 1 (5 questions)

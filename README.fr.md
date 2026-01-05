@@ -15,6 +15,7 @@ Plateforme open source d'apprentissage de l'automatisme industriel et des automa
   - [Modules Automatisme](#modules-automatisme)
   - [Modules CNC](#modules-cnc)
   - [Modules Siemens](#modules-siemens)
+  - [Modules VFD et Positionnement](#modules-vfd-et-positionnement)
 - [Fonctionnalités](#fonctionnalités)
 - [Installation](#installation)
 - [Compte démo](#compte-démo)
@@ -46,34 +47,37 @@ Plateforme open source d'apprentissage de l'automatisme industriel et des automa
 
 ## Parcours d'apprentissage
 
-EasyPLC School propose trois parcours de spécialisation avec un socle commun de modules fondamentaux :
+EasyPLC School propose quatre parcours de spécialisation avec un socle commun de modules fondamentaux :
 
 ```
-┌───────────────────────────────────────────────────────────────────────────────────────────────┐
-│                              PARCOURS D'APPRENTISSAGE                                          │
-├───────────────────────────────────────────────────────────────────────────────────────────────┤
-│                                                                                                │
-│   🏭 AUTOMATISME INDUSTRIEL       🔧 COMMANDE NUMÉRIQUE (CNC)      🔷 AUTOMATISME SIEMENS     │
-│   ━━━━━━━━━━━━━━━━━━━━━━━━       ━━━━━━━━━━━━━━━━━━━━━━━━━━       ━━━━━━━━━━━━━━━━━━━━━━     │
-│                                                                                                │
-│   ├── Introduction *              ├── Introduction *              ├── Introduction *          │
-│   ├── Logique combinatoire *      ├── Logique combinatoire *      ├── Logique combinatoire *  │
-│   ├── Capteurs/actionneurs *      ├── Capteurs/actionneurs *      ├── Le langage LADDER       │
-│   ├── Le langage LADDER           ├── Introduction CNC            ├── Introduction S7-1500    │
-│   └── GRAFCET                     ├── Programmation G-Code        ├── Programmation TIA Portal│
-│                                   └── Axes et interpolation       └── Blocs de données S7     │
-│                                                                                                │
-│   * Modules fondamentaux partagés entre les parcours                                          │
-│                                                                                                │
-└───────────────────────────────────────────────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+│                                         PARCOURS D'APPRENTISSAGE                                                     │
+├─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                                                      │
+│  🏭 AUTOMATISME INDUSTRIEL    🔧 COMMANDE NUMÉRIQUE     🔷 AUTOMATISME SIEMENS    ⚡ VFD ET POSITIONNEMENT          │
+│  ━━━━━━━━━━━━━━━━━━━━━━━     ━━━━━━━━━━━━━━━━━━━━      ━━━━━━━━━━━━━━━━━━━━━    ━━━━━━━━━━━━━━━━━━━━━━━           │
+│                                                                                                                      │
+│  ├── Introduction *           ├── Introduction *        ├── Introduction *        ├── Introduction *                │
+│  ├── Logique combinatoire *   ├── Logique combinatoire* ├── Logique combinatoire* ├── Logique combinatoire *        │
+│  ├── Capteurs/actionneurs *   ├── Capteurs/actionneurs* ├── Le langage LADDER     ├── Capteurs/actionneurs *        │
+│  ├── Le langage LADDER        ├── Introduction CNC      ├── Introduction S7-1500  ├── Introduction aux VFD          │
+│  └── GRAFCET                  ├── Programmation G-Code  ├── TIA Portal            ├── Configuration VFD             │
+│                               └── Axes et interpolation └── Blocs de données S7   ├── Communication VFD             │
+│                                                                                   ├── Intro Positionnement          │
+│                                                                                   ├── Moteurs pas à pas/servo       │
+│                                                                                   └── Programmation mouvement       │
+│                                                                                                                      │
+│  * Modules fondamentaux partagés entre les parcours                                                                 │
+│                                                                                                                      │
+└─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
 ### Parcours Automatisme industriel 🏭
 
 Ce parcours couvre les bases de l'automatisation industrielle avec les automates programmables (PLC). Il inclut :
-- 5 modules progressifs
-- 10 leçons au total
+- 5 modules progressifs (35 leçons)
 - Focus sur le LADDER et le GRAFCET
+- Quiz de validation pour chaque leçon
 
 ### Parcours Commande numérique (CNC) 🔧
 
@@ -89,6 +93,14 @@ Ce parcours est dédié aux automates Siemens S7-1500 et à l'environnement TIA 
 - 6 leçons spécialisées avec diagrammes ASCII
 - Programmation LAD, FBD, SCL
 - Maîtrise des blocs de données (DB)
+
+### Parcours VFD et Positionnement ⚡
+
+Ce parcours se spécialise dans les variateurs de vitesse et le contrôle de mouvement :
+- 9 modules (3 fondamentaux + 6 spécialisés)
+- 36 leçons avec 180 quiz
+- Variateurs de vitesse (VFD) : principes, configuration, communication
+- Positionnement : moteurs pas à pas, servomoteurs, programmation PLCopen
 
 ---
 
@@ -880,6 +892,266 @@ Ces modules sont spécifiques au parcours Automatisme Siemens S7-1500.
 
 ---
 
+## Modules VFD et Positionnement
+
+Ces modules sont spécifiques au parcours Variation de vitesse et Positionnement.
+
+### Module 12 : Introduction aux variateurs de vitesse ⚡
+
+> **Objectif** : Comprendre les principes fondamentaux des variateurs de fréquence (VFD)
+
+#### Principe de fonctionnement
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│                    VARIATEUR DE VITESSE (VFD)                            │
+│  ┌───────────────────────────────────────────────────────────────────┐  │
+│  │                                                                   │  │
+│  │  ┌───────────┐    ┌───────────┐    ┌───────────┐    ┌─────────┐  │  │
+│  │  │           │    │           │    │           │    │         │  │  │
+│  │  │REDRESSEUR │───▶│ BUS DC    │───▶│ ONDULEUR  │───▶│ MOTEUR  │  │  │
+│  │  │   (AC→DC) │    │ (Filtrage)│    │  (DC→AC)  │    │   AC    │  │  │
+│  │  │           │    │           │    │           │    │         │  │  │
+│  │  └───────────┘    └───────────┘    └───────────┘    └─────────┘  │  │
+│  │       ▲                                   │                       │  │
+│  │       │                              ┌────┴────┐                  │  │
+│  │  Réseau AC                           │ Contrôle│                  │  │
+│  │  (50/60 Hz)                          │   PWM   │                  │  │
+│  │                                      └─────────┘                  │  │
+│  └───────────────────────────────────────────────────────────────────┘  │
+│                                                                          │
+│  Fréquence de sortie variable : 0-400 Hz                                │
+│  Tension de sortie variable : 0-Unom                                    │
+└─────────────────────────────────────────────────────────────────────────┘
+```
+
+#### Leçons du module
+
+| # | Leçon | Durée | XP | Description |
+|---|-------|-------|-----|-------------|
+| 1 | Qu'est-ce qu'un variateur de vitesse ? | 12 min | 60 | Principe et applications des VFD |
+| 2 | Types de moteurs et variateurs | 15 min | 70 | Moteurs compatibles avec les VFD |
+| 3 | Schémas de câblage | 15 min | 70 | Câblage électrique d'un VFD |
+| 4 | Protections et sécurité | 12 min | 60 | Dispositifs de protection |
+| 5 | Économie d'énergie | 12 min | 60 | Optimiser la consommation |
+| 6 | Marques et modèles courants | 10 min | 50 | Principaux fabricants |
+
+---
+
+### Module 13 : Configuration des variateurs 🔧
+
+> **Objectif** : Maîtriser le paramétrage des variateurs de vitesse
+
+#### Paramètres essentiels
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│              PARAMÈTRES DE CONFIGURATION VFD                  │
+├─────────────────────────────────────────────────────────────┤
+│                                                               │
+│  PARAMÈTRES MOTEUR          RAMPES ET LIMITES                │
+│  ─────────────────          ────────────────                 │
+│  • Tension nominale         • Temps d'accélération          │
+│  • Courant nominal          • Temps de décélération         │
+│  • Fréquence nominale       • Fréquence min/max             │
+│  • Vitesse nominale         • Limitation de courant         │
+│  • Cos phi                                                   │
+│                                                               │
+│  MODES DE COMMANDE          RÉGULATION                       │
+│  ─────────────────          ──────────                       │
+│  • V/f constant             • PID intégré                    │
+│  • Contrôle vectoriel       • Référence analogique          │
+│  • Contrôle DTC             • Communication bus             │
+│                                                               │
+└─────────────────────────────────────────────────────────────┘
+```
+
+#### Leçons du module
+
+| # | Leçon | Durée | XP | Description |
+|---|-------|-------|-----|-------------|
+| 1 | Paramètres moteur | 15 min | 70 | Configuration des données moteur |
+| 2 | Rampes et limites | 15 min | 70 | Accélération et vitesses limites |
+| 3 | Modes de commande | 18 min | 80 | V/f, vectoriel, DTC |
+| 4 | Régulation PID intégrée | 18 min | 80 | Utiliser le PID du variateur |
+| 5 | Gestion des défauts | 15 min | 70 | Comportement sur défaut |
+| 6 | Sauvegarde et restauration | 12 min | 60 | Backup des paramètres |
+
+---
+
+### Module 14 : Communication des variateurs 🌐
+
+> **Objectif** : Intégrer les variateurs dans un système automatisé
+
+#### Protocoles de communication
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│                    COMMUNICATION INDUSTRIELLE                            │
+├─────────────────────────────────────────────────────────────────────────┤
+│                                                                          │
+│  ┌─────────┐       ┌──────────┐       ┌─────────┐       ┌─────────┐     │
+│  │   PLC   │◀─────▶│ PROFINET │◀─────▶│   VFD   │◀─────▶│ MOTEUR  │     │
+│  │         │       │ MODBUS   │       │         │       │         │     │
+│  │         │       │ Ethernet │       │         │       │         │     │
+│  └─────────┘       └──────────┘       └─────────┘       └─────────┘     │
+│       │                                                                  │
+│       │            DONNÉES ÉCHANGÉES                                     │
+│       │            ─────────────────                                     │
+│       │            • Mot de commande (Run/Stop)                          │
+│       │            • Consigne de vitesse                                 │
+│       │            • Mot d'état                                          │
+│       │            • Vitesse actuelle                                    │
+│       │            • Courant, puissance                                  │
+│       │            • Codes défaut                                        │
+│                                                                          │
+└─────────────────────────────────────────────────────────────────────────┘
+```
+
+#### Leçons du module
+
+| # | Leçon | Durée | XP | Description |
+|---|-------|-------|-----|-------------|
+| 1 | Protocoles de communication | 15 min | 70 | Modbus, PROFINET, Ethernet/IP |
+| 2 | Communication Modbus | 18 min | 80 | Maîtriser Modbus RTU/TCP |
+| 3 | Intégration automate | 18 min | 80 | Connexion PLC-VFD |
+| 4 | Diagnostic et monitoring | 15 min | 70 | Superviser l'état du variateur |
+| 5 | Dépannage | 15 min | 70 | Résoudre les problèmes courants |
+| 6 | Maintenance préventive | 12 min | 60 | Planifier la maintenance |
+
+---
+
+### Module 15 : Introduction au positionnement 📐
+
+> **Objectif** : Découvrir les fondamentaux du contrôle de mouvement
+
+#### Boucles de régulation
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│                 BOUCLES DE RÉGULATION EN CASCADE                         │
+├─────────────────────────────────────────────────────────────────────────┤
+│                                                                          │
+│   Consigne    ┌────────┐   ┌────────┐   ┌────────┐   ┌────────┐         │
+│   Position ──▶│Position│──▶│Vitesse │──▶│Courant │──▶│ MOTEUR │         │
+│               │  PID   │   │  PID   │   │  PID   │   │        │         │
+│               └────────┘   └────────┘   └────────┘   └───┬────┘         │
+│                    ▲            ▲            ▲           │              │
+│                    │            │            │           │              │
+│               ┌────┴────┐  ┌────┴────┐  ┌───┴────┐     │              │
+│               │ Codeur  │  │ Codeur  │  │Capteur │◀────┘              │
+│               │Position │  │Vitesse  │  │Courant │                     │
+│               └─────────┘  └─────────┘  └────────┘                     │
+│                                                                          │
+│   Boucle externe ────────────────────────────────▶ Boucle interne       │
+│   (la plus lente)                                  (la plus rapide)     │
+│                                                                          │
+└─────────────────────────────────────────────────────────────────────────┘
+```
+
+#### Leçons du module
+
+| # | Leçon | Durée | XP | Description |
+|---|-------|-------|-----|-------------|
+| 1 | Principes du contrôle de mouvement | 15 min | 70 | Fondamentaux du motion control |
+| 2 | Notions de mécanique | 15 min | 70 | Concepts mécaniques essentiels |
+| 3 | Codeurs et capteurs de position | 18 min | 80 | Encodeurs, règles, résolveurs |
+| 4 | Boucles de régulation | 18 min | 80 | Position, vitesse, courant |
+| 5 | Prise d'origine (homing) | 15 min | 70 | Configuration du homing |
+| 6 | Limites et sécurités | 15 min | 70 | Fins de course et limites software |
+
+---
+
+### Module 16 : Moteurs pas à pas et servomoteurs ⚙️
+
+> **Objectif** : Choisir et dimensionner un système d'entraînement
+
+#### Comparaison des technologies
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│              MOTEUR PAS À PAS vs SERVOMOTEUR                             │
+├─────────────────────────────────────────────────────────────────────────┤
+│                                                                          │
+│  MOTEUR PAS À PAS                    SERVOMOTEUR                        │
+│  ─────────────────                   ───────────                        │
+│                                                                          │
+│  ┌─────────────────┐                 ┌─────────────────┐                │
+│  │    ┌─────┐      │                 │    ┌─────┐      │                │
+│  │   /│░░░░░│\     │                 │   /│▓▓▓▓▓│\     │                │
+│  │  │ │░░░░░│ │    │                 │  │ │▓▓▓▓▓│ │    │                │
+│  │  │ │░░░░░│ │    │                 │  │ │▓▓▓▓▓│ │    │                │
+│  │   \│░░░░░│/     │                 │   \│▓▓▓▓▓│/     │                │
+│  │    └─────┘      │                 │    └──┬──┘      │                │
+│  └─────────────────┘                 └───────┼─────────┘                │
+│                                              │                           │
+│  • Boucle ouverte                    • Boucle fermée (codeur)           │
+│  • Pas de perte de pas               • Haute dynamique                   │
+│  • Économique                        • Couple constant                   │
+│  • Couple décroît avec vitesse       • Prix plus élevé                  │
+│  • Idéal : positionnement simple     • Idéal : haute performance        │
+│                                                                          │
+└─────────────────────────────────────────────────────────────────────────┘
+```
+
+#### Leçons du module
+
+| # | Leçon | Durée | XP | Description |
+|---|-------|-------|-----|-------------|
+| 1 | Moteurs pas à pas | 18 min | 80 | Fonctionnement et types |
+| 2 | Servomoteurs synchrones | 18 min | 80 | Servos à aimants permanents |
+| 3 | Comparaison et choix | 15 min | 70 | Critères de sélection |
+| 4 | Dimensionnement moteur | 20 min | 90 | Calculs d'inertie et couple |
+| 5 | Drivers et servo-variateurs | 18 min | 80 | Électronique de commande |
+| 6 | Moteurs linéaires | 15 min | 70 | Entraînements directs |
+
+---
+
+### Module 17 : Programmation de mouvement 🎯
+
+> **Objectif** : Programmer des mouvements avec les blocs PLCopen
+
+#### Blocs fonction PLCopen Motion
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│                    BLOCS FONCTION PLCopen                                │
+├─────────────────────────────────────────────────────────────────────────┤
+│                                                                          │
+│  MC_Power          MC_MoveAbsolute      MC_Stop                         │
+│  ┌─────────┐       ┌─────────────┐      ┌─────────┐                     │
+│  │ Enable  │       │ Execute     │      │ Execute │                     │
+│  │ Axis    │       │ Axis        │      │ Axis    │                     │
+│  │         │       │ Position    │      │         │                     │
+│  │  Status │       │ Velocity    │      │  Done   │                     │
+│  │  Error  │       │ Done/Busy   │      │  Error  │                     │
+│  └─────────┘       └─────────────┘      └─────────┘                     │
+│                                                                          │
+│  MC_MoveRelative   MC_MoveVelocity      MC_Home                         │
+│  ┌─────────────┐   ┌─────────────┐      ┌─────────┐                     │
+│  │ Execute     │   │ Execute     │      │ Execute │                     │
+│  │ Axis        │   │ Axis        │      │ Axis    │                     │
+│  │ Distance    │   │ Velocity    │      │ Position│                     │
+│  │ Velocity    │   │ Direction   │      │ Done    │                     │
+│  │ Done/Busy   │   │ InVelocity  │      │ Error   │                     │
+│  └─────────────┘   └─────────────┘      └─────────┘                     │
+│                                                                          │
+└─────────────────────────────────────────────────────────────────────────┘
+```
+
+#### Leçons du module
+
+| # | Leçon | Durée | XP | Description |
+|---|-------|-------|-----|-------------|
+| 1 | Profils de mouvement | 18 min | 80 | Trapèze, S-curve, jerk |
+| 2 | Mouvements absolus et relatifs | 15 min | 70 | MC_MoveAbsolute/Relative |
+| 3 | Synchronisation d'axes | 20 min | 90 | Axes maître/esclave |
+| 4 | Interpolation multi-axes | 20 min | 90 | Trajectoires coordonnées |
+| 5 | Blocs fonction PLCopen | 18 min | 80 | Standard PLCopen Motion |
+| 6 | Diagnostic et optimisation | 15 min | 70 | Tuning et performances |
+
+---
+
 ## Simulateurs interactifs
 
 EasyPLC School inclut trois simulateurs interactifs pour mettre en pratique les concepts appris.
@@ -1245,7 +1517,7 @@ Ce projet est open source et accueille les contributions de la communauté !
 - [x] ~~Ajouter des animations pour les schémas LADDER~~ ✅ Flux de puissance animé dans le simulateur PLC
 - [ ] Implémenter un mode examen
 - [x] ~~Ajouter le support multi-langues (EN, ES, DE)~~ ✅ FR, EN, ES disponibles
-- [x] ~~Ajouter des parcours d'apprentissage~~ ✅ Automatisme et CNC
+- [x] ~~Ajouter des parcours d'apprentissage~~ ✅ 4 parcours : Automatisme, CNC, Siemens, VFD/Positionnement
 - [ ] Créer des exercices de programmation pratiques
 - [x] ~~Ajouter un simulateur G-Code interactif~~ ✅ Visualisation 2D/3D avec Three.js
 

@@ -27,34 +27,37 @@ Open source learning platform for industrial automation and programmable logic c
 
 ## Learning Paths
 
-EasyPLC School offers three specialization paths with a common foundation of core modules:
+EasyPLC School offers four specialization paths with a common foundation of core modules:
 
 ```
-┌───────────────────────────────────────────────────────────────────────────────────────────────┐
-│                                    LEARNING PATHS                                               │
-├───────────────────────────────────────────────────────────────────────────────────────────────┤
-│                                                                                                │
-│   🏭 INDUSTRIAL AUTOMATION       🔧 CNC MACHINING                🔷 SIEMENS AUTOMATION        │
-│   ━━━━━━━━━━━━━━━━━━━━━━━       ━━━━━━━━━━━━━━━━                 ━━━━━━━━━━━━━━━━━━━━━        │
-│                                                                                                │
-│   ├── Introduction *             ├── Introduction *             ├── Introduction *            │
-│   ├── Combinational logic *      ├── Combinational logic *      ├── Combinational logic *     │
-│   ├── Sensors/actuators *        ├── Sensors/actuators *        ├── LADDER language           │
-│   ├── LADDER language            ├── CNC Introduction           ├── S7-1500 Introduction      │
-│   └── GRAFCET                    ├── G-Code Programming         ├── TIA Portal Programming    │
-│                                  └── Axes and interpolation     └── S7 Data Blocks            │
-│                                                                                                │
-│   * Core modules shared across paths                                                          │
-│                                                                                                │
-└───────────────────────────────────────────────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+│                                              LEARNING PATHS                                                          │
+├─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                                                      │
+│  🏭 INDUSTRIAL AUTOMATION     🔧 CNC MACHINING          🔷 SIEMENS AUTOMATION     ⚡ VFD AND POSITIONING             │
+│  ━━━━━━━━━━━━━━━━━━━━━━━     ━━━━━━━━━━━━━━            ━━━━━━━━━━━━━━━━━━━━━    ━━━━━━━━━━━━━━━━━━━━━━             │
+│                                                                                                                      │
+│  ├── Introduction *           ├── Introduction *        ├── Introduction *        ├── Introduction *                │
+│  ├── Combinational logic *    ├── Combinational logic * ├── Combinational logic * ├── Combinational logic *         │
+│  ├── Sensors/actuators *      ├── Sensors/actuators *   ├── LADDER language       ├── Sensors/actuators *           │
+│  ├── LADDER language          ├── CNC Introduction      ├── S7-1500 Introduction  ├── VFD Introduction              │
+│  └── GRAFCET                  ├── G-Code Programming    ├── TIA Portal            ├── VFD Configuration             │
+│                               └── Axes & interpolation  └── S7 Data Blocks        ├── VFD Communication             │
+│                                                                                   ├── Positioning Intro             │
+│                                                                                   ├── Stepper/Servo motors          │
+│                                                                                   └── Motion Programming            │
+│                                                                                                                      │
+│  * Core modules shared across paths                                                                                 │
+│                                                                                                                      │
+└─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
 ### Industrial Automation Path 🏭
 
 This path covers the basics of industrial automation with programmable logic controllers (PLC):
-- 5 progressive modules
-- 10 lessons total
+- 5 progressive modules (35 lessons)
 - Focus on LADDER and GRAFCET
+- Validation quizzes for each lesson
 
 ### CNC Machining Path 🔧
 
@@ -70,6 +73,14 @@ This path is dedicated to Siemens S7-1500 PLCs and the TIA Portal environment:
 - 6 specialized lessons with ASCII diagrams
 - LAD, FBD, SCL programming
 - Mastering data blocks (DB)
+
+### VFD and Positioning Path ⚡
+
+This path specializes in variable frequency drives and motion control:
+- 9 modules (3 core + 6 specialized)
+- 36 lessons with 180 quizzes
+- Variable Frequency Drives (VFD): principles, configuration, communication
+- Positioning: stepper motors, servomotors, PLCopen programming
 
 ---
 
@@ -447,7 +458,7 @@ This project is open source and welcomes community contributions!
 - [x] ~~Add animations for LADDER diagrams~~ ✅ Animated power flow in PLC simulator
 - [ ] Implement exam mode
 - [x] ~~Add multi-language support (EN, ES, DE)~~ ✅ FR, EN, ES available
-- [x] ~~Add learning paths~~ ✅ Automation and CNC
+- [x] ~~Add learning paths~~ ✅ 4 paths: Automation, CNC, Siemens, VFD/Positioning
 - [ ] Create practical programming exercises
 - [x] ~~Add interactive G-Code simulator~~ ✅ 2D/3D visualization with Three.js
 
