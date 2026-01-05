@@ -11,9 +11,17 @@
     "build:client": "vite build",
     "build:server": "tsc -p tsconfig.server.json",
     "start": "node dist/server/index.js",
+    "start:prod": "NODE_ENV=production node dist/server/index.js",
     "db:push": "prisma db push",
+    "db:migrate": "prisma migrate deploy",
+    "db:migrate:dev": "prisma migrate dev",
+    "db:generate": "prisma generate",
     "db:studio": "prisma studio",
-    "db:seed": "tsx prisma/seed.ts"
+    "db:seed": "tsx prisma/seed.ts",
+    "db:seed:prod": "node dist/prisma/seed.js",
+    "postinstall": "prisma generate",
+    "prod:build": "npm run build && npm run db:generate",
+    "prod:start": "npm run db:migrate && npm run start:prod"
   },
   "dependencies": {
     "@prisma/client": "^5.7.0",

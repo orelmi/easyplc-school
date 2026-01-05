@@ -1,0 +1,34 @@
+# =================================
+# Render Blueprint
+# =================================
+# Deploy with: https://render.com/deploy
+
+services:
+  # Web Service
+  - type: web
+    name: easyplc-school
+    env: node
+    region: frankfurt # or oregon, singapore, etc.
+    plan: free # or starter, standard, etc.
+    buildCommand: npm install && npm run prod:build
+    startCommand: npm run prod:start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        fromDatabase:
+          name: easyplc-db
+          property: connectionString
+      - key: JWT_SECRET
+        generateValue: true
+      - key: CORS_ORIGINS
+        sync: false
+
+databases:
+  # PostgreSQL Database
+  - name: easyplc-db
+    databaseName: easyplc_school
+    user: easyplc
+    plan: free # or starter, standard, etc.
+    region: frankfurt
