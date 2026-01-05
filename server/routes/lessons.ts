@@ -99,6 +99,16 @@ router.post('/:id/submit', authMiddleware, async (req: AuthRequest, res: Respons
     const { answers, timeSpent } = req.body
     const lang = (req.query.lang as string) || 'fr'
 
+    // Verify user still exists (in case DB was reseeded)
+    const userExists = await prisma.user.findUnique({
+      where: { id: req.userId },
+      select: { id: true }
+    })
+
+    if (!userExists) {
+      return res.status(401).json({ error: 'Session invalide, veuillez vous reconnecter' })
+    }
+
     const lesson = await prisma.lesson.findUnique({
       where: { id },
       include: {
