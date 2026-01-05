@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuthStore } from '../store/authStore'
 import { api } from '../lib/api'
+import SocialLoginButtons from '../components/SocialLoginButtons'
 
 export default function Login() {
   const { t } = useTranslation()
@@ -33,11 +34,10 @@ export default function Login() {
     <div className="min-h-screen bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         {/* Logo */}
-          <span className="text-5xl">⚡</span>
         <div className="text-center mb-8">
           <span className="text-5xl">⚡</span>
           <h1 className="text-3xl font-bold text-white mt-2">EasyPLC School</h1>
-          <p className="text-primary-100 mt-1">Apprenez l'automatisme pas à pas</p>
+          <p className="text-primary-100 mt-1">Your Path to Industrial Automation</p>
         </div>
 
         {/* Card */}
@@ -87,6 +87,10 @@ export default function Login() {
               {isLoading ? 'Connexion...' : 'Se connecter'}
             </button>
           </form>
+
+          <div className="mt-6">
+            <SocialLoginButtons />
+          </div>
 
           <div className="mt-6 text-center text-sm text-gray-600">
             {t('auth.noAccount')}{' '}

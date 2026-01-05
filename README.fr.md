@@ -1413,60 +1413,147 @@ Ce compte a déjà :
 ```
 easyplc-school/
 ├── prisma/
-│   ├── schema.prisma    # Schéma de la base de données
-│   ├── seed.ts          # Script de peuplement + contenu pédagogique
-│   └── translations.ts  # Traductions des leçons et quiz (EN/ES)
+│   ├── schema.prisma        # Schéma de la base de données
+│   ├── seed.ts              # Script principal de peuplement
+│   └── modules/             # Contenu pédagogique modulaire
+│       ├── index.ts         # Ré-exporte tous les modules
+│       ├── types.ts         # Types TypeScript partagés
+│       ├── module-01-automation/
+│       │   └── index.ts     # Introduction à l'automatisme
+│       ├── module-02-combinational/
+│       │   └── index.ts     # Logique combinatoire
+│       ├── module-03-ladder/
+│       │   └── index.ts     # Langage LADDER
+│       ├── module-04-sensors/
+│       │   └── index.ts     # Capteurs et actionneurs
+│       ├── module-05-grafcet/
+│       │   └── index.ts     # GRAFCET
+│       ├── module-06-intro-cnc/
+│       │   └── index.ts     # Introduction CNC
+│       ├── module-07-programmation-gcode/
+│       │   └── index.ts     # Programmation G-Code
+│       ├── module-08-axes-interpolation/
+│       │   └── index.ts     # Axes et interpolation
+│       ├── module-09-intro-siemens/
+│       │   └── index.ts     # Introduction Siemens S7-1500
+│       ├── module-10-tia-portal/
+│       │   └── index.ts     # TIA Portal
+│       ├── module-11-data-blocks/
+│       │   └── index.ts     # Blocs de données S7
+│       ├── module-12-vfd-intro/
+│       │   └── index.ts     # Introduction aux VFD
+│       ├── module-13-vfd-config/
+│       │   └── index.ts     # Configuration VFD
+│       ├── module-14-vfd-comm/
+│       │   └── index.ts     # Communication VFD
+│       ├── module-15-positioning-intro/
+│       │   └── index.ts     # Introduction au positionnement
+│       ├── module-16-motors/
+│       │   └── index.ts     # Moteurs pas à pas et servo
+│       └── module-17-motion/
+│           └── index.ts     # Programmation de mouvement
 ├── server/
-│   ├── index.ts         # Point d'entrée du serveur
+│   ├── index.ts             # Point d'entrée du serveur
+│   ├── config/
+│   │   └── passport.ts      # Configuration OAuth
 │   ├── middleware/
-│   │   └── auth.ts      # Middleware d'authentification
-│   └── routes/
-│       ├── auth.ts      # Routes d'authentification
-│       ├── users.ts     # Routes utilisateurs
-│       ├── modules.ts   # Routes des modules
-│       ├── lessons.ts   # Routes des leçons
-│       ├── progress.ts  # Routes de progression
-│       ├── rewards.ts   # Routes des récompenses
-│       ├── leaderboard.ts # Routes du classement
-│       └── cursus.ts    # Routes des parcours d'apprentissage
+│   │   └── auth.ts          # Middleware JWT
+│   ├── routes/
+│   │   ├── auth.ts          # Routes d'authentification
+│   │   ├── oauth.ts         # Routes OAuth (Google, Facebook, Microsoft)
+│   │   ├── users.ts         # Routes utilisateurs
+│   │   ├── modules.ts       # Routes des modules
+│   │   ├── lessons.ts       # Routes des leçons
+│   │   ├── progress.ts      # Routes de progression
+│   │   ├── rewards.ts       # Routes des récompenses
+│   │   ├── leaderboard.ts   # Routes du classement
+│   │   └── cursus.ts        # Routes des parcours
+│   └── types/
+│       └── passport-microsoft.d.ts
 ├── src/
 │   ├── components/
-│   │   ├── Layout.tsx   # Layout principal
-│   │   └── LanguageSelector.tsx # Sélecteur de langue
+│   │   ├── Layout.tsx
+│   │   ├── LanguageSelector.tsx
+│   │   ├── SocialLoginButtons.tsx   # Boutons de connexion OAuth
+│   │   ├── LadderDiagram.tsx        # Visualisation LADDER
+│   │   ├── PLCIOPanel.tsx           # Panneau E/S PLC
+│   │   ├── GCodeCanvas.tsx          # Visualisation 2D G-Code
+│   │   └── GCodeCanvas3D.tsx        # Visualisation 3D G-Code
 │   ├── pages/
 │   │   ├── Login.tsx
 │   │   ├── Register.tsx
+│   │   ├── AuthCallback.tsx         # Callback OAuth
 │   │   ├── Dashboard.tsx
-│   │   ├── CursusSelect.tsx  # Sélection du parcours
-│   │   ├── CursusDetail.tsx  # Détail d'un parcours
+│   │   ├── CursusSelect.tsx
+│   │   ├── CursusDetail.tsx
 │   │   ├── Modules.tsx
 │   │   ├── ModuleDetail.tsx
 │   │   ├── Lesson.tsx
 │   │   ├── Rewards.tsx
 │   │   ├── Leaderboard.tsx
-│   │   └── Profile.tsx
-│   ├── store/
-│   │   └── authStore.ts # Store Zustand
+│   │   ├── Profile.tsx
+│   │   ├── PLCSimulator.tsx         # Simulateur PLC
+│   │   ├── GCodeSimulator.tsx       # Simulateur G-Code
+│   │   └── GRAFCETEditor.tsx        # Éditeur GRAFCET
 │   ├── lib/
-│   │   └── api.ts       # Client API
+│   │   ├── api.ts                   # Client API
+│   │   ├── plc-simulator.ts         # Moteur de simulation PLC
+│   │   └── gcode-parser.ts          # Parseur G-Code
 │   ├── i18n/
-│   │   ├── index.ts     # Configuration i18n
-│   │   └── locales/     # Fichiers de traduction (fr, en, es)
+│   │   ├── index.ts
+│   │   └── locales/
+│   ├── store/
+│   │   └── authStore.ts
 │   ├── App.tsx
 │   ├── main.tsx
 │   └── index.css
+├── .env.example                     # Template des variables d'environnement
 ├── package.json
 └── vite.config.ts
 ```
+
+### Structure des modules
+
+Chaque module dans `prisma/modules/` suit une structure standardisée :
+
+```typescript
+// prisma/modules/module-XX-name/index.ts
+export const moduleXXData: ModuleData = {
+  moduleOrder: 1,
+  moduleTitle: "Titre du module (FR)",
+  moduleDescription: "Description (FR)",
+  moduleTranslations: {
+    en: { title: "...", description: "..." },
+    es: { title: "...", description: "..." }
+  },
+  lessons: [...],           // Contenu des leçons en français
+  lessonTranslations: {     // Traductions EN/ES
+    en: { "lesson-1": {...} },
+    es: { "lesson-1": {...} }
+  },
+  quizzes: [[...]],         // Quiz par leçon
+  quizTranslations: {...}   // Traductions des quiz
+}
+```
+
+Cette architecture modulaire permet :
+- **Gestion facile du contenu** : Chaque module est autonome
+- **Développement parallèle** : Les contributeurs peuvent travailler sur différents modules
+- **Typage fort** : Les types partagés assurent la cohérence
+- **Évolutivité** : Ajoutez de nouveaux modules en créant un dossier
 
 ## API Endpoints
 
 ### Authentification
 | Méthode | Endpoint | Description |
 |---------|----------|-------------|
-| POST | `/api/auth/register` | Inscription |
-| POST | `/api/auth/login` | Connexion |
+| POST | `/api/auth/register` | Inscription email/mot de passe |
+| POST | `/api/auth/login` | Connexion email/mot de passe |
 | GET | `/api/auth/me` | Utilisateur courant |
+| GET | `/api/auth/providers` | Liste des fournisseurs OAuth |
+| GET | `/api/auth/google` | Connexion Google OAuth |
+| GET | `/api/auth/facebook` | Connexion Facebook OAuth |
+| GET | `/api/auth/microsoft` | Connexion Microsoft OAuth |
 
 ### Modules & Leçons
 | Méthode | Endpoint | Description |
@@ -1523,11 +1610,31 @@ Ce projet est open source et accueille les contributions de la communauté !
 
 ### Enrichir le contenu pédagogique
 
-Le contenu des leçons est défini dans `prisma/seed.ts`. Pour ajouter du contenu :
+Le contenu pédagogique est maintenant organisé en fichiers modulaires dans `prisma/modules/`. Pour ajouter ou modifier du contenu :
 
-1. Ouvrez le fichier `prisma/seed.ts`
-2. Ajoutez vos leçons en suivant la structure existante
+1. **Modifier un module existant** : Éditez le fichier `index.ts` dans le dossier du module correspondant
+2. **Ajouter un nouveau module** :
+   - Créez un nouveau dossier `prisma/modules/module-XX-name/`
+   - Créez un fichier `index.ts` suivant la structure du type `ModuleData`
+   - Exportez le module dans `prisma/modules/index.ts`
+   - Ajoutez-le au tableau `allModules`
 3. Relancez `npm run db:seed` pour appliquer les changements
+
+**Exemple : Ajouter une leçon à un module existant**
+```typescript
+// Dans prisma/modules/module-01-automation/index.ts
+lessons: [
+  // ... leçons existantes
+  {
+    title: "Nouveau titre de leçon",
+    description: "Description de la leçon",
+    content: JSON.stringify([...]),
+    order: 8,
+    duration: 15,
+    xpReward: 60
+  }
+]
+```
 
 ## Licence
 

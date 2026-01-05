@@ -11,7 +11,7 @@ model User {
   id            String    @id @default(uuid())
   email         String    @unique
   username      String    @unique
-  password      String
+  password      String?   // Optional for OAuth users
   avatar        String?
   totalXp       Int       @default(0)
   level         Int       @default(1)
@@ -23,6 +23,25 @@ model User {
   progress      LessonProgress[]
   rewards       UserReward[]
   quizAttempts  QuizAttempt[]
+  accounts      Account[]
+}
+
+model Account {
+  id                String  @id @default(uuid())
+  userId            String
+  provider          String  // google, facebook, microsoft, credentials
+  providerAccountId String
+  accessToken       String?
+  refreshToken      String?
+  expiresAt         Int?
+  tokenType         String?
+  scope             String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
 }
 
 model Cursus {

@@ -917,60 +917,147 @@ Esta cuenta ya tiene:
 ```
 easyplc-school/
 ├── prisma/
-│   ├── schema.prisma    # Esquema de la base de datos
-│   ├── seed.ts          # Script de poblado + contenido educativo
-│   └── translations.ts  # Traducciones de lecciones y quiz (EN/ES)
+│   ├── schema.prisma        # Esquema de la base de datos
+│   ├── seed.ts              # Script principal de poblado
+│   └── modules/             # Contenido educativo modular
+│       ├── index.ts         # Re-exporta todos los módulos
+│       ├── types.ts         # Tipos TypeScript compartidos
+│       ├── module-01-automation/
+│       │   └── index.ts     # Introducción a la Automatización
+│       ├── module-02-combinational/
+│       │   └── index.ts     # Lógica Combinacional
+│       ├── module-03-ladder/
+│       │   └── index.ts     # Lenguaje LADDER
+│       ├── module-04-sensors/
+│       │   └── index.ts     # Sensores y Actuadores
+│       ├── module-05-grafcet/
+│       │   └── index.ts     # GRAFCET
+│       ├── module-06-intro-cnc/
+│       │   └── index.ts     # Introducción CNC
+│       ├── module-07-programmation-gcode/
+│       │   └── index.ts     # Programación G-Code
+│       ├── module-08-axes-interpolation/
+│       │   └── index.ts     # Ejes e Interpolación
+│       ├── module-09-intro-siemens/
+│       │   └── index.ts     # Introducción Siemens S7-1500
+│       ├── module-10-tia-portal/
+│       │   └── index.ts     # TIA Portal
+│       ├── module-11-data-blocks/
+│       │   └── index.ts     # Bloques de Datos S7
+│       ├── module-12-vfd-intro/
+│       │   └── index.ts     # Introducción a Variadores
+│       ├── module-13-vfd-config/
+│       │   └── index.ts     # Configuración de Variadores
+│       ├── module-14-vfd-comm/
+│       │   └── index.ts     # Comunicación de Variadores
+│       ├── module-15-positioning-intro/
+│       │   └── index.ts     # Introducción al Posicionamiento
+│       ├── module-16-motors/
+│       │   └── index.ts     # Motores Paso a Paso y Servo
+│       └── module-17-motion/
+│           └── index.ts     # Programación de Movimiento
 ├── server/
-│   ├── index.ts         # Punto de entrada del servidor
+│   ├── index.ts             # Punto de entrada del servidor
+│   ├── config/
+│   │   └── passport.ts      # Configuración de estrategias OAuth
 │   ├── middleware/
-│   │   └── auth.ts      # Middleware de autenticación
-│   └── routes/
-│       ├── auth.ts      # Rutas de autenticación
-│       ├── users.ts     # Rutas de usuarios
-│       ├── modules.ts   # Rutas de módulos
-│       ├── lessons.ts   # Rutas de lecciones
-│       ├── progress.ts  # Rutas de progreso
-│       ├── rewards.ts   # Rutas de recompensas
-│       ├── leaderboard.ts # Rutas de clasificación
-│       └── cursus.ts    # Rutas de rutas de aprendizaje
+│   │   └── auth.ts          # Middleware de autenticación JWT
+│   ├── routes/
+│   │   ├── auth.ts          # Rutas de autenticación
+│   │   ├── oauth.ts         # Rutas OAuth (Google, Facebook, Microsoft)
+│   │   ├── users.ts         # Rutas de usuarios
+│   │   ├── modules.ts       # Rutas de módulos
+│   │   ├── lessons.ts       # Rutas de lecciones
+│   │   ├── progress.ts      # Rutas de progreso
+│   │   ├── rewards.ts       # Rutas de recompensas
+│   │   ├── leaderboard.ts   # Rutas de clasificación
+│   │   └── cursus.ts        # Rutas de rutas de aprendizaje
+│   └── types/
+│       └── passport-microsoft.d.ts  # Definiciones de tipos
 ├── src/
 │   ├── components/
-│   │   ├── Layout.tsx   # Layout principal
-│   │   └── LanguageSelector.tsx # Selector de idioma
+│   │   ├── Layout.tsx
+│   │   ├── LanguageSelector.tsx
+│   │   ├── SocialLoginButtons.tsx   # Botones de login OAuth
+│   │   ├── LadderDiagram.tsx        # Visualización LADDER
+│   │   ├── PLCIOPanel.tsx           # Panel E/S del PLC
+│   │   ├── GCodeCanvas.tsx          # Visualización G-Code 2D
+│   │   └── GCodeCanvas3D.tsx        # Visualización G-Code 3D
 │   ├── pages/
 │   │   ├── Login.tsx
 │   │   ├── Register.tsx
+│   │   ├── AuthCallback.tsx         # Manejador de callback OAuth
 │   │   ├── Dashboard.tsx
-│   │   ├── CursusSelect.tsx  # Selección de ruta
-│   │   ├── CursusDetail.tsx  # Detalle de una ruta
+│   │   ├── CursusSelect.tsx
+│   │   ├── CursusDetail.tsx
 │   │   ├── Modules.tsx
 │   │   ├── ModuleDetail.tsx
 │   │   ├── Lesson.tsx
 │   │   ├── Rewards.tsx
 │   │   ├── Leaderboard.tsx
-│   │   └── Profile.tsx
-│   ├── store/
-│   │   └── authStore.ts # Store Zustand
+│   │   ├── Profile.tsx
+│   │   ├── PLCSimulator.tsx         # Página del simulador PLC
+│   │   ├── GCodeSimulator.tsx       # Página del simulador G-Code
+│   │   └── GRAFCETEditor.tsx        # Página del editor GRAFCET
 │   ├── lib/
-│   │   └── api.ts       # Cliente API
+│   │   ├── api.ts                   # Cliente API
+│   │   ├── plc-simulator.ts         # Motor de simulación PLC
+│   │   └── gcode-parser.ts          # Parser de G-Code
 │   ├── i18n/
-│   │   ├── index.ts     # Configuración i18n
-│   │   └── locales/     # Archivos de traducción (fr, en, es)
+│   │   ├── index.ts                 # Configuración i18n
+│   │   └── locales/                 # Archivos de traducción (fr, en, es)
+│   ├── store/
+│   │   └── authStore.ts             # Store Zustand
 │   ├── App.tsx
 │   ├── main.tsx
 │   └── index.css
+├── .env.example                     # Plantilla de variables de entorno
 ├── package.json
 └── vite.config.ts
 ```
+
+### Estructura de Módulos
+
+Cada módulo en `prisma/modules/` sigue una estructura estandarizada:
+
+```typescript
+// prisma/modules/module-XX-name/index.ts
+export const moduleXXData: ModuleData = {
+  moduleOrder: 1,
+  moduleTitle: "Título del Módulo (FR)",
+  moduleDescription: "Descripción (FR)",
+  moduleTranslations: {
+    en: { title: "...", description: "..." },
+    es: { title: "...", description: "..." }
+  },
+  lessons: [...],           // Contenido de lecciones en francés
+  lessonTranslations: {     // Traducciones EN/ES
+    en: { "lesson-1": {...} },
+    es: { "lesson-1": {...} }
+  },
+  quizzes: [[...]],         // Quizzes por lección
+  quizTranslations: {...}   // Traducciones de quizzes
+}
+```
+
+Esta arquitectura modular permite:
+- **Gestión fácil del contenido**: Cada módulo es autónomo
+- **Desarrollo paralelo**: Los contribuidores pueden trabajar en diferentes módulos
+- **Seguridad de tipos**: Los tipos compartidos aseguran consistencia
+- **Escalabilidad**: Añadir nuevos módulos creando una nueva carpeta
 
 ## API Endpoints
 
 ### Autenticación
 | Método | Endpoint | Descripción |
 |--------|----------|-------------|
-| POST | `/api/auth/register` | Registro |
-| POST | `/api/auth/login` | Inicio de sesión |
+| POST | `/api/auth/register` | Registro con email/contraseña |
+| POST | `/api/auth/login` | Inicio de sesión con email/contraseña |
 | GET | `/api/auth/me` | Usuario actual |
+| GET | `/api/auth/providers` | Lista de proveedores OAuth disponibles |
+| GET | `/api/auth/google` | Login con Google OAuth |
+| GET | `/api/auth/facebook` | Login con Facebook OAuth |
+| GET | `/api/auth/microsoft` | Login con Microsoft OAuth |
 
 ### Módulos y lecciones
 | Método | Endpoint | Descripción |
@@ -1027,11 +1114,14 @@ easyplc-school/
 
 ### Enriquecer el contenido educativo
 
-El contenido de las lecciones está definido en `prisma/seed.ts`. Para agregar contenido:
+El contenido de las lecciones está organizado de forma modular en `prisma/modules/`. Para agregar contenido:
 
-1. Abre el archivo `prisma/seed.ts`
-2. Agrega tus lecciones siguiendo la estructura existente
-3. Ejecuta `npm run db:seed` para aplicar los cambios
+1. Crea una nueva carpeta `prisma/modules/module-XX-nombre/`
+2. Crea un archivo `index.ts` siguiendo la estructura `ModuleData`
+3. Exporta tu módulo en `prisma/modules/index.ts`
+4. Ejecuta `npm run db:seed` para aplicar los cambios
+
+Consulta los módulos existentes como referencia para la estructura de lecciones, quizzes y traducciones.
 
 ## Licencia
 

@@ -82,6 +82,11 @@ router.post('/login', async (req: Request, res: Response) => {
       return res.status(401).json({ error: 'Email ou mot de passe incorrect' })
     }
 
+    // OAuth users don't have password
+    if (!user.password) {
+      return res.status(401).json({ error: 'Ce compte utilise une connexion sociale. Veuillez utiliser Google, Facebook ou Microsoft.' })
+    }
+
     const isValidPassword = await bcrypt.compare(password, user.password)
 
     if (!isValidPassword) {

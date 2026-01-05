@@ -1,9 +1,13 @@
+import 'dotenv/config'
 import express from 'express'
 import cors from 'cors'
 import path from 'path'
 import { fileURLToPath } from 'url'
+import session from 'express-session'
 import { PrismaClient } from '@prisma/client'
+import { configurePassport } from './config/passport.js'
 import authRoutes from './routes/auth.js'
+import oauthRoutes from './routes/oauth.js'
 import userRoutes from './routes/users.js'
 import moduleRoutes from './routes/modules.js'
 import lessonRoutes from './routes/lessons.js'
@@ -24,18 +28,35 @@ const NODE_ENV = process.env.NODE_ENV || 'development'
 const corsOptions = {
   origin: NODE_ENV === 'production'
     ? (process.env.CORS_ORIGINS?.split(',') || [])
-    : '*',
+    : ['http://localhost:5173', 'http://localhost:3001'],
   credentials: true,
 }
 
 app.use(cors(corsOptions))
 app.use(express.json())
 
+// Session for OAuth
+app.use(session({
+  secret: process.env.SESSION_SECRET || 'easyplc-session-secret-dev',
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    secure: NODE_ENV === 'production',
+    maxAge: 24 * 60 * 60 * 1000, // 24 hours
+  },
+}))
+
+// Initialize Passport
+const passport = configurePassport()
+app.use(passport.initialize())
+app.use(passport.session())
+
 // Make prisma available in routes
 app.locals.prisma = prisma
 
 // Routes
 app.use('/api/auth', authRoutes)
+app.use('/api/auth', oauthRoutes)
 app.use('/api/users', userRoutes)
 app.use('/api/modules', moduleRoutes)
 app.use('/api/lessons', lessonRoutes)
