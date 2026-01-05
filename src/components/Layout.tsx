@@ -34,13 +34,13 @@ export default function Layout() {
             </NavLink>
 
             {/* Navigation */}
-            <nav className="hidden md:flex items-center gap-1">
+            <nav className="hidden lg:flex items-center gap-1">
               {navItems.map((item) => (
                 <NavLink
                   key={item.to}
                   to={item.to}
                   className={({ isActive }) =>
-                    `px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                    `px-3 py-2 rounded-lg text-sm font-medium transition-colors whitespace-nowrap ${
                       isActive
                         ? 'bg-primary-100 text-primary-700'
                         : 'text-gray-600 hover:bg-gray-100'
@@ -97,8 +97,8 @@ export default function Layout() {
           </div>
         </div>
 
-        {/* Mobile navigation */}
-        <nav className="md:hidden border-t border-gray-100 px-4 py-2 flex gap-1 overflow-x-auto">
+        {/* Mobile/Tablet navigation */}
+        <nav className="lg:hidden border-t border-gray-100 px-4 py-2 flex gap-1 overflow-x-auto">
           {navItems.map((item) => (
             <NavLink
               key={item.to}

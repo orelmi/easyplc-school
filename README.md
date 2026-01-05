@@ -12,6 +12,7 @@ Plateforme open source d'apprentissage de l'automatisme industriel et des automa
   - [Modules fondamentaux](#modules-fondamentaux-partagés)
   - [Modules Automatisme](#modules-automatisme)
   - [Modules CNC](#modules-cnc)
+  - [Modules Siemens](#modules-siemens)
 - [Fonctionnalités](#fonctionnalités)
 - [Installation](#installation)
 - [Compte démo](#compte-démo)
@@ -37,26 +38,26 @@ Plateforme open source d'apprentissage de l'automatisme industriel et des automa
 
 ## Parcours d'apprentissage
 
-EasyPLC School propose deux parcours de spécialisation avec un socle commun de modules fondamentaux :
+EasyPLC School propose trois parcours de spécialisation avec un socle commun de modules fondamentaux :
 
 ```
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                         PARCOURS D'APPRENTISSAGE                             │
-├─────────────────────────────────────────────────────────────────────────────┤
-│                                                                              │
-│   🏭 AUTOMATISME INDUSTRIEL            🔧 COMMANDE NUMÉRIQUE (CNC)          │
-│   ━━━━━━━━━━━━━━━━━━━━━━━━            ━━━━━━━━━━━━━━━━━━━━━━━━━━            │
-│                                                                              │
-│   ├── Introduction à l'automatisme *   ├── Introduction à l'automatisme *  │
-│   ├── Logique combinatoire *           ├── Logique combinatoire *          │
-│   ├── Capteurs et actionneurs *        ├── Capteurs et actionneurs *       │
-│   ├── Le langage LADDER                ├── Introduction à la CNC           │
-│   └── GRAFCET                          ├── Programmation G-Code            │
-│                                        └── Axes et interpolation           │
-│                                                                              │
-│   * Modules fondamentaux partagés entre les deux parcours                   │
-│                                                                              │
-└─────────────────────────────────────────────────────────────────────────────┘
+┌───────────────────────────────────────────────────────────────────────────────────────────────┐
+│                              PARCOURS D'APPRENTISSAGE                                          │
+├───────────────────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                                │
+│   🏭 AUTOMATISME INDUSTRIEL       🔧 COMMANDE NUMÉRIQUE (CNC)      🔷 AUTOMATISME SIEMENS     │
+│   ━━━━━━━━━━━━━━━━━━━━━━━━       ━━━━━━━━━━━━━━━━━━━━━━━━━━       ━━━━━━━━━━━━━━━━━━━━━━     │
+│                                                                                                │
+│   ├── Introduction *              ├── Introduction *              ├── Introduction *          │
+│   ├── Logique combinatoire *      ├── Logique combinatoire *      ├── Logique combinatoire *  │
+│   ├── Capteurs/actionneurs *      ├── Capteurs/actionneurs *      ├── Le langage LADDER       │
+│   ├── Le langage LADDER           ├── Introduction CNC            ├── Introduction S7-1500    │
+│   └── GRAFCET                     ├── Programmation G-Code        ├── Programmation TIA Portal│
+│                                   └── Axes et interpolation       └── Blocs de données S7     │
+│                                                                                                │
+│   * Modules fondamentaux partagés entre les parcours                                          │
+│                                                                                                │
+└───────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
 ### Parcours Automatisme industriel 🏭
@@ -72,6 +73,14 @@ Ce parcours se spécialise dans la programmation des machines à commande numér
 - 6 modules (3 fondamentaux + 3 spécialisés)
 - Apprentissage du G-Code
 - Maîtrise des systèmes d'axes
+
+### Parcours Automatisme Siemens 🔷
+
+Ce parcours est dédié aux automates Siemens S7-1500 et à l'environnement TIA Portal :
+- 6 modules (3 fondamentaux + 3 spécialisés Siemens)
+- 6 leçons spécialisées avec diagrammes ASCII
+- Programmation LAD, FBD, SCL
+- Maîtrise des blocs de données (DB)
 
 ---
 
@@ -693,6 +702,173 @@ G01 X50 Y50 F200 (usiner vers B)
 |---|-------|-------|-----|-------------|
 | 1 | Système de coordonnées | 12 min | 60 | Repères et origines machine/pièce |
 | 2 | Interpolation linéaire et circulaire | 18 min | 80 | G01, G02, G03 en détail |
+
+---
+
+## Modules Siemens
+
+Ces modules sont spécifiques au parcours Automatisme Siemens S7-1500.
+
+### Module 9 : Introduction au Siemens S7-1500 🔷
+
+> **Objectif** : Découvrir l'automate Siemens S7-1500 et l'environnement TIA Portal
+
+#### Architecture S7-1500
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                           S7-1500                                    │
+│  ┌─────────────────────────────────────────────────────────────────┐│
+│  │   ┌─────────┐ ┌─────────┐ ┌─────────┐ ┌─────────┐ ┌─────────┐  ││
+│  │   │ DISPLAY │ │   CPU   │ │   DI    │ │   DQ    │ │   AI    │  ││
+│  │   │         │ │ 1511-1  │ │  16x24V │ │  16x24V │ │   8x    │  ││
+│  │   │  [===]  │ │  PN     │ │         │ │         │ │  0-10V  │  ││
+│  │   │  [===]  │ │         │ │  ○ ○ ○  │ │  ○ ○ ○  │ │         │  ││
+│  │   │  [===]  │ │  RUN    │ │  ○ ○ ○  │ │  ○ ○ ○  │ │  CH0-7  │  ││
+│  │   │         │ │  STOP   │ │         │ │         │ │         │  ││
+│  │   └─────────┘ └─────────┘ └─────────┘ └─────────┘ └─────────┘  ││
+│  │                                                                 ││
+│  │   ════════════════════════════════════════════════════════════ ││
+│  │                        PROFINET / PROFIBUS                      ││
+│  └─────────────────────────────────────────────────────────────────┘│
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+#### Gamme de CPUs S7-1500
+
+| CPU | Mémoire | Performance |
+|-----|---------|-------------|
+| 1511 | 150 KB | Entrée de gamme |
+| 1513 | 300 KB | Standard |
+| 1515 | 500 KB | Avancé |
+| 1517 | 2 MB | Haute performance |
+| 1518 | 4 MB | Maximum |
+
+#### Leçons du module
+
+| # | Leçon | Durée | XP | Description |
+|---|-------|-------|-----|-------------|
+| 1 | Présentation du S7-1500 | 15 min | 70 | Architecture et caractéristiques |
+| 2 | L'environnement TIA Portal | 18 min | 80 | Interface et fonctionnalités |
+
+---
+
+### Module 10 : Programmation TIA Portal 💻
+
+> **Objectif** : Créer des projets et programmer avec TIA Portal
+
+#### Interface TIA Portal
+
+```
+┌───────────────────────────────────────────────────────────────┐
+│  TIA Portal V17                                    [─][□][X]  │
+├─────────────┬─────────────────────────────────────────────────┤
+│ Projet      │  Blocs de programme                             │
+│ ├─ PLC_1    │  ┌───────────────────────────────────────────┐  │
+│ │  ├─ Prog  │  │  Main [OB1]                               │  │
+│ │  │  ├─OB1 │  │                                           │  │
+│ │  │  ├─FB1 │  │  --| |--| |------------------( )--        │  │
+│ │  │  └─DB1 │  │   I0.0  I0.1                 Q0.0         │  │
+│ │  ├─ Tech  │  │                                           │  │
+│ │  └─ HMI   │  │  --| |------------------------( )--       │  │
+│ └─ HMI_1    │  │   I0.2                        Q0.1         │  │
+│             │  │                                           │  │
+├─────────────┴─┴───────────────────────────────────────────────┤
+│ Propriétés │ Info │ Diagnostic │ Références croisées          │
+└───────────────────────────────────────────────────────────────┘
+```
+
+#### Langages de programmation S7
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│  Exemple: Q0.0 = I0.0 AND I0.1                                  │
+│                                                                  │
+│  LAD:     ──| |────| |────────────────────────( )──             │
+│             I0.0    I0.1                        Q0.0             │
+│                                                                  │
+│  FBD:     ┌─────┐                                               │
+│           │ AND │                                               │
+│     I0.0──┤     ├───Q0.0                                        │
+│     I0.1──┤     │                                               │
+│           └─────┘                                               │
+│                                                                  │
+│  SCL:     IF I0.0 AND I0.1 THEN                                 │
+│              Q0.0 := TRUE;                                      │
+│           END_IF;                                               │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+#### Leçons du module
+
+| # | Leçon | Durée | XP | Description |
+|---|-------|-------|-----|-------------|
+| 1 | Créer un projet TIA Portal | 15 min | 70 | Configuration matérielle et projet |
+| 2 | Langages de programmation S7 | 18 min | 80 | LAD, FBD, SCL et GRAPH |
+
+---
+
+### Module 11 : Blocs de données S7-1500 📦
+
+> **Objectif** : Maîtriser les blocs de données et la programmation structurée
+
+#### Structure d'un bloc de données (DB)
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  DB10 "Données_Moteur"                                       │
+│  ┌─────────────────────────────────────────────────────────┐│
+│  │  Nom            │ Type    │ Valeur   │ Commentaire      ││
+│  │────────────────┼─────────┼──────────┼──────────────────││
+│  │  Vitesse        │ REAL    │ 1500.0   │ Vitesse en RPM   ││
+│  │  EnMarche       │ BOOL    │ FALSE    │ État de marche   ││
+│  │  Defaut         │ BOOL    │ FALSE    │ Défaut présent   ││
+│  │  TempsFonct     │ TIME    │ T#0s     │ Temps cumulé     ││
+│  │  Parametres     │ STRUCT  │          │ Paramètres moteur││
+│  │   ├─ VitesseMax │ REAL    │ 3000.0   │ Vitesse maximum  ││
+│  │   └─ Accel      │ REAL    │ 10.0     │ Accélération     ││
+│  └─────────────────────────────────────────────────────────┘│
+└─────────────────────────────────────────────────────────────┘
+```
+
+#### Types de blocs en S7
+
+| Bloc | Description | Mémoire |
+|------|-------------|---------|
+| OB (Organisation Block) | Point d'entrée du programme | Non |
+| FB (Function Block) | Bloc avec mémoire | DB d'instance |
+| FC (Function) | Bloc sans mémoire | Non |
+| DB (Data Block) | Stockage de données | Oui |
+
+#### Programmation structurée
+
+```
+┌───────────────────────────────────────────────────────────┐
+│                        OB1 (Main)                          │
+│  ┌─────────────────────────────────────────────────────┐  │
+│  │                                                     │  │
+│  │   CALL "FC_Lecture_Entrees"                         │  │
+│  │                                                     │  │
+│  │   CALL "FB_Moteur", "DB_Moteur1"                    │  │
+│  │        En := I0.0                                   │  │
+│  │        Vitesse := 1500                              │  │
+│  │                                                     │  │
+│  │   CALL "FB_Moteur", "DB_Moteur2"                    │  │
+│  │        En := I0.1                                   │  │
+│  │        Vitesse := 1200                              │  │
+│  │                                                     │  │
+│  │   CALL "FC_Ecriture_Sorties"                        │  │
+│  │                                                     │  │
+│  └─────────────────────────────────────────────────────┘  │
+└───────────────────────────────────────────────────────────┘
+```
+
+#### Leçons du module
+
+| # | Leçon | Durée | XP | Description |
+|---|-------|-------|-----|-------------|
+| 1 | Les blocs de données (DB) | 15 min | 70 | DB globaux et d'instance |
+| 2 | Programmation structurée | 18 min | 80 | Organisation avec OB, FB, FC |
 
 ---
 
