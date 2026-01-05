@@ -2,6 +2,14 @@
 
 Plateforme d'apprentissage de l'automatisme industriel et des automates programmables (PLC).
 
+## Captures d'écran
+
+### Vue d'ensemble
+![Vue d'ensemble de l'application](public/overview.png)
+
+### Module d'apprentissage
+![Exemple d'un module](public/module1.png)
+
 ## Fonctionnalités
 
 ### Système d'utilisateurs
