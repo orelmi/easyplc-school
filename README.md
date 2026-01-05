@@ -37,6 +37,9 @@ Plateforme open source d'apprentissage de l'automatisme industriel et des automa
 ### Simulateur G-Code interactif
 ![Simulateur G-Code](public/gcode-simulator.png)
 
+### Simulateur PLC / LADDER
+![Simulateur PLC](public/plc-simulator.png)
+
 ---
 
 ## Parcours d'apprentissage
@@ -1092,9 +1095,9 @@ Ce projet est open source et accueille les contributions de la communauté !
 
 ### Idées de contributions
 
-- [ ] Ajouter un simulateur d'automate interactif
+- [x] ~~Ajouter un simulateur d'automate interactif~~ ✅ Simulateur PLC avec visualisation LADDER en temps réel
 - [ ] Créer un éditeur GRAFCET visuel
-- [ ] Ajouter des animations pour les schémas LADDER
+- [x] ~~Ajouter des animations pour les schémas LADDER~~ ✅ Flux de puissance animé dans le simulateur PLC
 - [ ] Implémenter un mode examen
 - [x] ~~Ajouter le support multi-langues (EN, ES, DE)~~ ✅ FR, EN, ES disponibles
 - [x] ~~Ajouter des parcours d'apprentissage~~ ✅ Automatisme et CNC

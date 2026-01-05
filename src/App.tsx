@@ -13,6 +13,7 @@ import Profile from './pages/Profile'
 import CursusSelect from './pages/CursusSelect'
 import CursusDetail from './pages/CursusDetail'
 import GCodeSimulator from './pages/GCodeSimulator'
+import PLCSimulator from './pages/PLCSimulator'
 
 function PrivateRoute({ children }: { children: React.ReactNode }) {
   const { user, isLoading } = useAuthStore()
@@ -80,6 +81,7 @@ export default function App() {
         <Route path="leaderboard" element={<Leaderboard />} />
         <Route path="profile" element={<Profile />} />
         <Route path="simulator/gcode" element={<GCodeSimulator />} />
+        <Route path="simulator/plc" element={<PLCSimulator />} />
       </Route>
     </Routes>
   )
