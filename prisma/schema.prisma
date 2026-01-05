@@ -36,7 +36,21 @@ model Module {
   requiredXp  Int       @default(0)
   createdAt   DateTime  @default(now())
 
-  lessons     Lesson[]
+  lessons      Lesson[]
+  translations ModuleTranslation[]
+}
+
+model ModuleTranslation {
+  id          String    @id @default(uuid())
+  moduleId    String
+  language    String
+  title       String
+  description String
+  createdAt   DateTime  @default(now())
+
+  module      Module    @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+
+  @@unique([moduleId, language])
 }
 
 model Lesson {
@@ -108,7 +122,21 @@ model Reward {
   xpBonus     Int       @default(0)
   createdAt   DateTime  @default(now())
 
-  users       UserReward[]
+  users        UserReward[]
+  translations RewardTranslation[]
+}
+
+model RewardTranslation {
+  id          String    @id @default(uuid())
+  rewardId    String
+  language    String
+  name        String
+  description String
+  createdAt   DateTime  @default(now())
+
+  reward      Reward    @relation(fields: [rewardId], references: [id], onDelete: Cascade)
+
+  @@unique([rewardId, language])
 }
 
 model UserReward {

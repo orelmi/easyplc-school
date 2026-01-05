@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useAuthStore } from '../store/authStore'
 import { api } from '../lib/api'
 
@@ -28,6 +29,7 @@ interface ProfileData {
 }
 
 export default function Profile() {
+  const { t, i18n } = useTranslation()
   const { user, updateUser } = useAuthStore()
   const [profile, setProfile] = useState<ProfileData | null>(null)
   const [loading, setLoading] = useState(true)
@@ -49,7 +51,7 @@ export default function Profile() {
       setProfile((prev) => prev ? { ...prev, username: updated.username } : null)
       setEditing(false)
     } catch (err) {
-      alert(err instanceof Error ? err.message : 'Erreur lors de la mise à jour')
+      alert(err instanceof Error ? err.message : t('errors.updateFailed'))
     } finally {
       setSaving(false)
     }
@@ -58,8 +60,8 @@ export default function Profile() {
   const formatTime = (seconds: number) => {
     const hours = Math.floor(seconds / 3600)
     const minutes = Math.floor((seconds % 3600) / 60)
-    if (hours > 0) return `${hours}h ${minutes}min`
-    return `${minutes} min`
+    if (hours > 0) return t('profile.timeHours', { hours, minutes })
+    return t('profile.timeMinutes', { minutes })
   }
 
   if (loading) {
@@ -91,14 +93,14 @@ export default function Profile() {
                   value={newUsername}
                   onChange={(e) => setNewUsername(e.target.value)}
                   className="input flex-1"
-                  placeholder="Nouveau nom d'utilisateur"
+                  placeholder={t('profile.newUsername')}
                 />
                 <button
                   onClick={handleSave}
                   disabled={saving}
                   className="btn btn-primary"
                 >
-                  {saving ? '...' : 'Sauver'}
+                  {saving ? '...' : t('common.save')}
                 </button>
                 <button
                   onClick={() => setEditing(false)}
@@ -123,7 +125,7 @@ export default function Profile() {
             )}
             <p className="text-gray-500">{profile.email}</p>
             <p className="text-sm text-gray-400 mt-1">
-              Membre depuis le {new Date(profile.createdAt).toLocaleDateString('fr-FR')}
+              {t('profile.memberSince', { date: new Date(profile.createdAt).toLocaleDateString(i18n.language === 'en' ? 'en-US' : i18n.language === 'es' ? 'es-ES' : 'fr-FR') })}
             </p>
           </div>
 
@@ -132,7 +134,7 @@ export default function Profile() {
             <div className="w-16 h-16 bg-primary-600 rounded-full flex items-center justify-center text-white text-2xl font-bold">
               {profile.level}
             </div>
-            <div className="text-sm text-gray-500 mt-1">Niveau</div>
+            <div className="text-sm text-gray-500 mt-1">{t('leaderboard.level')}</div>
           </div>
         </div>
       </div>
@@ -141,25 +143,25 @@ export default function Profile() {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
         <div className="card text-center">
           <div className="text-3xl font-bold text-primary-600">{profile.totalXp}</div>
-          <div className="text-sm text-gray-500">Points XP</div>
+          <div className="text-sm text-gray-500">{t('profile.xpPoints')}</div>
         </div>
         <div className="card text-center">
           <div className="text-3xl font-bold text-green-600">
             {profile.stats.completedLessons}
           </div>
-          <div className="text-sm text-gray-500">Leçons terminées</div>
+          <div className="text-sm text-gray-500">{t('profile.lessonsCompleted')}</div>
         </div>
         <div className="card text-center">
           <div className="text-3xl font-bold text-purple-600">
             {profile.stats.averageScore}%
           </div>
-          <div className="text-sm text-gray-500">Score moyen</div>
+          <div className="text-sm text-gray-500">{t('profile.averageScore')}</div>
         </div>
         <div className="card text-center">
           <div className="text-3xl font-bold text-orange-500">
             {profile.streak} 🔥
           </div>
-          <div className="text-sm text-gray-500">Jours consécutifs</div>
+          <div className="text-sm text-gray-500">{t('profile.consecutiveDays')}</div>
         </div>
       </div>
 
@@ -169,7 +171,7 @@ export default function Profile() {
           <span className="text-4xl">⏱️</span>
           <div>
             <div className="text-2xl font-bold">{formatTime(profile.stats.totalTimeSpent)}</div>
-            <div className="text-gray-500">Temps total d'apprentissage</div>
+            <div className="text-gray-500">{t('profile.totalLearningTime')}</div>
           </div>
         </div>
       </div>
@@ -177,7 +179,7 @@ export default function Profile() {
       {/* Recent rewards */}
       {profile.rewards.length > 0 && (
         <div className="card">
-          <h2 className="text-xl font-bold mb-4">Récompenses récentes</h2>
+          <h2 className="text-xl font-bold mb-4">{t('profile.recentRewards')}</h2>
           <div className="flex flex-wrap gap-4">
             {profile.rewards.slice(0, 8).map((r) => (
               <div

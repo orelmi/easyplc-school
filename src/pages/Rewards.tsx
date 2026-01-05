@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { api } from '../lib/api'
 
 interface Reward {
@@ -24,12 +25,21 @@ interface RewardsData {
 }
 
 export default function Rewards() {
+  const { t, i18n } = useTranslation()
   const [data, setData] = useState<RewardsData | null>(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     api.getRewards().then(setData).finally(() => setLoading(false))
   }, [])
+
+  const getLocale = () => {
+    switch (i18n.language) {
+      case 'en': return 'en-US'
+      case 'es': return 'es-ES'
+      default: return 'fr-FR'
+    }
+  }
 
   if (loading) {
     return (
@@ -59,7 +69,7 @@ export default function Rewards() {
       )}
       {reward.earned && reward.earnedAt && (
         <div className="text-xs text-gray-400 mt-2">
-          Obtenu le {new Date(reward.earnedAt).toLocaleDateString('fr-FR')}
+          {t('rewards.earnedOn', { date: new Date(reward.earnedAt).toLocaleDateString(getLocale()) })}
         </div>
       )}
       {!reward.earned && (
@@ -72,7 +82,7 @@ export default function Rewards() {
     <div className="animate-slide-in">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold">Récompenses</h1>
+        <h1 className="text-3xl font-bold">{t('rewards.title')}</h1>
         <p className="text-gray-600 mt-1">
           Collectionnez des badges et trophées en progressant dans votre apprentissage
         </p>
@@ -103,7 +113,7 @@ export default function Rewards() {
       <section className="mb-12">
         <div className="flex items-center gap-2 mb-4">
           <span className="text-2xl">🎖️</span>
-          <h2 className="text-xl font-bold">Badges</h2>
+          <h2 className="text-xl font-bold">{t('rewards.badges')}</h2>
           <span className="text-sm text-gray-500">
             ({data.badges.filter((b) => b.earned).length}/{data.badges.length})
           </span>
@@ -119,7 +129,7 @@ export default function Rewards() {
       <section className="mb-12">
         <div className="flex items-center gap-2 mb-4">
           <span className="text-2xl">🏆</span>
-          <h2 className="text-xl font-bold">Trophées</h2>
+          <h2 className="text-xl font-bold">{t('rewards.trophies')}</h2>
           <span className="text-sm text-gray-500">
             ({data.trophies.filter((t) => t.earned).length}/{data.trophies.length})
           </span>
@@ -136,7 +146,7 @@ export default function Rewards() {
         <section>
           <div className="flex items-center gap-2 mb-4">
             <span className="text-2xl">📜</span>
-            <h2 className="text-xl font-bold">Certificats</h2>
+            <h2 className="text-xl font-bold">{t('rewards.certificates')}</h2>
             <span className="text-sm text-gray-500">
               ({data.certificates.filter((c) => c.earned).length}/{data.certificates.length})
             </span>

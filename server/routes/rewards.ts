@@ -8,9 +8,15 @@ const router = Router()
 router.get('/', authMiddleware, async (req: AuthRequest, res: Response) => {
   try {
     const prisma: PrismaClient = req.app.locals.prisma
+    const lang = (req.query.lang as string) || 'fr'
 
     const allRewards = await prisma.reward.findMany({
       orderBy: { createdAt: 'asc' },
+      include: {
+        translations: {
+          where: { language: lang }
+        }
+      }
     })
 
     const userRewards = await prisma.userReward.findMany({
@@ -20,16 +26,19 @@ router.get('/', authMiddleware, async (req: AuthRequest, res: Response) => {
     const earnedRewardIds = userRewards.map((ur) => ur.rewardId)
     const earnedDates = Object.fromEntries(userRewards.map((ur) => [ur.rewardId, ur.earnedAt]))
 
-    const rewards = allRewards.map((reward) => ({
-      id: reward.id,
-      name: reward.name,
-      description: reward.description,
-      icon: reward.icon,
-      type: reward.type,
-      xpBonus: reward.xpBonus,
-      earned: earnedRewardIds.includes(reward.id),
-      earnedAt: earnedDates[reward.id] || null,
-    }))
+    const rewards = allRewards.map((reward) => {
+      const translation = (reward as any).translations?.[0]
+      return {
+        id: reward.id,
+        name: translation?.name || reward.name,
+        description: translation?.description || reward.description,
+        icon: reward.icon,
+        type: reward.type,
+        xpBonus: reward.xpBonus,
+        earned: earnedRewardIds.includes(reward.id),
+        earnedAt: earnedDates[reward.id] || null,
+      }
+    })
 
     // Separate by type
     const badges = rewards.filter((r) => r.type === 'badge')

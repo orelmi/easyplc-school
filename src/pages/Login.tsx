@@ -1,9 +1,11 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuthStore } from '../store/authStore'
 import { api } from '../lib/api'
 
 export default function Login() {
+  const { t } = useTranslation()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
@@ -31,6 +33,7 @@ export default function Login() {
     <div className="min-h-screen bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         {/* Logo */}
+          <span className="text-5xl">⚡</span>
         <div className="text-center mb-8">
           <span className="text-5xl">⚡</span>
           <h1 className="text-3xl font-bold text-white mt-2">EasyPLC School</h1>
@@ -39,7 +42,7 @@ export default function Login() {
 
         {/* Card */}
         <div className="bg-white rounded-2xl shadow-xl p-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">Connexion</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-6">{t('auth.login')}</h2>
 
           {error && (
             <div className="bg-red-50 text-red-600 px-4 py-3 rounded-lg mb-4 text-sm">
@@ -86,7 +89,7 @@ export default function Login() {
           </form>
 
           <div className="mt-6 text-center text-sm text-gray-600">
-            Pas encore de compte ?{' '}
+            {t('auth.noAccount')}{' '}
             <Link to="/register" className="text-primary-600 font-medium hover:underline">
               Inscrivez-vous
             </Link>

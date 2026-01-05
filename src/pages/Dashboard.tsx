@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { useAuthStore } from '../store/authStore'
 import { api } from '../lib/api'
 
@@ -34,6 +35,7 @@ interface ProgressData {
 }
 
 export default function Dashboard() {
+  const { t, i18n } = useTranslation()
   const { user } = useAuthStore()
   const [progress, setProgress] = useState<ProgressData | null>(null)
   const [loading, setLoading] = useState(true)
@@ -41,6 +43,14 @@ export default function Dashboard() {
   useEffect(() => {
     api.getProgress().then(setProgress).finally(() => setLoading(false))
   }, [])
+
+  const getLocale = () => {
+    switch (i18n.language) {
+      case 'en': return 'en-US'
+      case 'es': return 'es-ES'
+      default: return 'fr-FR'
+    }
+  }
 
   if (loading) {
     return (
@@ -54,11 +64,11 @@ export default function Dashboard() {
     <div className="space-y-8 animate-slide-in">
       {/* Welcome header */}
       <div className="bg-gradient-to-r from-primary-600 to-primary-700 rounded-2xl p-6 text-white">
-        <h1 className="text-2xl font-bold">Bonjour, {user?.username} ! 👋</h1>
+        <h1 className="text-2xl font-bold">{t('dashboard.welcome', { username: user?.username })} ! 👋</h1>
         <p className="text-primary-100 mt-1">
           {progress?.overview.completedLessons === 0
-            ? "Prêt à commencer votre apprentissage de l'automatisme ?"
-            : `Vous avez terminé ${progress?.overview.completedLessons} leçons. Continuez comme ça !`}
+            ? t('dashboard.startLearning')
+            : t('dashboard.continueLearn')}
         </p>
       </div>
 
@@ -66,32 +76,32 @@ export default function Dashboard() {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <div className="card text-center">
           <div className="text-3xl font-bold text-primary-600">{progress?.user.totalXp}</div>
-          <div className="text-sm text-gray-500">Points XP</div>
+          <div className="text-sm text-gray-500">{t('dashboard.totalXp')}</div>
         </div>
         <div className="card text-center">
           <div className="text-3xl font-bold text-purple-600">{progress?.user.level}</div>
-          <div className="text-sm text-gray-500">Niveau</div>
+          <div className="text-sm text-gray-500">{t('leaderboard.level')}</div>
         </div>
         <div className="card text-center">
           <div className="text-3xl font-bold text-green-600">
             {progress?.overview.completedLessons}
           </div>
-          <div className="text-sm text-gray-500">Leçons terminées</div>
+          <div className="text-sm text-gray-500">{t('dashboard.lessonsCompleted')}</div>
         </div>
         <div className="card text-center">
           <div className="text-3xl font-bold text-orange-500">
             {progress?.user.streak || 0} 🔥
           </div>
-          <div className="text-sm text-gray-500">Jours consécutifs</div>
+          <div className="text-sm text-gray-500">{t('dashboard.currentStreak')}</div>
         </div>
       </div>
 
       {/* Level progress */}
       <div className="card">
         <div className="flex justify-between items-center mb-2">
-          <h3 className="font-semibold">Progression vers le niveau {(progress?.user.level || 1) + 1}</h3>
+          <h3 className="font-semibold">{t('dashboard.level', { level: (progress?.user.level || 1) + 1 })}</h3>
           <span className="text-sm text-gray-500">
-            {progress?.user.xpForNextLevel} XP restants
+            {progress?.user.xpForNextLevel} XP
           </span>
         </div>
         <div className="h-4 bg-gray-200 rounded-full overflow-hidden">
@@ -105,7 +115,7 @@ export default function Dashboard() {
       {/* Module progress */}
       <div>
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-bold">Progression des modules</h2>
+          <h2 className="text-xl font-bold">{t('dashboard.modulesProgress')}</h2>
           <Link to="/modules" className="text-primary-600 hover:underline text-sm font-medium">
             Voir tous les modules →
           </Link>
@@ -140,7 +150,7 @@ export default function Dashboard() {
       {/* Recent activity */}
       {progress?.recentActivity && progress.recentActivity.length > 0 && (
         <div>
-          <h2 className="text-xl font-bold mb-4">Activité récente</h2>
+          <h2 className="text-xl font-bold mb-4">{t('dashboard.recentActivity')}</h2>
           <div className="card divide-y divide-gray-100">
             {progress.recentActivity.map((activity) => (
               <Link
@@ -165,7 +175,7 @@ export default function Dashboard() {
                     {activity.score}%
                   </span>
                   <span className="text-sm text-gray-400">
-                    {new Date(activity.completedAt).toLocaleDateString('fr-FR')}
+                    {new Date(activity.completedAt).toLocaleDateString(getLocale())}
                   </span>
                 </div>
               </Link>

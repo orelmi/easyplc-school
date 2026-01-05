@@ -47,8 +47,8 @@ export const api = {
   getMe: () => fetchWithAuth('/auth/me'),
 
   // Modules
-  getModules: () => fetchWithAuth('/modules'),
-  getModule: (id: string) => fetchWithAuth(`/modules/${id}`),
+  getModules: () => fetchWithAuth(withLang('/modules')),
+  getModule: (id: string) => fetchWithAuth(withLang(`/modules/${id}`)),
 
   // Lessons
   getLesson: (id: string) => fetchWithAuth(`/lessons/${id}`),
@@ -62,7 +62,7 @@ export const api = {
   getProgress: () => fetchWithAuth('/progress'),
 
   // Rewards
-  getRewards: () => fetchWithAuth('/rewards'),
+  getRewards: () => fetchWithAuth(withLang('/rewards')),
 
   // Leaderboard
   getLeaderboard: (period?: string) =>

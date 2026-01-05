@@ -1,10 +1,61 @@
 import { PrismaClient } from '@prisma/client'
 import bcrypt from 'bcryptjs'
 
+
 const prisma = new PrismaClient()
+// Module translations for English and Spanish
+const moduleTranslations = {
+  en: [
+    { order: 1, title: "Introduction to Automation", description: "Discover the basics of industrial automation and programmable logic controllers" },
+    { order: 2, title: "Combinational Logic", description: "Master AND, OR, NOT logic gates and their applications" },
+    { order: 3, title: "LADDER Language", description: "Learn to program in LADDER language (contact diagram)" },
+    { order: 4, title: "Sensors and Actuators", description: "Understand sensors, actuators and their interfacing" },
+    { order: 5, title: "Grafcet", description: "Model sequential systems with GRAFCET" }
+  ],
+  es: [
+    { order: 1, title: "Introducción a la Automatización", description: "Descubra los fundamentos de la automatización industrial y los controladores lógicos programables" },
+    { order: 2, title: "Lógica Combinacional", description: "Domine las puertas lógicas AND, OR, NOT y sus aplicaciones" },
+    { order: 3, title: "Lenguaje LADDER", description: "Aprenda a programar en lenguaje LADDER (diagrama de contactos)" },
+    { order: 4, title: "Sensores y Actuadores", description: "Comprenda los sensores, actuadores y su interfaz" },
+    { order: 5, title: "Grafcet", description: "Modele sistemas secuenciales con GRAFCET" }
+  ]
+} as const
+
+const rewardTranslations: Record<string, Record<string, { name: string; description: string }>> = {
+  en: {
+    "Premier pas": { name: "First Step", description: "Complete your first lesson" },
+    "Étudiant assidu": { name: "Dedicated Student", description: "Complete 5 lessons" },
+    "Expert en herbe": { name: "Budding Expert", description: "Complete 10 lessons" },
+    "Sans faute !": { name: "Perfect Score!", description: "Get 100% on a quiz" },
+    "Série de 3": { name: "3-Day Streak", description: "Log in 3 consecutive days" },
+    "Série de 7": { name: "7-Day Streak", description: "Log in 7 consecutive days" },
+    "Maître logicien": { name: "Logic Master", description: "Complete the Combinational Logic module" },
+    "Pro du LADDER": { name: "LADDER Pro", description: "Complete the LADDER module" },
+    "Niveau 5": { name: "Level 5", description: "Reach level 5" },
+    "Niveau 10": { name: "Level 10", description: "Reach level 10" }
+  },
+  es: {
+    "Premier pas": { name: "Primer Paso", description: "Completar tu primera lección" },
+    "Étudiant assidu": { name: "Estudiante Dedicado", description: "Completar 5 lecciones" },
+    "Expert en herbe": { name: "Experto en Ciernes", description: "Completar 10 lecciones" },
+    "Sans faute !": { name: "¡Puntuación Perfecta!", description: "Obtener 100% en un quiz" },
+    "Série de 3": { name: "Racha de 3 Días", description: "Conectarse 3 días consecutivos" },
+    "Série de 7": { name: "Racha de 7 Días", description: "Conectarse 7 días consecutivos" },
+    "Maître logicien": { name: "Maestro de la Lógica", description: "Completar el módulo de Lógica Combinacional" },
+    "Pro du LADDER": { name: "Profesional LADDER", description: "Completar el módulo LADDER" },
+    "Niveau 5": { name: "Nivel 5", description: "Alcanzar el nivel 5" },
+    "Niveau 10": { name: "Nivel 10", description: "Alcanzar el nivel 10" }
+  }
+}
+
+
 
 async function main() {
   // Clear existing data
+  // QuizTranslation not implemented
+  await prisma.rewardTranslation.deleteMany()
+  // LessonTranslation not implemented
+  await prisma.moduleTranslation.deleteMany()
   await prisma.quizAttempt.deleteMany()
   await prisma.userReward.deleteMany()
   await prisma.lessonProgress.deleteMany()
@@ -74,6 +125,25 @@ async function main() {
       requiredXp: 1400,
     },
   })
+
+  
+  // Create Module Translations
+  const modules = [module1, module2, module3, module4, module5]
+  for (const lang of ['en', 'es'] as const) {
+    for (const module of modules) {
+      const trans = moduleTranslations[lang].find(t => t.order === modules.indexOf(module) + 1)
+      if (trans) {
+        await prisma.moduleTranslation.create({
+          data: {
+            moduleId: module.id,
+            language: lang,
+            title: trans.title,
+            description: trans.description
+          }
+        })
+      }
+    }
+  }
 
   // Create Lessons for Module 1
   const lesson1_1 = await prisma.lesson.create({
@@ -589,6 +659,25 @@ async function main() {
       },
     ],
   })
+
+  
+  // Create Reward Translations
+  const allRewards = await prisma.reward.findMany()
+  for (const reward of allRewards) {
+    for (const lang of ['en', 'es'] as const) {
+      const trans = rewardTranslations[lang][reward.name]
+      if (trans) {
+        await prisma.rewardTranslation.create({
+          data: {
+            rewardId: reward.id,
+            language: lang,
+            name: trans.name,
+            description: trans.description
+          }
+        })
+      }
+    }
+  }
 
   // Create demo user with some progress
   const hashedPassword = await bcrypt.hash('demo123', 10)

@@ -1,9 +1,11 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuthStore } from '../store/authStore'
 import { api } from '../lib/api'
 
 export default function Register() {
+  const { t } = useTranslation()
   const [email, setEmail] = useState('')
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -18,12 +20,12 @@ export default function Register() {
     setError('')
 
     if (password !== confirmPassword) {
-      setError('Les mots de passe ne correspondent pas')
+      setError(t('errors.passwordMismatch'))
       return
     }
 
     if (password.length < 6) {
-      setError('Le mot de passe doit contenir au moins 6 caractères')
+      setError(t('errors.passwordTooShort'))
       return
     }
 
@@ -52,7 +54,7 @@ export default function Register() {
 
         {/* Card */}
         <div className="bg-white rounded-2xl shadow-xl p-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">Inscription</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-6">{t('auth.register')}</h2>
 
           {error && (
             <div className="bg-red-50 text-red-600 px-4 py-3 rounded-lg mb-4 text-sm">
@@ -129,7 +131,7 @@ export default function Register() {
           </form>
 
           <div className="mt-6 text-center text-sm text-gray-600">
-            Déjà un compte ?{' '}
+            {t('auth.hasAccount')}{' '}
             <Link to="/login" className="text-primary-600 font-medium hover:underline">
               Connectez-vous
             </Link>

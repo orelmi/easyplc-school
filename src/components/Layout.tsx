@@ -1,7 +1,10 @@
 import { Outlet, NavLink, useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { useAuthStore } from '../store/authStore'
+import LanguageSelector from './LanguageSelector'
 
 export default function Layout() {
+  const { t } = useTranslation()
   const { user, logout } = useAuthStore()
   const navigate = useNavigate()
 
@@ -11,10 +14,10 @@ export default function Layout() {
   }
 
   const navItems = [
-    { to: '/dashboard', label: 'Tableau de bord', icon: '📊' },
-    { to: '/modules', label: 'Modules', icon: '📚' },
-    { to: '/rewards', label: 'Récompenses', icon: '🏆' },
-    { to: '/leaderboard', label: 'Classement', icon: '🥇' },
+    { to: '/dashboard', label: t('nav.dashboard'), icon: '📊' },
+    { to: '/modules', label: t('nav.modules'), icon: '📚' },
+    { to: '/rewards', label: t('nav.rewards'), icon: '🏆' },
+    { to: '/leaderboard', label: t('nav.leaderboard'), icon: '🥇' },
   ]
 
   return (
@@ -51,6 +54,9 @@ export default function Layout() {
 
             {/* User menu */}
             <div className="flex items-center gap-4">
+              {/* Language Selector */}
+              <LanguageSelector />
+
               {/* XP Badge */}
               <div className="hidden sm:flex items-center gap-2 bg-primary-50 px-3 py-1.5 rounded-full">
                 <span className="text-primary-600 font-bold">{user?.totalXp} XP</span>

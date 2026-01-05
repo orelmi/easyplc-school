@@ -8,6 +8,7 @@ const router = Router()
 router.get('/', authMiddleware, async (req: AuthRequest, res: Response) => {
   try {
     const prisma: PrismaClient = req.app.locals.prisma
+    const lang = (req.query.lang as string) || 'fr'
 
     const modules = await prisma.module.findMany({
       orderBy: { order: 'asc' },
@@ -19,6 +20,9 @@ router.get('/', authMiddleware, async (req: AuthRequest, res: Response) => {
               where: { userId: req.userId },
             },
           },
+        },
+        translations: {
+          where: { language: lang }
         },
       },
     })
@@ -39,10 +43,13 @@ router.get('/', authMiddleware, async (req: AuthRequest, res: Response) => {
       // Check if module is unlocked based on user XP
       const isUnlocked = !module.isLocked || (user?.totalXp || 0) >= module.requiredXp
 
+      // Get translated content if available
+      const translation = (module as any).translations?.[0]
+
       return {
         id: module.id,
-        title: module.title,
-        description: module.description,
+        title: translation?.title || module.title,
+        description: translation?.description || module.description,
         order: module.order,
         icon: module.icon,
         color: module.color,
@@ -66,6 +73,7 @@ router.get('/:id', authMiddleware, async (req: AuthRequest, res: Response) => {
   try {
     const prisma: PrismaClient = req.app.locals.prisma
     const { id } = req.params
+    const lang = (req.query.lang as string) || 'fr'
 
     const module = await prisma.module.findUnique({
       where: { id },
@@ -78,6 +86,9 @@ router.get('/:id', authMiddleware, async (req: AuthRequest, res: Response) => {
             },
             quizzes: true,
           },
+        },
+        translations: {
+          where: { language: lang }
         },
       },
     })
@@ -108,8 +119,13 @@ router.get('/:id', authMiddleware, async (req: AuthRequest, res: Response) => {
       score: lesson.progress[0]?.score || null,
     }))
 
+    // Get translated content if available
+    const translation = (module as any).translations?.[0]
+
     res.json({
       ...module,
+      title: translation?.title || module.title,
+      description: translation?.description || module.description,
       lessons: lessonsWithProgress,
     })
   } catch (error) {

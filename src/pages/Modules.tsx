@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import { api } from '../lib/api'
 
@@ -17,6 +18,7 @@ interface Module {
 }
 
 export default function Modules() {
+  const { t } = useTranslation()
   const [modules, setModules] = useState<Module[]>([])
   const [loading, setLoading] = useState(true)
 
@@ -35,7 +37,7 @@ export default function Modules() {
   return (
     <div className="animate-slide-in">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold">Modules d'apprentissage</h1>
+        <h1 className="text-3xl font-bold">{t('modules.title')}</h1>
         <p className="text-gray-600 mt-1">
           Progressez étape par étape dans votre apprentissage de l'automatisme
         </p>
@@ -72,7 +74,7 @@ export default function Modules() {
                       🔒 {module.requiredXp} XP requis
                     </div>
                   ) : module.progress === 100 ? (
-                    <div className="badge bg-green-100 text-green-700">✓ Terminé</div>
+                    <div className="badge bg-green-100 text-green-700">✓ {t('modules.completed')}</div>
                   ) : null}
                 </div>
 
@@ -80,7 +82,7 @@ export default function Modules() {
                 <div className="mt-4">
                   <div className="flex justify-between text-sm mb-1">
                     <span className="text-gray-500">
-                      {module.completedLessons}/{module.lessonsCount} leçons
+                      {module.completedLessons}/{module.lessonsCount > 1 ? t('modules.lessons', { count: module.lessonsCount }) : t('modules.lesson', { count: module.lessonsCount })}
                     </span>
                     <span className="font-medium" style={{ color: module.color }}>
                       {module.progress}%

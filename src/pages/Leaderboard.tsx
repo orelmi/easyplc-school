@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { api } from '../lib/api'
 
 interface LeaderboardUser {
@@ -21,6 +22,7 @@ interface LeaderboardData {
 }
 
 export default function Leaderboard() {
+  const { t } = useTranslation()
   const [data, setData] = useState<LeaderboardData | null>(null)
   const [period, setPeriod] = useState<'all' | 'month' | 'week'>('all')
   const [loading, setLoading] = useState(true)
@@ -71,9 +73,9 @@ export default function Leaderboard() {
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
         <div>
-          <h1 className="text-3xl font-bold">Classement</h1>
+          <h1 className="text-3xl font-bold">{t('leaderboard.title')}</h1>
           <p className="text-gray-600 mt-1">
-            {data.totalUsers} apprenants au total
+            {t('leaderboard.totalLearners', { count: data.totalUsers })}
           </p>
         </div>
 
@@ -89,7 +91,7 @@ export default function Leaderboard() {
                   : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
               }`}
             >
-              {p === 'all' ? 'Tout temps' : p === 'month' ? 'Ce mois' : 'Cette semaine'}
+              {t('leaderboard.period.' + p)}
             </button>
           ))}
         </div>
@@ -104,9 +106,9 @@ export default function Leaderboard() {
               {data.currentUser.username.charAt(0).toUpperCase()}
             </div>
             <div className="flex-1">
-              <div className="font-bold">{data.currentUser.username} (vous)</div>
+              <div className="font-bold">{data.currentUser.username} ({t('leaderboard.you')})</div>
               <div className="text-sm text-gray-500">
-                {data.currentUser.totalXp} XP • Niveau {data.currentUser.level}
+                {data.currentUser.totalXp} XP • {t('leaderboard.level')} {data.currentUser.level}
               </div>
             </div>
           </div>
@@ -137,7 +139,7 @@ export default function Leaderboard() {
               <div className="text-center mt-2">
                 <div className={`font-bold ${user.isCurrentUser ? 'text-primary-600' : ''}`}>
                   {user.username}
-                  {user.isCurrentUser && ' (vous)'}
+                  {user.isCurrentUser && ` (${t("leaderboard.you")})`}
                 </div>
                 <div className="text-sm text-gray-500">{user.totalXp} XP</div>
               </div>
@@ -160,12 +162,12 @@ export default function Leaderboard() {
         <table className="w-full">
           <thead>
             <tr className="text-left text-sm text-gray-500 border-b">
-              <th className="pb-3 pl-2">Rang</th>
-              <th className="pb-3">Utilisateur</th>
+              <th className="pb-3 pl-2">{t('leaderboard.rank')}</th>
+              <th className="pb-3">{t('leaderboard.user')}</th>
               <th className="pb-3 text-right">XP</th>
-              <th className="pb-3 text-right hidden sm:table-cell">Niveau</th>
-              <th className="pb-3 text-right hidden md:table-cell">Leçons</th>
-              <th className="pb-3 text-right hidden md:table-cell">Série</th>
+              <th className="pb-3 text-right hidden sm:table-cell">{t('leaderboard.level')}</th>
+              <th className="pb-3 text-right hidden md:table-cell">{t('leaderboard.lessons')}</th>
+              <th className="pb-3 text-right hidden md:table-cell">{t('leaderboard.streak')}</th>
             </tr>
           </thead>
           <tbody>
@@ -197,10 +199,10 @@ export default function Leaderboard() {
                     <div>
                       <div className={`font-medium ${user.isCurrentUser ? 'text-primary-700' : ''}`}>
                         {user.username}
-                        {user.isCurrentUser && ' (vous)'}
+                        {user.isCurrentUser && ` (${t("leaderboard.you")})`}
                       </div>
                       <div className="text-sm text-gray-500 sm:hidden">
-                        Niveau {user.level}
+                        {t('leaderboard.level')} {user.level}
                       </div>
                     </div>
                   </div>
