@@ -66,7 +66,7 @@ export const api = {
     }),
 
   // Progress
-  getProgress: () => fetchWithAuth('/progress'),
+  getProgress: () => fetchWithAuth(withLang('/progress')),
 
   // Rewards
   getRewards: () => fetchWithAuth(withLang('/rewards')),

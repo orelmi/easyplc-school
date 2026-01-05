@@ -8,6 +8,7 @@ const router = Router()
 router.get('/', authMiddleware, async (req: AuthRequest, res: Response) => {
   try {
     const prisma: PrismaClient = req.app.locals.prisma
+    const lang = (req.query.lang as string) || 'fr'
 
     const user = await prisma.user.findUnique({
       where: { id: req.userId },
@@ -23,7 +24,16 @@ router.get('/', authMiddleware, async (req: AuthRequest, res: Response) => {
       include: {
         lesson: {
           include: {
-            module: true,
+            module: {
+              include: {
+                translations: {
+                  where: { language: lang }
+                }
+              }
+            },
+            translations: {
+              where: { language: lang }
+            }
           },
         },
       },
@@ -37,15 +47,19 @@ router.get('/', authMiddleware, async (req: AuthRequest, res: Response) => {
       orderBy: { order: 'asc' },
       include: {
         lessons: true,
+        translations: {
+          where: { language: lang }
+        }
       },
     })
 
     const moduleProgress = modules.map((module) => {
       const moduleLessonIds = module.lessons.map((l) => l.id)
       const completed = completedLessons.filter((p) => moduleLessonIds.includes(p.lessonId)).length
+      const moduleTrans = (module as any).translations?.[0]
       return {
         moduleId: module.id,
-        title: module.title,
+        title: moduleTrans?.title || module.title,
         icon: module.icon,
         completed,
         total: module.lessons.length,
@@ -74,13 +88,17 @@ router.get('/', authMiddleware, async (req: AuthRequest, res: Response) => {
       recentActivity: completedLessons
         .sort((a, b) => new Date(b.completedAt!).getTime() - new Date(a.completedAt!).getTime())
         .slice(0, 5)
-        .map((p) => ({
-          lessonId: p.lessonId,
-          lessonTitle: p.lesson.title,
-          moduleTitle: p.lesson.module.title,
-          score: p.score,
-          completedAt: p.completedAt,
-        })),
+        .map((p) => {
+          const lessonTrans = (p.lesson as any).translations?.[0]
+          const moduleTrans = (p.lesson.module as any).translations?.[0]
+          return {
+            lessonId: p.lessonId,
+            lessonTitle: lessonTrans?.title || p.lesson.title,
+            moduleTitle: moduleTrans?.title || p.lesson.module.title,
+            score: p.score,
+            completedAt: p.completedAt,
+          }
+        }),
     })
   } catch (error) {
     console.error('Get progress error:', error)
