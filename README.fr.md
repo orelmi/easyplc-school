@@ -930,6 +930,8 @@ Un simulateur d'automate programmable complet avec visualisation LADDER en temps
 
 Un éditeur visuel pour créer et simuler des diagrammes GRAFCET (Graphe Fonctionnel de Commande Étape-Transition).
 
+![Éditeur GRAFCET](public/g7-simulator.png)
+
 ```
 ┌─────────────────────────────────────────────────────────────────┐
 │  ÉDITEUR GRAFCET                                    [MARCHE]    │

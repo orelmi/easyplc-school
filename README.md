@@ -123,6 +123,8 @@ A complete PLC simulator with real-time LADDER visualization.
 
 A visual editor for creating and simulating GRAFCET diagrams (Sequential Function Charts).
 
+![GRAFCET Editor](public/g7-simulator.png)
+
 ```
 ┌─────────────────────────────────────────────────────────────────┐
 │  GRAFCET EDITOR                                        [RUN]    │
