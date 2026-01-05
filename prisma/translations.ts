@@ -1047,3 +1047,653 @@ export const quizTranslations = {
     }
   }
 }
+
+// Siemens Module translations for English and Spanish
+export const siemensLessonTranslations = {
+  en: {
+    // Module 9 - Introduction to S7-1500
+    "Présentation du S7-1500": {
+      title: "Introduction to the S7-1500",
+      description: "Discover the Siemens S7-1500 PLC and its features",
+      content: JSON.stringify({
+        sections: [
+          {
+            type: "text",
+            content: "# The Siemens S7-1500\n\nThe **S7-1500** is Siemens' high-end programmable logic controller, designed for maximum performance."
+          },
+          {
+            type: "info",
+            content: "The S7-1500 replaces the S7-300/400 series and offers increased performance, better diagnostics, and a modern design."
+          },
+          {
+            type: "text",
+            content: "## Key Features\n\n- **Integrated display**: Diagnostics and configuration without PC\n- **Enhanced security**: Protection against unauthorized access\n- **High performance**: Very fast cycle times\n- **Technology functions**: Motion control, PID built-in"
+          },
+          {
+            type: "diagram",
+            title: "S7-1500 Architecture",
+            content: `┌─────────────────────────────────────────────────────────────────────┐
+│                           S7-1500                                    │
+│  ┌─────────────────────────────────────────────────────────────────┐│
+│  │   ┌─────────┐ ┌─────────┐ ┌─────────┐ ┌─────────┐ ┌─────────┐  ││
+│  │   │ DISPLAY │ │   CPU   │ │   DI    │ │   DQ    │ │   AI    │  ││
+│  │   │         │ │ 1511-1  │ │  16x24V │ │  16x24V │ │   8x    │  ││
+│  │   │  [===]  │ │  PN     │ │         │ │         │ │  0-10V  │  ││
+│  │   │  [===]  │ │         │ │  ○ ○ ○  │ │  ○ ○ ○  │ │         │  ││
+│  │   │  [===]  │ │  RUN    │ │  ○ ○ ○  │ │  ○ ○ ○  │ │  CH0-7  │  ││
+│  │   │         │ │  STOP   │ │         │ │         │ │         │  ││
+│  │   └─────────┘ └─────────┘ └─────────┘ └─────────┘ └─────────┘  ││
+│  │                                                                 ││
+│  │   ════════════════════════════════════════════════════════════ ││
+│  │                        PROFINET / PROFIBUS                      ││
+│  └─────────────────────────────────────────────────────────────────┘│
+└─────────────────────────────────────────────────────────────────────┘`
+          },
+          {
+            type: "text",
+            content: "## CPU Range\n\n| CPU | Memory | Performance |\n|-----|--------|-------------|\n| 1511 | 150 KB | Entry-level |\n| 1513 | 300 KB | Standard |\n| 1515 | 500 KB | Advanced |\n| 1517 | 2 MB | High performance |\n| 1518 | 4 MB | Maximum |"
+          }
+        ]
+      })
+    },
+    "L'environnement TIA Portal": {
+      title: "The TIA Portal Environment",
+      description: "Discover the TIA Portal development environment",
+      content: JSON.stringify({
+        sections: [
+          {
+            type: "text",
+            content: "# TIA Portal\n\n**TIA Portal** (Totally Integrated Automation) is Siemens' unified engineering platform."
+          },
+          {
+            type: "text",
+            content: "## What is TIA Portal?\n\nTIA Portal brings together all automation tools in a single environment:\n\n- **Step 7**: PLC programming\n- **WinCC**: HMI visualization\n- **Startdrive**: Drive configuration\n- **Safety**: Safety programming"
+          },
+          {
+            type: "diagram",
+            title: "TIA Portal Interface",
+            content: `┌───────────────────────────────────────────────────────────────┐
+│  TIA Portal V17                                    [─][□][X]  │
+├─────────────┬─────────────────────────────────────────────────┤
+│ Project     │  Program blocks                                 │
+│ ├─ PLC_1    │  ┌───────────────────────────────────────────┐  │
+│ │  ├─ Prog  │  │  Main [OB1]                               │  │
+│ │  │  ├─OB1 │  │                                           │  │
+│ │  │  ├─FB1 │  │  --| |--| |------------------( )--        │  │
+│ │  │  └─DB1 │  │   I0.0  I0.1                 Q0.0         │  │
+│ │  ├─ Tech  │  │                                           │  │
+│ │  └─ HMI   │  │  --| |------------------------( )--       │  │
+│ └─ HMI_1    │  │   I0.2                        Q0.1         │  │
+│                │  │                                           │  │
+├─────────────┴─┴───────────────────────────────────────────────┤
+│ Properties │ Info │ Diagnostics │ Cross-references            │
+└───────────────────────────────────────────────────────────────┘`
+          },
+          {
+            type: "info",
+            content: "TIA Portal uses a \"Portal view\" for intuitive navigation and a \"Project view\" for detailed editing."
+          },
+          {
+            type: "text",
+            content: "## Key Features\n\n- **Unified interface**: Everything in one software\n- **Drag & drop**: Simplified configuration\n- **Integrated simulation**: PLCSIM for testing\n- **Libraries**: Reusable code blocks"
+          }
+        ]
+      })
+    },
+    // Module 10 - TIA Portal Programming
+    "Créer un projet TIA Portal": {
+      title: "Creating a TIA Portal Project",
+      description: "Learn to create and configure a TIA Portal project",
+      content: JSON.stringify({
+        sections: [
+          {
+            type: "text",
+            content: "# Creating a TIA Portal Project\n\nA structured project is the foundation of any automation application."
+          },
+          {
+            type: "text",
+            content: "## Creation Steps\n\n1. **New Project**: File > New > Project\n2. **Device selection**: Choose CPU (e.g., CPU 1511-1 PN)\n3. **Hardware configuration**: Add I/O modules\n4. **Network**: Configure PROFINET addresses\n5. **Programming**: Create program blocks"
+          },
+          {
+            type: "diagram",
+            title: "Hardware Configuration (HW Config)",
+            content: `┌─────────────────────────────────────────────────────────────┐
+│  Device Configuration - PLC_1                                │
+│  ┌─────────────────────────────────────────────────────────┐│
+│  │  Rail 0                                                  ││
+│  │  ┌──────┐ ┌──────┐ ┌──────┐ ┌──────┐ ┌──────┐          ││
+│  │  │  PS  │ │ CPU  │ │ DI16 │ │ DQ16 │ │ AI8  │          ││
+│  │  │ 25W  │ │1511-1│ │      │ │      │ │      │          ││
+│  │  │      │ │  PN  │ │      │ │      │ │      │          ││
+│  │  └──────┘ └──────┘ └──────┘ └──────┘ └──────┘          ││
+│  │   Slot 0   Slot 1   Slot 2   Slot 3   Slot 4           ││
+│  │                                                          ││
+│  │  Addresses:        I0.0-I1.7  Q0.0-Q1.7  IW64-IW78     ││
+│  └─────────────────────────────────────────────────────────┘│
+└─────────────────────────────────────────────────────────────┘`
+          },
+          {
+            type: "info",
+            content: "Compile and download your project to the PLC regularly to verify that everything works."
+          }
+        ]
+      })
+    },
+    "Langages de programmation S7": {
+      title: "S7 Programming Languages",
+      description: "Discover LAD, FBD, SCL and GRAPH",
+      content: JSON.stringify({
+        sections: [
+          {
+            type: "text",
+            content: "# S7 Programming Languages\n\nSiemens offers several programming languages for different needs."
+          },
+          {
+            type: "text",
+            content: "## Available Languages\n\n### LAD (Ladder Diagram)\nGraphical language resembling electrical diagrams. Ideal for discrete logic.\n\n### FBD (Function Block Diagram)\nGraphical language using logic blocks. Good for process control.\n\n### SCL (Structured Control Language)\nHigh-level textual language similar to Pascal. Powerful for algorithms.\n\n### GRAPH\nSequential programming language for step-by-step processes."
+          },
+          {
+            type: "diagram",
+            title: "Language Comparison",
+            content: `┌─────────────────────────────────────────────────────────────────┐
+│  Example: Q0.0 = I0.0 AND I0.1                                  │
+│                                                                  │
+│  LAD:     ──| |────| |────────────────────────( )──             │
+│             I0.0    I0.1                        Q0.0             │
+│                                                                  │
+│  FBD:     ┌─────┐                                               │
+│           │ AND │                                               │
+│     I0.0──┤     ├───Q0.0                                        │
+│     I0.1──┤     │                                               │
+│           └─────┘                                               │
+│                                                                  │
+│  SCL:     IF I0.0 AND I0.1 THEN                                 │
+│              Q0.0 := TRUE;                                      │
+│           END_IF;                                               │
+└─────────────────────────────────────────────────────────────────┘`
+          },
+          {
+            type: "warning",
+            content: "Choose the language based on the task: LAD for logic, SCL for math, GRAPH for sequences."
+          }
+        ]
+      })
+    },
+    // Module 11 - Data Blocks
+    "Les blocs de données (DB)": {
+      title: "Data Blocks (DB)",
+      description: "Understand and use data blocks",
+      content: JSON.stringify({
+        sections: [
+          {
+            type: "text",
+            content: "# Data Blocks (DB)\n\n**Data blocks** store data used by the program."
+          },
+          {
+            type: "text",
+            content: "## Types of DB\n\n### Global DB\nAccessible from anywhere in the program. Ideal for shared data.\n\n### Instance DB\nAssociated with a Function Block (FB). Stores the FB's internal data."
+          },
+          {
+            type: "diagram",
+            title: "DB Structure",
+            content: `┌─────────────────────────────────────────────────────────────┐
+│  DB10 "Motor_Data"                                           │
+│  ┌─────────────────────────────────────────────────────────┐│
+│  │  Name          │ Type    │ Value    │ Comment           ││
+│  │────────────────┼─────────┼──────────┼───────────────────││
+│  │  Speed         │ REAL    │ 1500.0   │ Speed in RPM      ││
+│  │  Running       │ BOOL    │ FALSE    │ Running status    ││
+│  │  Fault         │ BOOL    │ FALSE    │ Fault present     ││
+│  │  RunTime       │ TIME    │ T#0s     │ Cumulative time   ││
+│  │  Parameters    │ STRUCT  │          │ Motor parameters  ││
+│  │   ├─ MaxSpeed  │ REAL    │ 3000.0   │ Maximum speed     ││
+│  │   └─ Accel     │ REAL    │ 10.0     │ Acceleration      ││
+│  └─────────────────────────────────────────────────────────┘│
+└─────────────────────────────────────────────────────────────┘`
+          },
+          {
+            type: "text",
+            content: "## Syntax for Accessing\n\n- **Global DB**: DB10.Speed or \"Motor_Data\".Speed\n- **Instance DB**: Automatic with FB call"
+          },
+          {
+            type: "info",
+            content: "Prefer global DBs for shared data and instance DBs for encapsulated data."
+          }
+        ]
+      })
+    },
+    "Programmation structurée": {
+      title: "Structured Programming",
+      description: "Organize your code with FB, FC and DB",
+      content: JSON.stringify({
+        sections: [
+          {
+            type: "text",
+            content: "# Structured Programming\n\nStructured programming organizes code into reusable blocks."
+          },
+          {
+            type: "text",
+            content: "## Block Types\n\n| Block | Description |\n|-------|-------------|\n| OB (Organisation Block) | Program entry point |\n| FB (Function Block) | Block with memory (instance DB) |\n| FC (Function) | Block without memory |\n| DB (Data Block) | Data storage |"
+          },
+          {
+            type: "diagram",
+            title: "Block Calls",
+            content: `┌───────────────────────────────────────────────────────────┐
+│                        OB1 (Main)                          │
+│  ┌─────────────────────────────────────────────────────┐  │
+│  │                                                     │  │
+│  │   CALL "FC_Read_Inputs"                             │  │
+│  │                                                     │  │
+│  │   CALL "FB_Motor", "DB_Motor1"                      │  │
+│  │        En := I0.0                                   │  │
+│  │        Speed := 1500                                │  │
+│  │                                                     │  │
+│  │   CALL "FB_Motor", "DB_Motor2"                      │  │
+│  │        En := I0.1                                   │  │
+│  │        Speed := 1200                                │  │
+│  │                                                     │  │
+│  │   CALL "FC_Write_Outputs"                           │  │
+│  │                                                     │  │
+│  └─────────────────────────────────────────────────────┘  │
+└───────────────────────────────────────────────────────────┘`
+          },
+          {
+            type: "text",
+            content: "## Advantages\n\n- **Reuse**: An FB can be called multiple times with different DBs\n- **Readability**: Organized and documented code\n- **Maintenance**: Localized modifications\n- **Testing**: Individually testable blocks"
+          },
+          {
+            type: "warning",
+            content: "Avoid programming everything in OB1! Use FB and FC to structure your code."
+          }
+        ]
+      })
+    }
+  },
+  es: {
+    // Module 9 - Introduction to S7-1500
+    "Présentation du S7-1500": {
+      title: "Presentación del S7-1500",
+      description: "Descubre el PLC Siemens S7-1500 y sus características",
+      content: JSON.stringify({
+        sections: [
+          {
+            type: "text",
+            content: "# El Siemens S7-1500\n\nEl **S7-1500** es el controlador lógico programable de gama alta de Siemens, diseñado para el máximo rendimiento."
+          },
+          {
+            type: "info",
+            content: "El S7-1500 reemplaza la serie S7-300/400 y ofrece mayor rendimiento, mejor diagnóstico y un diseño moderno."
+          },
+          {
+            type: "text",
+            content: "## Características principales\n\n- **Pantalla integrada**: Diagnóstico y configuración sin PC\n- **Seguridad mejorada**: Protección contra acceso no autorizado\n- **Alto rendimiento**: Tiempos de ciclo muy rápidos\n- **Funciones tecnológicas**: Control de movimiento, PID integrado"
+          },
+          {
+            type: "diagram",
+            title: "Arquitectura S7-1500",
+            content: `┌─────────────────────────────────────────────────────────────────────┐
+│                           S7-1500                                    │
+│  ┌─────────────────────────────────────────────────────────────────┐│
+│  │   ┌─────────┐ ┌─────────┐ ┌─────────┐ ┌─────────┐ ┌─────────┐  ││
+│  │   │ DISPLAY │ │   CPU   │ │   DI    │ │   DQ    │ │   AI    │  ││
+│  │   │         │ │ 1511-1  │ │  16x24V │ │  16x24V │ │   8x    │  ││
+│  │   │  [===]  │ │  PN     │ │         │ │         │ │  0-10V  │  ││
+│  │   │  [===]  │ │         │ │  ○ ○ ○  │ │  ○ ○ ○  │ │         │  ││
+│  │   │  [===]  │ │  RUN    │ │  ○ ○ ○  │ │  ○ ○ ○  │ │  CH0-7  │  ││
+│  │   │         │ │  STOP   │ │         │ │         │ │         │  ││
+│  │   └─────────┘ └─────────┘ └─────────┘ └─────────┘ └─────────┘  ││
+│  │                                                                 ││
+│  │   ════════════════════════════════════════════════════════════ ││
+│  │                        PROFINET / PROFIBUS                      ││
+│  └─────────────────────────────────────────────────────────────────┘│
+└─────────────────────────────────────────────────────────────────────┘`
+          },
+          {
+            type: "text",
+            content: "## Gama de CPUs\n\n| CPU | Memoria | Rendimiento |\n|-----|---------|-------------|\n| 1511 | 150 KB | Entrada |\n| 1513 | 300 KB | Estándar |\n| 1515 | 500 KB | Avanzado |\n| 1517 | 2 MB | Alto rendimiento |\n| 1518 | 4 MB | Máximo |"
+          }
+        ]
+      })
+    },
+    "L'environnement TIA Portal": {
+      title: "El entorno TIA Portal",
+      description: "Descubre el entorno de desarrollo TIA Portal",
+      content: JSON.stringify({
+        sections: [
+          {
+            type: "text",
+            content: "# TIA Portal\n\n**TIA Portal** (Totally Integrated Automation) es la plataforma de ingeniería unificada de Siemens."
+          },
+          {
+            type: "text",
+            content: "## ¿Qué es TIA Portal?\n\nTIA Portal reúne todas las herramientas de automatización en un solo entorno:\n\n- **Step 7**: Programación de PLC\n- **WinCC**: Visualización HMI\n- **Startdrive**: Configuración de variadores\n- **Safety**: Programación de seguridad"
+          },
+          {
+            type: "diagram",
+            title: "Interfaz TIA Portal",
+            content: `┌───────────────────────────────────────────────────────────────┐
+│  TIA Portal V17                                    [─][□][X]  │
+├─────────────┬─────────────────────────────────────────────────┤
+│ Proyecto    │  Bloques de programa                            │
+│ ├─ PLC_1    │  ┌───────────────────────────────────────────┐  │
+│ │  ├─ Prog  │  │  Main [OB1]                               │  │
+│ │  │  ├─OB1 │  │                                           │  │
+│ │  │  ├─FB1 │  │  --| |--| |------------------( )--        │  │
+│ │  │  └─DB1 │  │   I0.0  I0.1                 Q0.0         │  │
+│ │  ├─ Tech  │  │                                           │  │
+│ │  └─ HMI   │  │  --| |------------------------( )--       │  │
+│ └─ HMI_1    │  │   I0.2                        Q0.1         │  │
+│             │  │                                           │  │
+├─────────────┴─┴───────────────────────────────────────────────┤
+│ Propiedades │ Info │ Diagnóstico │ Referencias cruzadas       │
+└───────────────────────────────────────────────────────────────┘`
+          },
+          {
+            type: "info",
+            content: "TIA Portal utiliza una \"Vista de portal\" para navegación intuitiva y una \"Vista de proyecto\" para edición detallada."
+          },
+          {
+            type: "text",
+            content: "## Características clave\n\n- **Interfaz unificada**: Todo en un solo software\n- **Arrastrar y soltar**: Configuración simplificada\n- **Simulación integrada**: PLCSIM para pruebas\n- **Bibliotecas**: Bloques de código reutilizables"
+          }
+        ]
+      })
+    },
+    // Module 10 - TIA Portal Programming
+    "Créer un projet TIA Portal": {
+      title: "Crear un proyecto TIA Portal",
+      description: "Aprende a crear y configurar un proyecto TIA Portal",
+      content: JSON.stringify({
+        sections: [
+          {
+            type: "text",
+            content: "# Crear un proyecto TIA Portal\n\nUn proyecto estructurado es la base de cualquier aplicación de automatización."
+          },
+          {
+            type: "text",
+            content: "## Pasos de creación\n\n1. **Nuevo proyecto**: Archivo > Nuevo > Proyecto\n2. **Selección del dispositivo**: Elegir CPU (ej. CPU 1511-1 PN)\n3. **Configuración de hardware**: Agregar módulos E/S\n4. **Red**: Configurar direcciones PROFINET\n5. **Programación**: Crear bloques de programa"
+          },
+          {
+            type: "diagram",
+            title: "Configuración de Hardware (HW Config)",
+            content: `┌─────────────────────────────────────────────────────────────┐
+│  Configuración del dispositivo - PLC_1                       │
+│  ┌─────────────────────────────────────────────────────────┐│
+│  │  Rack 0                                                  ││
+│  │  ┌──────┐ ┌──────┐ ┌──────┐ ┌──────┐ ┌──────┐          ││
+│  │  │  PS  │ │ CPU  │ │ DI16 │ │ DQ16 │ │ AI8  │          ││
+│  │  │ 25W  │ │1511-1│ │      │ │      │ │      │          ││
+│  │  │      │ │  PN  │ │      │ │      │ │      │          ││
+│  │  └──────┘ └──────┘ └──────┘ └──────┘ └──────┘          ││
+│  │   Slot 0   Slot 1   Slot 2   Slot 3   Slot 4           ││
+│  │                                                          ││
+│  │  Direcciones:      I0.0-I1.7  Q0.0-Q1.7  IW64-IW78     ││
+│  └─────────────────────────────────────────────────────────┘│
+└─────────────────────────────────────────────────────────────┘`
+          },
+          {
+            type: "info",
+            content: "Compile y descargue su proyecto al PLC regularmente para verificar que todo funcione."
+          }
+        ]
+      })
+    },
+    "Langages de programmation S7": {
+      title: "Lenguajes de programación S7",
+      description: "Descubre LAD, FBD, SCL y GRAPH",
+      content: JSON.stringify({
+        sections: [
+          {
+            type: "text",
+            content: "# Lenguajes de programación S7\n\nSiemens ofrece varios lenguajes de programación para diferentes necesidades."
+          },
+          {
+            type: "text",
+            content: "## Lenguajes disponibles\n\n### LAD (Diagrama de Escalera)\nLenguaje gráfico que se asemeja a diagramas eléctricos. Ideal para lógica discreta.\n\n### FBD (Diagrama de Bloques de Función)\nLenguaje gráfico usando bloques lógicos. Bueno para control de procesos.\n\n### SCL (Lenguaje de Control Estructurado)\nLenguaje textual de alto nivel similar a Pascal. Potente para algoritmos.\n\n### GRAPH\nLenguaje de programación secuencial para procesos paso a paso."
+          },
+          {
+            type: "diagram",
+            title: "Comparación de lenguajes",
+            content: `┌─────────────────────────────────────────────────────────────────┐
+│  Ejemplo: Q0.0 = I0.0 AND I0.1                                  │
+│                                                                  │
+│  LAD:     ──| |────| |────────────────────────( )──             │
+│             I0.0    I0.1                        Q0.0             │
+│                                                                  │
+│  FBD:     ┌─────┐                                               │
+│           │ AND │                                               │
+│     I0.0──┤     ├───Q0.0                                        │
+│     I0.1──┤     │                                               │
+│           └─────┘                                               │
+│                                                                  │
+│  SCL:     IF I0.0 AND I0.1 THEN                                 │
+│              Q0.0 := TRUE;                                      │
+│           END_IF;                                               │
+└─────────────────────────────────────────────────────────────────┘`
+          },
+          {
+            type: "warning",
+            content: "Elija el lenguaje según la tarea: LAD para lógica, SCL para matemáticas, GRAPH para secuencias."
+          }
+        ]
+      })
+    },
+    // Module 11 - Data Blocks
+    "Les blocs de données (DB)": {
+      title: "Bloques de datos (DB)",
+      description: "Comprende y utiliza los bloques de datos",
+      content: JSON.stringify({
+        sections: [
+          {
+            type: "text",
+            content: "# Bloques de datos (DB)\n\nLos **bloques de datos** almacenan datos utilizados por el programa."
+          },
+          {
+            type: "text",
+            content: "## Tipos de DB\n\n### DB Global\nAccesible desde cualquier parte del programa. Ideal para datos compartidos.\n\n### DB de Instancia\nAsociado a un Bloque de Función (FB). Almacena los datos internos del FB."
+          },
+          {
+            type: "diagram",
+            title: "Estructura de DB",
+            content: `┌─────────────────────────────────────────────────────────────┐
+│  DB10 "Datos_Motor"                                          │
+│  ┌─────────────────────────────────────────────────────────┐│
+│  │  Nombre        │ Tipo    │ Valor    │ Comentario        ││
+│  │────────────────┼─────────┼──────────┼───────────────────││
+│  │  Velocidad     │ REAL    │ 1500.0   │ Velocidad en RPM  ││
+│  │  EnMarcha      │ BOOL    │ FALSE    │ Estado de marcha  ││
+│  │  Fallo         │ BOOL    │ FALSE    │ Fallo presente    ││
+│  │  TiempoMarcha  │ TIME    │ T#0s     │ Tiempo acumulado  ││
+│  │  Parametros    │ STRUCT  │          │ Parámetros motor  ││
+│  │   ├─ VelMax    │ REAL    │ 3000.0   │ Velocidad máxima  ││
+│  │   └─ Acel      │ REAL    │ 10.0     │ Aceleración       ││
+│  └─────────────────────────────────────────────────────────┘│
+└─────────────────────────────────────────────────────────────┘`
+          },
+          {
+            type: "text",
+            content: "## Sintaxis de acceso\n\n- **DB Global**: DB10.Velocidad o \"Datos_Motor\".Velocidad\n- **DB de Instancia**: Automático con llamada FB"
+          },
+          {
+            type: "info",
+            content: "Prefiera DBs globales para datos compartidos y DBs de instancia para datos encapsulados."
+          }
+        ]
+      })
+    },
+    "Programmation structurée": {
+      title: "Programación estructurada",
+      description: "Organiza tu código con FB, FC y DB",
+      content: JSON.stringify({
+        sections: [
+          {
+            type: "text",
+            content: "# Programación estructurada\n\nLa programación estructurada organiza el código en bloques reutilizables."
+          },
+          {
+            type: "text",
+            content: "## Tipos de bloques\n\n| Bloque | Descripción |\n|--------|-------------|\n| OB (Bloque de Organización) | Punto de entrada del programa |\n| FB (Bloque de Función) | Bloque con memoria (DB de instancia) |\n| FC (Función) | Bloque sin memoria |\n| DB (Bloque de Datos) | Almacenamiento de datos |"
+          },
+          {
+            type: "diagram",
+            title: "Llamadas de bloques",
+            content: `┌───────────────────────────────────────────────────────────┐
+│                        OB1 (Main)                          │
+│  ┌─────────────────────────────────────────────────────┐  │
+│  │                                                     │  │
+│  │   CALL "FC_Lectura_Entradas"                        │  │
+│  │                                                     │  │
+│  │   CALL "FB_Motor", "DB_Motor1"                      │  │
+│  │        En := I0.0                                   │  │
+│  │        Velocidad := 1500                            │  │
+│  │                                                     │  │
+│  │   CALL "FB_Motor", "DB_Motor2"                      │  │
+│  │        En := I0.1                                   │  │
+│  │        Velocidad := 1200                            │  │
+│  │                                                     │  │
+│  │   CALL "FC_Escritura_Salidas"                       │  │
+│  │                                                     │  │
+│  └─────────────────────────────────────────────────────┘  │
+└───────────────────────────────────────────────────────────┘`
+          },
+          {
+            type: "text",
+            content: "## Ventajas\n\n- **Reutilización**: Un FB puede llamarse varias veces con diferentes DBs\n- **Legibilidad**: Código organizado y documentado\n- **Mantenimiento**: Modificaciones localizadas\n- **Pruebas**: Bloques probables individualmente"
+          },
+          {
+            type: "warning",
+            content: "¡Evite programar todo en OB1! Use FB y FC para estructurar su código."
+          }
+        ]
+      })
+    }
+  }
+}
+
+// Siemens Quiz translations for English and Spanish
+export const siemensQuizTranslations = {
+  en: {
+    "Quelle est la particularité du S7-1500 par rapport aux anciens automates Siemens ?": {
+      question: "What is special about the S7-1500 compared to older Siemens PLCs?",
+      options: ["It is cheaper", "It has an integrated display and increased performance", "It doesn't require programming", "It works without power"],
+      explanation: "The S7-1500 features an integrated front display, better performance, and improved diagnostics compared to the S7-300/400."
+    },
+    "Quel logiciel est utilisé pour programmer les S7-1500 ?": {
+      question: "What software is used to program S7-1500?",
+      options: ["Step 7 Classic", "WinCC", "TIA Portal", "Logo! Soft Comfort"],
+      explanation: "TIA Portal (Totally Integrated Automation) is the unified programming environment for S7-1500."
+    },
+    "Que signifie TIA dans TIA Portal ?": {
+      question: "What does TIA stand for in TIA Portal?",
+      options: ["Total Industrial Automation", "Totally Integrated Automation", "Technical Integration Application", "Tool for Industrial Applications"],
+      explanation: "TIA stands for Totally Integrated Automation, reflecting the integration of all design tools in a single environment."
+    },
+    "Quelle vue de TIA Portal permet de voir tous les appareils du projet ?": {
+      question: "Which TIA Portal view shows all project devices?",
+      options: ["Program view", "Portal view", "Project view", "Network view"],
+      explanation: "The Project view displays the complete tree with all devices, programs, and configurations."
+    },
+    "Quelle est la première étape pour créer un projet TIA Portal ?": {
+      question: "What is the first step to create a TIA Portal project?",
+      options: ["Write the program", "Create a new project and configure hardware", "Connect the PLC", "Compile the program"],
+      explanation: "You always start by creating a project then configuring hardware (CPU, I/O modules) before programming."
+    },
+    "Qu'est-ce que le HW Config dans TIA Portal ?": {
+      question: "What is HW Config in TIA Portal?",
+      options: ["The program editor", "Hardware configuration", "The simulator", "Online diagnostics"],
+      explanation: "HW Config (Hardware Configuration) allows you to define the hardware configuration: CPU, modules, addresses."
+    },
+    "Quel langage utilise des contacts et bobines comme un schéma électrique ?": {
+      question: "Which language uses contacts and coils like an electrical diagram?",
+      options: ["SCL", "FBD", "LAD (LADDER)", "GRAPH"],
+      explanation: "LAD (Ladder Diagram) represents logic with contacts and coils like a relay diagram."
+    },
+    "Quel langage est similaire au Pascal et permet des calculs complexes ?": {
+      question: "Which language is similar to Pascal and allows complex calculations?",
+      options: ["LAD", "FBD", "SCL", "GRAPH"],
+      explanation: "SCL (Structured Control Language) is a high-level textual language similar to Pascal, ideal for algorithms."
+    },
+    "Quelle est la différence entre un DB global et un DB d'instance ?": {
+      question: "What is the difference between a global DB and an instance DB?",
+      options: ["There is no difference", "Global DB is accessible everywhere, instance DB is linked to an FB", "Instance DB is larger", "Global DB is automatic"],
+      explanation: "A global DB stores data accessible throughout the program. An instance DB stores a specific FB's internal data."
+    },
+    "Comment accède-t-on à une variable 'Vitesse' dans le DB10 ?": {
+      question: "How do you access a 'Speed' variable in DB10?",
+      options: ["Speed", "DB10.Speed", "%DB10.Speed", "#Speed"],
+      explanation: "You access DB variables with the syntax DB<number>.<variable>, for example DB10.Speed."
+    },
+    "Quel bloc possède une mémoire (DB d'instance) ?": {
+      question: "Which block has memory (instance DB)?",
+      options: ["FC (Function)", "FB (Function Block)", "OB (Organisation Block)", "No block"],
+      explanation: "FB (Function Block) has an instance DB that retains data between calls, unlike FC."
+    },
+    "Quel bloc est le point d'entrée principal du programme cyclique ?": {
+      question: "Which block is the main entry point for the cyclic program?",
+      options: ["FB1", "FC1", "OB1", "DB1"],
+      explanation: "OB1 (Main) is the main cyclic Organisation Block, executed in a loop by the CPU."
+    }
+  },
+  es: {
+    "Quelle est la particularité du S7-1500 par rapport aux anciens automates Siemens ?": {
+      question: "¿Qué característica especial tiene el S7-1500 comparado con los PLCs Siemens antiguos?",
+      options: ["Es más barato", "Tiene pantalla integrada y mayor rendimiento", "No requiere programación", "Funciona sin alimentación"],
+      explanation: "El S7-1500 tiene una pantalla frontal integrada, mejor rendimiento y diagnóstico mejorado comparado con el S7-300/400."
+    },
+    "Quel logiciel est utilisé pour programmer les S7-1500 ?": {
+      question: "¿Qué software se usa para programar el S7-1500?",
+      options: ["Step 7 Classic", "WinCC", "TIA Portal", "Logo! Soft Comfort"],
+      explanation: "TIA Portal (Totally Integrated Automation) es el entorno de programación unificado para S7-1500."
+    },
+    "Que signifie TIA dans TIA Portal ?": {
+      question: "¿Qué significa TIA en TIA Portal?",
+      options: ["Total Industrial Automation", "Totally Integrated Automation", "Technical Integration Application", "Tool for Industrial Applications"],
+      explanation: "TIA significa Totally Integrated Automation, reflejando la integración de todas las herramientas de diseño en un solo entorno."
+    },
+    "Quelle vue de TIA Portal permet de voir tous les appareils du projet ?": {
+      question: "¿Qué vista de TIA Portal muestra todos los dispositivos del proyecto?",
+      options: ["Vista del programa", "Vista del portal", "Vista del proyecto", "Vista de red"],
+      explanation: "La Vista del proyecto muestra el árbol completo con todos los dispositivos, programas y configuraciones."
+    },
+    "Quelle est la première étape pour créer un projet TIA Portal ?": {
+      question: "¿Cuál es el primer paso para crear un proyecto TIA Portal?",
+      options: ["Escribir el programa", "Crear un nuevo proyecto y configurar el hardware", "Conectar el PLC", "Compilar el programa"],
+      explanation: "Siempre se comienza creando un proyecto y configurando el hardware (CPU, módulos E/S) antes de programar."
+    },
+    "Qu'est-ce que le HW Config dans TIA Portal ?": {
+      question: "¿Qué es HW Config en TIA Portal?",
+      options: ["El editor de programa", "Configuración de hardware", "El simulador", "Diagnóstico en línea"],
+      explanation: "HW Config (Hardware Configuration) permite definir la configuración de hardware: CPU, módulos, direcciones."
+    },
+    "Quel langage utilise des contacts et bobines comme un schéma électrique ?": {
+      question: "¿Qué lenguaje usa contactos y bobinas como un diagrama eléctrico?",
+      options: ["SCL", "FBD", "LAD (LADDER)", "GRAPH"],
+      explanation: "LAD (Diagrama de Escalera) representa la lógica con contactos y bobinas como un diagrama de relés."
+    },
+    "Quel langage est similaire au Pascal et permet des calculs complexes ?": {
+      question: "¿Qué lenguaje es similar a Pascal y permite cálculos complejos?",
+      options: ["LAD", "FBD", "SCL", "GRAPH"],
+      explanation: "SCL (Lenguaje de Control Estructurado) es un lenguaje textual de alto nivel similar a Pascal, ideal para algoritmos."
+    },
+    "Quelle est la différence entre un DB global et un DB d'instance ?": {
+      question: "¿Cuál es la diferencia entre un DB global y un DB de instancia?",
+      options: ["No hay diferencia", "El DB global es accesible en todas partes, el DB de instancia está vinculado a un FB", "El DB de instancia es más grande", "El DB global es automático"],
+      explanation: "Un DB global almacena datos accesibles en todo el programa. Un DB de instancia almacena los datos internos de un FB específico."
+    },
+    "Comment accède-t-on à une variable 'Vitesse' dans le DB10 ?": {
+      question: "¿Cómo se accede a una variable 'Velocidad' en DB10?",
+      options: ["Velocidad", "DB10.Velocidad", "%DB10.Velocidad", "#Velocidad"],
+      explanation: "Se accede a las variables de un DB con la sintaxis DB<número>.<variable>, por ejemplo DB10.Velocidad."
+    },
+    "Quel bloc possède une mémoire (DB d'instance) ?": {
+      question: "¿Qué bloque tiene memoria (DB de instancia)?",
+      options: ["FC (Función)", "FB (Bloque de Función)", "OB (Bloque de Organización)", "Ningún bloque"],
+      explanation: "Los FB (Bloque de Función) tienen un DB de instancia que conserva los datos entre llamadas, a diferencia de los FC."
+    },
+    "Quel bloc est le point d'entrée principal du programme cyclique ?": {
+      question: "¿Qué bloque es el punto de entrada principal del programa cíclico?",
+      options: ["FB1", "FC1", "OB1", "DB1"],
+      explanation: "OB1 (Main) es el Bloque de Organización cíclico principal, ejecutado en bucle por la CPU."
+    }
+  }
+}

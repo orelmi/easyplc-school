@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client'
 import bcrypt from 'bcryptjs'
-import { lessonTranslations, quizTranslations, cncLessonTranslations, cncQuizTranslations } from './translations.js'
+import { lessonTranslations, quizTranslations, cncLessonTranslations, cncQuizTranslations, siemensLessonTranslations, siemensQuizTranslations } from './translations.js'
 
 const prisma = new PrismaClient()
 // Module translations for English and Spanish
@@ -13,7 +13,10 @@ const moduleTranslations = {
     { order: 5, title: "Grafcet", description: "Model sequential systems with GRAFCET" },
     { order: 6, title: "Introduction to CNC", description: "Discover the basics of CNC machines and their operation" },
     { order: 7, title: "G-Code Programming", description: "Learn to program CNC machines with G-Code" },
-    { order: 8, title: "Axes and Interpolation", description: "Master coordinate systems and tool movements" }
+    { order: 8, title: "Axes and Interpolation", description: "Master coordinate systems and tool movements" },
+    { order: 9, title: "Introduction to Siemens S7-1500", description: "Discover the S7-1500 PLC and TIA Portal environment" },
+    { order: 10, title: "TIA Portal Programming", description: "Learn to create projects and program with TIA Portal" },
+    { order: 11, title: "S7-1500 Data Blocks", description: "Master data blocks (DB) and structured programming" }
   ],
   es: [
     { order: 1, title: "Introducción a la Automatización", description: "Descubra los fundamentos de la automatización industrial y los controladores lógicos programables" },
@@ -23,7 +26,10 @@ const moduleTranslations = {
     { order: 5, title: "Grafcet", description: "Modele sistemas secuenciales con GRAFCET" },
     { order: 6, title: "Introducción a CNC", description: "Descubra los fundamentos de las máquinas CNC y su funcionamiento" },
     { order: 7, title: "Programación G-Code", description: "Aprenda a programar máquinas CNC con código G" },
-    { order: 8, title: "Ejes e Interpolación", description: "Domine los sistemas de coordenadas y movimientos de herramienta" }
+    { order: 8, title: "Ejes e Interpolación", description: "Domine los sistemas de coordenadas y movimientos de herramienta" },
+    { order: 9, title: "Introducción a Siemens S7-1500", description: "Descubra el PLC S7-1500 y el entorno TIA Portal" },
+    { order: 10, title: "Programación con TIA Portal", description: "Aprenda a crear proyectos y programar con TIA Portal" },
+    { order: 11, title: "Bloques de Datos S7-1500", description: "Domine los bloques de datos (DB) y la programación estructurada" }
   ]
 } as const
 
@@ -31,11 +37,13 @@ const moduleTranslations = {
 const cursusTranslations = {
   en: [
     { order: 1, title: "Industrial Automation", description: "Complete learning path for industrial automation and PLC programming" },
-    { order: 2, title: "CNC Machining", description: "Learn to program and operate CNC machines" }
+    { order: 2, title: "CNC Machining", description: "Learn to program and operate CNC machines" },
+    { order: 3, title: "Siemens Automation", description: "Specialized path for Siemens S7-1500 PLCs and TIA Portal" }
   ],
   es: [
     { order: 1, title: "Automatización Industrial", description: "Ruta de aprendizaje completa para automatización industrial y programación de PLCs" },
-    { order: 2, title: "Mecanizado CNC", description: "Aprenda a programar y operar máquinas CNC" }
+    { order: 2, title: "Mecanizado CNC", description: "Aprenda a programar y operar máquinas CNC" },
+    { order: 3, title: "Automatización Siemens", description: "Ruta especializada para PLCs Siemens S7-1500 y TIA Portal" }
   ]
 }
 
@@ -184,6 +192,43 @@ async function main() {
     },
   })
 
+  // Create Siemens Modules
+  const module9 = await prisma.module.create({
+    data: {
+      title: "Introduction au Siemens S7-1500",
+      description: "Découvrez l'automate S7-1500 et l'environnement TIA Portal",
+      order: 9,
+      icon: "🔷",
+      color: "#009999",
+      isLocked: false,
+      requiredXp: 0,
+    },
+  })
+
+  const module10 = await prisma.module.create({
+    data: {
+      title: "Programmation TIA Portal",
+      description: "Apprenez à créer des projets et programmer avec TIA Portal",
+      order: 10,
+      icon: "💻",
+      color: "#00cccc",
+      isLocked: true,
+      requiredXp: 300,
+    },
+  })
+
+  const module11 = await prisma.module.create({
+    data: {
+      title: "Blocs de données S7-1500",
+      description: "Maîtrisez les blocs de données (DB) et la programmation structurée",
+      order: 11,
+      icon: "📦",
+      color: "#00aaaa",
+      isLocked: true,
+      requiredXp: 600,
+    },
+  })
+
   // Create Cursus
   const cursusAutomatisme = await prisma.cursus.create({
     data: {
@@ -205,10 +250,21 @@ async function main() {
     },
   })
 
+  const cursusSiemens = await prisma.cursus.create({
+    data: {
+      title: "Automatisme SIEMENS",
+      description: "Parcours spécialisé pour les automates Siemens S7-1500 et TIA Portal",
+      icon: "🔷",
+      color: "#009999",
+      order: 3,
+    },
+  })
+
   // Create Cursus Translations
   for (const lang of ['en', 'es'] as const) {
     const cursusAutoTrans = cursusTranslations[lang].find(t => t.order === 1)
     const cursusCNCTrans = cursusTranslations[lang].find(t => t.order === 2)
+    const cursusSiemensTrans = cursusTranslations[lang].find(t => t.order === 3)
 
     if (cursusAutoTrans) {
       await prisma.cursusTranslation.create({
@@ -227,6 +283,16 @@ async function main() {
           language: lang,
           title: cursusCNCTrans.title,
           description: cursusCNCTrans.description
+        }
+      })
+    }
+    if (cursusSiemensTrans) {
+      await prisma.cursusTranslation.create({
+        data: {
+          cursusId: cursusSiemens.id,
+          language: lang,
+          title: cursusSiemensTrans.title,
+          description: cursusSiemensTrans.description
         }
       })
     }
@@ -255,8 +321,20 @@ async function main() {
     ]
   })
 
+  // Associate Modules to Cursus Siemens
+  await prisma.cursusModule.createMany({
+    data: [
+      { cursusId: cursusSiemens.id, moduleId: module1.id, order: 1, isRequired: true },  // Shared foundation
+      { cursusId: cursusSiemens.id, moduleId: module2.id, order: 2, isRequired: true },  // Shared foundation
+      { cursusId: cursusSiemens.id, moduleId: module3.id, order: 3, isRequired: true },  // LADDER (Siemens uses LAD)
+      { cursusId: cursusSiemens.id, moduleId: module9.id, order: 4, isRequired: true },  // Intro S7-1500
+      { cursusId: cursusSiemens.id, moduleId: module10.id, order: 5, isRequired: true }, // TIA Portal
+      { cursusId: cursusSiemens.id, moduleId: module11.id, order: 6, isRequired: true }, // Data Blocks
+    ]
+  })
+
   // Create Module Translations
-  const modules = [module1, module2, module3, module4, module5, module6, module7, module8]
+  const modules = [module1, module2, module3, module4, module5, module6, module7, module8, module9, module10, module11]
   for (const lang of ['en', 'es'] as const) {
     for (const module of modules) {
       const trans = moduleTranslations[lang].find(t => t.order === modules.indexOf(module) + 1)
@@ -814,6 +892,268 @@ async function main() {
     },
   })
 
+  // Create Lessons for Module 9 (Siemens S7-1500 Introduction)
+  const lesson9_1 = await prisma.lesson.create({
+    data: {
+      moduleId: module9.id,
+      title: "Présentation du S7-1500",
+      description: "Découvrez l'automate Siemens S7-1500 et ses caractéristiques",
+      order: 1,
+      xpReward: 60,
+      duration: 12,
+      content: JSON.stringify({
+        sections: [
+          {
+            type: "text",
+            content: "# L'automate Siemens S7-1500\n\nLe **S7-1500** est la gamme haut de gamme des automates Siemens. Il offre des performances élevées et de nombreuses fonctionnalités avancées."
+          },
+          {
+            type: "diagram",
+            title: "Architecture du S7-1500",
+            content: `┌────────────────────────────────────────────────────────────────┐
+│                     SIEMENS S7-1500                              │
+├────────────────────────────────────────────────────────────────┤
+│                                                                  │
+│  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐        │
+│  │   CPU    │  │    DI    │  │    DO    │  │    AI    │        │
+│  │ 1511-1   │  │  32xDC   │  │  32xDC   │  │   8xAI   │        │
+│  │          │  │          │  │          │  │          │        │
+│  │  ┌────┐  │  │  ┌────┐  │  │  ┌────┐  │  │  ┌────┐  │        │
+│  │  │DISP│  │  │  │LED │  │  │  │LED │  │  │  │LED │  │        │
+│  │  └────┘  │  │  └────┘  │  │  └────┘  │  │  └────┘  │        │
+│  └────┬─────┘  └────┬─────┘  └────┬─────┘  └────┬─────┘        │
+│       │             │             │             │                │
+│       └─────────────┴─────────────┴─────────────┘                │
+│                          │                                       │
+│                    Rail DIN profilé                              │
+│                                                                  │
+└────────────────────────────────────────────────────────────────┘`
+          },
+          {
+            type: "text",
+            content: "## Caractéristiques principales\n\n- **Performance** : Temps de cycle rapide (jusqu'à 1 ns/instruction)\n- **Écran intégré** : Affichage des diagnostics et paramètres\n- **Mémoire** : Jusqu'à 10 Mo de mémoire de travail\n- **Communication** : PROFINET, PROFIBUS, OPC UA intégrés\n- **Sécurité** : Fonctions de sécurité intégrées (Safety Integrated)"
+          },
+          {
+            type: "info",
+            content: "Le S7-1500 remplace progressivement les anciens S7-300 et S7-400 grâce à ses performances supérieures."
+          }
+        ]
+      }),
+    },
+  })
+
+  const lesson9_2 = await prisma.lesson.create({
+    data: {
+      moduleId: module9.id,
+      title: "L'environnement TIA Portal",
+      description: "Introduction à l'outil de programmation Siemens TIA Portal",
+      order: 2,
+      xpReward: 70,
+      duration: 15,
+      content: JSON.stringify({
+        sections: [
+          {
+            type: "text",
+            content: "# TIA Portal\n\n**TIA Portal** (Totally Integrated Automation Portal) est l'environnement de développement intégré de Siemens pour programmer et configurer les automates S7."
+          },
+          {
+            type: "text",
+            content: "## Les composants de TIA Portal\n\n| Composant | Description |\n|-----------|-------------|\n| STEP 7 | Programmation des automates |\n| WinCC | Création des interfaces IHM |\n| SINAMICS Startdrive | Configuration des variateurs |\n| SIMOTION SCOUT | Programmation motion control |"
+          },
+          {
+            type: "diagram",
+            title: "Interface TIA Portal",
+            content: `┌──────────────────────────────────────────────────────────────┐
+│  TIA Portal V18                                    [─][□][×] │
+├──────────────────────────────────────────────────────────────┤
+│  Projet │ Édition │ Affichage │ Outils │ Fenêtre │ Aide     │
+├─────────────┬────────────────────────────────────┬───────────┤
+│             │                                    │           │
+│  Arbre du   │     Zone de travail               │  Tâches   │
+│  projet     │                                    │           │
+│             │  ┌─────────────────────────────┐  │  ┌─────┐  │
+│  ▼ PLC_1    │  │                             │  │  │Biblio│  │
+│   ├ Blocs   │  │   Éditeur LAD/FBD/SCL       │  │  │thèque│  │
+│   ├ Tables  │  │                             │  │  │     │  │
+│   └ Config  │  │                             │  │  └─────┘  │
+│             │  └─────────────────────────────┘  │           │
+│             │                                    │           │
+├─────────────┴────────────────────────────────────┴───────────┤
+│  Détails │ Diagnostic │ Compilation │ Résultats              │
+└──────────────────────────────────────────────────────────────┘`
+          },
+          {
+            type: "text",
+            content: "## Vue portail vs Vue projet\n\n- **Vue portail** : Vue simplifiée pour démarrer rapidement\n- **Vue projet** : Vue complète pour la configuration avancée"
+          }
+        ]
+      }),
+    },
+  })
+
+  // Create Lessons for Module 10 (TIA Portal Programming)
+  const lesson10_1 = await prisma.lesson.create({
+    data: {
+      moduleId: module10.id,
+      title: "Créer un projet TIA Portal",
+      description: "Apprenez à créer et configurer un projet S7-1500",
+      order: 1,
+      xpReward: 70,
+      duration: 15,
+      content: JSON.stringify({
+        sections: [
+          {
+            type: "text",
+            content: "# Créer un projet TIA Portal\n\nLa création d'un projet est la première étape pour programmer un automate Siemens."
+          },
+          {
+            type: "text",
+            content: "## Étapes de création\n\n1. **Nouveau projet** : Fichier → Nouveau → Projet\n2. **Ajouter un appareil** : Sélectionner la CPU (ex: CPU 1511-1 PN)\n3. **Configurer le matériel** : Ajouter les modules d'E/S\n4. **Configurer le réseau** : Définir l'adresse IP\n5. **Compiler** : Vérifier la configuration"
+          },
+          {
+            type: "info",
+            content: "Choisissez toujours la référence exacte de votre CPU. Les programmes ne sont pas toujours compatibles entre différentes versions."
+          },
+          {
+            type: "text",
+            content: "## Structure du projet\n\n```\nProjet TIA Portal\n├── Appareils et réseaux\n│   └── PLC_1 [CPU 1511-1 PN]\n│       ├── Configuration des appareils\n│       ├── Blocs de programme\n│       │   ├── Main [OB1]\n│       │   ├── Fonctions (FC)\n│       │   └── Blocs fonctionnels (FB)\n│       ├── Variables API\n│       └── Tables de visualisation\n└── Données communes\n```"
+          }
+        ]
+      }),
+    },
+  })
+
+  const lesson10_2 = await prisma.lesson.create({
+    data: {
+      moduleId: module10.id,
+      title: "Langages de programmation S7",
+      description: "Découvrez LAD, FBD, SCL et Graph pour programmer le S7-1500",
+      order: 2,
+      xpReward: 80,
+      duration: 18,
+      content: JSON.stringify({
+        sections: [
+          {
+            type: "text",
+            content: "# Langages de programmation\n\nLe S7-1500 supporte plusieurs langages de programmation selon la norme IEC 61131-3."
+          },
+          {
+            type: "text",
+            content: "## LAD (Ladder Diagram)\n\nLe plus utilisé, similaire aux schémas électriques.\n\n```\n|     I0.0        I0.1          Q0.0     |\n|----[ ]----------[/]-----------( )-----|\n|                                        |\n```"
+          },
+          {
+            type: "text",
+            content: "## FBD (Function Block Diagram)\n\nReprésentation graphique par blocs fonctionnels.\n\n```\n     ┌─────┐\nI0.0─┤     │\n     │ AND ├─Q0.0\nI0.1─┤     │\n     └─────┘\n```"
+          },
+          {
+            type: "text",
+            content: "## SCL (Structured Control Language)\n\nLangage textuel similaire au Pascal.\n\n```pascal\nIF I0.0 AND NOT I0.1 THEN\n    Q0.0 := TRUE;\nELSE\n    Q0.0 := FALSE;\nEND_IF;\n```"
+          },
+          {
+            type: "text",
+            content: "## GRAPH\n\nProgrammation séquentielle de type GRAFCET.\n\n| Langage | Utilisation |\n|---------|-------------|\n| LAD | Logique combinatoire, électriciens |\n| FBD | Traitement de signal, régulation |\n| SCL | Calculs complexes, gestion données |\n| GRAPH | Séquences, cycles machines |"
+          }
+        ]
+      }),
+    },
+  })
+
+  // Create Lessons for Module 11 (Data Blocks)
+  const lesson11_1 = await prisma.lesson.create({
+    data: {
+      moduleId: module11.id,
+      title: "Les blocs de données (DB)",
+      description: "Comprenez les différents types de blocs de données S7",
+      order: 1,
+      xpReward: 70,
+      duration: 15,
+      content: JSON.stringify({
+        sections: [
+          {
+            type: "text",
+            content: "# Les blocs de données (DB)\n\nLes **Data Blocks** (DB) permettent de stocker des données dans l'automate S7-1500."
+          },
+          {
+            type: "text",
+            content: "## Types de blocs de données\n\n### DB Global\nAccessible depuis n'importe quel bloc du programme.\n\n### DB d'instance\nAssocié à un bloc fonctionnel (FB) spécifique.\n\n### DB de recette\nPour stocker des paramètres de production."
+          },
+          {
+            type: "diagram",
+            title: "Structure d'un DB",
+            content: `┌─────────────────────────────────────────────┐
+│  DB1 - Données_Production                   │
+├─────────────────────────────────────────────┤
+│  Nom              │ Type    │ Valeur       │
+├───────────────────┼─────────┼──────────────┤
+│  Compteur_Pieces  │ Int     │ 0            │
+│  Vitesse_Consigne │ Real    │ 1500.0       │
+│  Mode_Auto        │ Bool    │ FALSE        │
+│  Nom_Produit      │ String  │ 'Pièce A'    │
+│  Temps_Cycle      │ Time    │ T#5s         │
+└───────────────────┴─────────┴──────────────┘`
+          },
+          {
+            type: "info",
+            content: "Le S7-1500 utilise par défaut l'accès optimisé aux DB, ce qui améliore les performances mais change la façon d'accéder aux données."
+          }
+        ]
+      }),
+    },
+  })
+
+  const lesson11_2 = await prisma.lesson.create({
+    data: {
+      moduleId: module11.id,
+      title: "Programmation structurée",
+      description: "Organisez votre code avec FB, FC et DB",
+      order: 2,
+      xpReward: 80,
+      duration: 18,
+      content: JSON.stringify({
+        sections: [
+          {
+            type: "text",
+            content: "# Programmation structurée\n\nLa programmation structurée permet d'organiser le code en blocs réutilisables."
+          },
+          {
+            type: "text",
+            content: "## Types de blocs\n\n| Bloc | Description |\n|------|-------------|\n| OB (Organisation Block) | Point d'entrée du programme |\n| FB (Function Block) | Bloc avec mémoire (DB d'instance) |\n| FC (Function) | Bloc sans mémoire |\n| DB (Data Block) | Stockage de données |"
+          },
+          {
+            type: "diagram",
+            title: "Appel de blocs",
+            content: `┌───────────────────────────────────────────────────────────┐
+│                        OB1 (Main)                          │
+│  ┌─────────────────────────────────────────────────────┐  │
+│  │                                                     │  │
+│  │   CALL "FC_Lecture_Entrees"                         │  │
+│  │                                                     │  │
+│  │   CALL "FB_Moteur", "DB_Moteur1"                    │  │
+│  │        En := I0.0                                   │  │
+│  │        Vitesse := 1500                              │  │
+│  │                                                     │  │
+│  │   CALL "FB_Moteur", "DB_Moteur2"                    │  │
+│  │        En := I0.1                                   │  │
+│  │        Vitesse := 1200                              │  │
+│  │                                                     │  │
+│  │   CALL "FC_Ecriture_Sorties"                        │  │
+│  │                                                     │  │
+│  └─────────────────────────────────────────────────────┘  │
+└───────────────────────────────────────────────────────────┘`
+          },
+          {
+            type: "text",
+            content: "## Avantages\n\n- **Réutilisation** : Un FB peut être appelé plusieurs fois avec des DB différents\n- **Lisibilité** : Code organisé et documenté\n- **Maintenance** : Modifications localisées\n- **Tests** : Blocs testables individuellement"
+          },
+          {
+            type: "warning",
+            content: "Évitez de programmer tout dans OB1 ! Utilisez des FB et FC pour structurer votre code."
+          }
+        ]
+      }),
+    },
+  })
+
   // Create Quizzes
   await prisma.quiz.createMany({
     data: [
@@ -1013,6 +1353,165 @@ async function main() {
         explanation: "G2 effectue une interpolation circulaire dans le sens horaire. G3 est pour le sens anti-horaire.",
         order: 2,
       },
+      // Quiz Module 9 - Siemens S7-1500 Introduction
+      {
+        lessonId: lesson9_1.id,
+        question: "Quelle est la particularité du S7-1500 par rapport aux anciens automates Siemens ?",
+        options: JSON.stringify([
+          "Il est moins cher",
+          "Il dispose d'un écran intégré et de performances accrues",
+          "Il ne nécessite pas de programmation",
+          "Il fonctionne sans alimentation"
+        ]),
+        correctIndex: 1,
+        explanation: "Le S7-1500 dispose d'un écran frontal intégré, de meilleures performances et d'un diagnostic amélioré par rapport aux S7-300/400.",
+        order: 1,
+      },
+      {
+        lessonId: lesson9_1.id,
+        question: "Quel logiciel est utilisé pour programmer les S7-1500 ?",
+        options: JSON.stringify([
+          "Step 7 Classic",
+          "WinCC",
+          "TIA Portal",
+          "Logo! Soft Comfort"
+        ]),
+        correctIndex: 2,
+        explanation: "TIA Portal (Totally Integrated Automation) est l'environnement de programmation unifié pour les S7-1500.",
+        order: 2,
+      },
+      {
+        lessonId: lesson9_2.id,
+        question: "Que signifie TIA dans TIA Portal ?",
+        options: JSON.stringify([
+          "Total Industrial Automation",
+          "Totally Integrated Automation",
+          "Technical Integration Application",
+          "Tool for Industrial Applications"
+        ]),
+        correctIndex: 1,
+        explanation: "TIA signifie Totally Integrated Automation, reflétant l'intégration de tous les outils de conception dans un seul environnement.",
+        order: 1,
+      },
+      {
+        lessonId: lesson9_2.id,
+        question: "Quelle vue de TIA Portal permet de voir tous les appareils du projet ?",
+        options: JSON.stringify([
+          "Vue du programme",
+          "Vue du portail",
+          "Vue du projet",
+          "Vue réseau"
+        ]),
+        correctIndex: 2,
+        explanation: "La Vue du projet affiche l'arborescence complète avec tous les appareils, programmes et configurations.",
+        order: 2,
+      },
+      // Quiz Module 10 - TIA Portal Programming
+      {
+        lessonId: lesson10_1.id,
+        question: "Quelle est la première étape pour créer un projet TIA Portal ?",
+        options: JSON.stringify([
+          "Écrire le programme",
+          "Créer un nouveau projet et configurer le matériel",
+          "Connecter l'automate",
+          "Compiler le programme"
+        ]),
+        correctIndex: 1,
+        explanation: "On commence toujours par créer un projet puis configurer le matériel (CPU, modules E/S) avant de programmer.",
+        order: 1,
+      },
+      {
+        lessonId: lesson10_1.id,
+        question: "Qu'est-ce que le HW Config dans TIA Portal ?",
+        options: JSON.stringify([
+          "L'éditeur de programme",
+          "La configuration matérielle",
+          "Le simulateur",
+          "Le diagnostic en ligne"
+        ]),
+        correctIndex: 1,
+        explanation: "HW Config (Hardware Configuration) permet de définir la configuration matérielle : CPU, modules, adresses.",
+        order: 2,
+      },
+      {
+        lessonId: lesson10_2.id,
+        question: "Quel langage utilise des contacts et bobines comme un schéma électrique ?",
+        options: JSON.stringify([
+          "SCL",
+          "FBD",
+          "LAD (LADDER)",
+          "GRAPH"
+        ]),
+        correctIndex: 2,
+        explanation: "LAD (Ladder Diagram) représente la logique avec des contacts et bobines comme un schéma à relais.",
+        order: 1,
+      },
+      {
+        lessonId: lesson10_2.id,
+        question: "Quel langage est similaire au Pascal et permet des calculs complexes ?",
+        options: JSON.stringify([
+          "LAD",
+          "FBD",
+          "SCL",
+          "GRAPH"
+        ]),
+        correctIndex: 2,
+        explanation: "SCL (Structured Control Language) est un langage textuel de haut niveau similaire au Pascal, idéal pour les algorithmes.",
+        order: 2,
+      },
+      // Quiz Module 11 - Data Blocks
+      {
+        lessonId: lesson11_1.id,
+        question: "Quelle est la différence entre un DB global et un DB d'instance ?",
+        options: JSON.stringify([
+          "Il n'y a pas de différence",
+          "Le DB global est accessible partout, le DB d'instance est lié à un FB",
+          "Le DB d'instance est plus grand",
+          "Le DB global est automatique"
+        ]),
+        correctIndex: 1,
+        explanation: "Un DB global stocke des données accessibles dans tout le programme. Un DB d'instance stocke les données internes d'un FB spécifique.",
+        order: 1,
+      },
+      {
+        lessonId: lesson11_1.id,
+        question: "Comment accède-t-on à une variable 'Vitesse' dans le DB10 ?",
+        options: JSON.stringify([
+          "Vitesse",
+          "DB10.Vitesse",
+          "%DB10.Vitesse",
+          "#Vitesse"
+        ]),
+        correctIndex: 1,
+        explanation: "On accède aux variables d'un DB avec la syntaxe DB<numéro>.<variable>, par exemple DB10.Vitesse.",
+        order: 2,
+      },
+      {
+        lessonId: lesson11_2.id,
+        question: "Quel bloc possède une mémoire (DB d'instance) ?",
+        options: JSON.stringify([
+          "FC (Function)",
+          "FB (Function Block)",
+          "OB (Organisation Block)",
+          "Aucun bloc"
+        ]),
+        correctIndex: 1,
+        explanation: "Les FB (Function Block) possèdent un DB d'instance qui conserve les données entre les appels, contrairement aux FC.",
+        order: 1,
+      },
+      {
+        lessonId: lesson11_2.id,
+        question: "Quel bloc est le point d'entrée principal du programme cyclique ?",
+        options: JSON.stringify([
+          "FB1",
+          "FC1",
+          "OB1",
+          "DB1"
+        ]),
+        correctIndex: 2,
+        explanation: "OB1 (Main) est l'Organisation Block cyclique principal, exécuté en boucle par le CPU.",
+        order: 2,
+      },
     ],
   })
 
@@ -1106,9 +1605,10 @@ async function main() {
   const allLessons = await prisma.lesson.findMany()
   for (const lesson of allLessons) {
     for (const lang of ['en', 'es'] as const) {
-      // Try regular translations first, then CNC translations
+      // Try regular translations first, then CNC, then Siemens translations
       const trans = lessonTranslations[lang][lesson.title as keyof typeof lessonTranslations['en']]
         || cncLessonTranslations[lang][lesson.title as keyof typeof cncLessonTranslations['en']]
+        || siemensLessonTranslations[lang][lesson.title as keyof typeof siemensLessonTranslations['en']]
       if (trans) {
         await prisma.lessonTranslation.create({
           data: {
@@ -1127,9 +1627,10 @@ async function main() {
   const allQuizzes = await prisma.quiz.findMany()
   for (const quiz of allQuizzes) {
     for (const lang of ['en', 'es'] as const) {
-      // Try regular translations first, then CNC translations
+      // Try regular translations first, then CNC, then Siemens translations
       const trans = quizTranslations[lang][quiz.question as keyof typeof quizTranslations['en']]
         || cncQuizTranslations[lang][quiz.question as keyof typeof cncQuizTranslations['en']]
+        || siemensQuizTranslations[lang][quiz.question as keyof typeof siemensQuizTranslations['en']]
       if (trans) {
         await prisma.quizTranslation.create({
           data: {
