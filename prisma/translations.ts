@@ -254,6 +254,82 @@ export const lessonTranslations = {
         ]
       })
     },
+    // Module 1 - Additional lessons
+    "Les marques et les fabricants d'automates": {
+      title: "PLC Brands and Manufacturers",
+      description: "Discover the main PLC manufacturers"
+    },
+    "L'adressage des E/S": {
+      title: "I/O Addressing",
+      description: "Understand input/output addressing in PLCs"
+    },
+    "Sécurité et normes industrielles": {
+      title: "Safety and Industrial Standards",
+      description: "Learn safety standards in industrial automation"
+    },
+    "Communication et réseaux industriels": {
+      title: "Communication and Industrial Networks",
+      description: "Discover industrial communication protocols"
+    },
+    // Module 2 - Additional lessons
+    "Les portes NAND et NOR": {
+      title: "NAND and NOR Gates",
+      description: "Learn universal logic gates"
+    },
+    "La porte XOR (OU exclusif)": {
+      title: "The XOR Gate (Exclusive OR)",
+      description: "Learn the exclusive OR function"
+    },
+    "Simplification des équations logiques": {
+      title: "Simplifying Logic Equations",
+      description: "Learn Boolean algebra techniques"
+    },
+    "Tableaux de Karnaugh": {
+      title: "Karnaugh Maps",
+      description: "Graphical method for simplifying logic"
+    },
+    // Module 3 - Additional lessons
+    "Circuit marche/arrêt avec auto-maintien": {
+      title: "Start/Stop Circuit with Self-Holding",
+      description: "Learn how to create latching circuits"
+    },
+    "Les temporisateurs": {
+      title: "Timers",
+      description: "Master different timer types in PLCs"
+    },
+    "Les compteurs": {
+      title: "Counters",
+      description: "Learn to use up/down counters"
+    },
+    "Détection de fronts": {
+      title: "Edge Detection",
+      description: "Detect rising and falling edges"
+    },
+    "Blocs fonctionnels et réutilisation": {
+      title: "Function Blocks and Reuse",
+      description: "Create reusable function blocks"
+    },
+    // Module 4 - Additional lessons
+    "Les capteurs analogiques": {
+      title: "Analog Sensors",
+      description: "Understand analog sensors and signals"
+    },
+    "PNP vs NPN : comprendre les sorties": {
+      title: "PNP vs NPN: Understanding Outputs",
+      description: "Learn the difference between PNP and NPN"
+    },
+    "Les actionneurs électriques": {
+      title: "Electrical Actuators",
+      description: "Discover motors, contactors, and drives"
+    },
+    "Les actionneurs pneumatiques": {
+      title: "Pneumatic Actuators",
+      description: "Learn about pneumatic cylinders and valves"
+    },
+    "Câblage et mise en service": {
+      title: "Wiring and Commissioning",
+      description: "Wire and commission an automated system"
+    },
     // Module 5 - GRAFCET
     "Introduction au GRAFCET": {
       title: "Introduction to GRAFCET",
@@ -278,6 +354,31 @@ export const lessonTranslations = {
           }
         ]
       })
+    },
+    // Module 5 - Additional lessons
+    "Étapes et transitions": {
+      title: "Steps and Transitions",
+      description: "Master GRAFCET steps and transitions"
+    },
+    "Les différents types d'actions": {
+      title: "Different Types of Actions",
+      description: "Learn about continuous, conditional and stored actions"
+    },
+    "Divergences et convergences": {
+      title: "Divergences and Convergences",
+      description: "Create parallel and alternative branches"
+    },
+    "Macro-étapes et sous-programmes": {
+      title: "Macro-steps and Subroutines",
+      description: "Structure complex sequences"
+    },
+    "Traduction GRAFCET vers LADDER": {
+      title: "GRAFCET to LADDER Translation",
+      description: "Convert GRAFCET to LADDER code"
+    },
+    "Exemple complet : système de remplissage": {
+      title: "Complete Example: Filling System",
+      description: "Apply GRAFCET to a real system"
     }
   },
   es: {
@@ -558,6 +659,107 @@ export const lessonTranslations = {
           }
         ]
       })
+    },
+    // Module 1 - Additional lessons
+    "Les marques et les fabricants d'automates": {
+      title: "Marcas y fabricantes de PLCs",
+      description: "Descubra los principales fabricantes de PLCs"
+    },
+    "L'adressage des E/S": {
+      title: "Direccionamiento de E/S",
+      description: "Comprenda el direccionamiento de entradas/salidas"
+    },
+    "Sécurité et normes industrielles": {
+      title: "Seguridad y normas industriales",
+      description: "Aprenda las normas de seguridad en automatización"
+    },
+    "Communication et réseaux industriels": {
+      title: "Comunicación y redes industriales",
+      description: "Descubra los protocolos de comunicación industrial"
+    },
+    // Module 2 - Additional lessons
+    "Les portes NAND et NOR": {
+      title: "Puertas NAND y NOR",
+      description: "Aprenda las puertas lógicas universales"
+    },
+    "La porte XOR (OU exclusif)": {
+      title: "La puerta XOR (O exclusivo)",
+      description: "Aprenda la función O exclusivo"
+    },
+    "Simplification des équations logiques": {
+      title: "Simplificación de ecuaciones lógicas",
+      description: "Aprenda técnicas de álgebra booleana"
+    },
+    "Tableaux de Karnaugh": {
+      title: "Mapas de Karnaugh",
+      description: "Método gráfico para simplificar lógica"
+    },
+    // Module 3 - Additional lessons
+    "Circuit marche/arrêt avec auto-maintien": {
+      title: "Circuito marcha/paro con autoenclavamiento",
+      description: "Aprenda a crear circuitos enclavados"
+    },
+    "Les temporisateurs": {
+      title: "Temporizadores",
+      description: "Domine los diferentes tipos de temporizadores"
+    },
+    "Les compteurs": {
+      title: "Contadores",
+      description: "Aprenda a usar contadores ascendentes/descendentes"
+    },
+    "Détection de fronts": {
+      title: "Detección de flancos",
+      description: "Detecte flancos ascendentes y descendentes"
+    },
+    "Blocs fonctionnels et réutilisation": {
+      title: "Bloques funcionales y reutilización",
+      description: "Cree bloques de función reutilizables"
+    },
+    // Module 4 - Additional lessons
+    "Les capteurs analogiques": {
+      title: "Sensores analógicos",
+      description: "Comprenda los sensores y señales analógicas"
+    },
+    "PNP vs NPN : comprendre les sorties": {
+      title: "PNP vs NPN: Entender las salidas",
+      description: "Aprenda la diferencia entre PNP y NPN"
+    },
+    "Les actionneurs électriques": {
+      title: "Actuadores eléctricos",
+      description: "Descubra motores, contactores y variadores"
+    },
+    "Les actionneurs pneumatiques": {
+      title: "Actuadores neumáticos",
+      description: "Aprenda sobre cilindros y válvulas neumáticas"
+    },
+    "Câblage et mise en service": {
+      title: "Cableado y puesta en marcha",
+      description: "Cablee y ponga en marcha un sistema automatizado"
+    },
+    // Module 5 - Additional lessons
+    "Étapes et transitions": {
+      title: "Etapas y transiciones",
+      description: "Domine las etapas y transiciones del GRAFCET"
+    },
+    "Les différents types d'actions": {
+      title: "Los diferentes tipos de acciones",
+      description: "Aprenda acciones continuas, condicionales y memorizadas"
+    },
+    "Divergences et convergences": {
+      title: "Divergencias y convergencias",
+      description: "Cree ramas paralelas y alternativas"
+    },
+    "Macro-étapes et sous-programmes": {
+      title: "Macro-etapas y subprogramas",
+      description: "Estructure secuencias complejas"
+    },
+    "Traduction GRAFCET vers LADDER": {
+      title: "Traducción GRAFCET a LADDER",
+      description: "Convierta GRAFCET a código LADDER"
+    },
+    "Exemple complet : système de remplissage": {
+      title: "Ejemplo completo: sistema de llenado",
+      description: "Aplique GRAFCET a un sistema real"
     }
   }
 }
