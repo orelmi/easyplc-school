@@ -34,6 +34,9 @@ Plateforme open source d'apprentissage de l'automatisme industriel et des automa
 ### Parcours d'apprentissage
 ![Parcours d'apprentissage](public/learning-path.png)
 
+### Simulateur G-Code interactif
+![Simulateur G-Code](public/gcode-simulator.png)
+
 ---
 
 ## Parcours d'apprentissage
@@ -1096,7 +1099,7 @@ Ce projet est open source et accueille les contributions de la communauté !
 - [x] ~~Ajouter le support multi-langues (EN, ES, DE)~~ ✅ FR, EN, ES disponibles
 - [x] ~~Ajouter des parcours d'apprentissage~~ ✅ Automatisme et CNC
 - [ ] Créer des exercices de programmation pratiques
-- [ ] Ajouter un simulateur G-Code interactif
+- [x] ~~Ajouter un simulateur G-Code interactif~~ ✅ Visualisation 2D/3D avec Three.js
 
 ### Enrichir le contenu pédagogique
 
