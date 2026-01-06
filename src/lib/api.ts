@@ -65,6 +65,16 @@ export const api = {
       body: JSON.stringify({ answers, timeSpent }),
     }),
 
+  // Exercises
+  getExercise: (id: string) => fetchWithAuth(withLang(`/exercises/${id}`)),
+  submitExercise: (id: string, data: { userCode?: string; userAnswer?: any }) =>
+    fetchWithAuth(withLang(`/exercises/${id}/submit`), {
+      method: 'POST',
+      body: JSON.stringify(data),
+    }),
+  getExerciseHint: (id: string, hintIndex: number) =>
+    fetchWithAuth(withLang(`/exercises/${id}/hint/${hintIndex}`)),
+
   // Progress
   getProgress: () => fetchWithAuth(withLang('/progress')),
 

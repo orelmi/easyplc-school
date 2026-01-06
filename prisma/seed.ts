@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client'
 import bcrypt from 'bcryptjs'
-import { allModules } from './modules/index.js'
+import { allModules, allExercises } from './modules/index.js'
 
 const prisma = new PrismaClient()
 
@@ -95,6 +95,9 @@ async function main() {
   console.log('🧹 Clearing existing data...')
 
   // Clear existing data
+  await prisma.exerciseTranslation.deleteMany()
+  await prisma.exerciseProgress.deleteMany()
+  await prisma.exercise.deleteMany()
   await prisma.cursusTranslation.deleteMany()
   await prisma.cursusModule.deleteMany()
   await prisma.cursus.deleteMany()
@@ -291,6 +294,51 @@ async function main() {
         },
       })
     }
+  }
+
+  console.log('🏋️ Creating exercises...')
+
+  // Create exercises for each module
+  for (const exerciseModule of allExercises) {
+    const module = createdModules.find(m => m.order === exerciseModule.moduleOrder)
+    if (!module) continue
+
+    for (const exerciseData of exerciseModule.exercises) {
+      const exercise = await prisma.exercise.create({
+        data: {
+          moduleId: module.id,
+          title: exerciseData.title,
+          description: exerciseData.description,
+          type: exerciseData.type,
+          difficulty: exerciseData.difficulty,
+          instructions: exerciseData.instructions,
+          initialCode: exerciseData.initialCode || null,
+          solution: exerciseData.solution,
+          hints: exerciseData.hints || null,
+          xpReward: exerciseData.xpReward,
+          order: exerciseData.order,
+        },
+      })
+
+      // Create exercise translations
+      for (const lang of ['en', 'es'] as const) {
+        const trans = exerciseModule.translations[lang][exerciseData.title]
+        if (trans) {
+          await prisma.exerciseTranslation.create({
+            data: {
+              exerciseId: exercise.id,
+              language: lang,
+              title: trans.title,
+              description: trans.description,
+              instructions: trans.instructions,
+              hints: trans.hints || null,
+            },
+          })
+        }
+      }
+    }
+
+    console.log(`  ✓ Exercises for Module ${exerciseModule.moduleOrder}`)
   }
 
   console.log('👤 Creating demo user...')

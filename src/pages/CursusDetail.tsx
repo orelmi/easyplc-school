@@ -9,6 +9,18 @@ interface LessonPreview {
   order: number
   duration: number
   xpReward: number
+  quizCount: number
+  completed: boolean
+}
+
+interface ExercisePreview {
+  id: string
+  title: string
+  description: string
+  type: string
+  difficulty: string
+  order: number
+  xpReward: number
   completed: boolean
 }
 
@@ -24,8 +36,12 @@ interface Module {
   isRequired: boolean
   lessonsCount: number
   completedLessons: number
+  exercisesCount: number
+  completedExercises: number
+  quizzesCount: number
   progress: number
   lessonsPreview: LessonPreview[]
+  exercisesPreview: ExercisePreview[]
 }
 
 interface CursusData {
@@ -39,6 +55,13 @@ interface CursusData {
     completed: number
     total: number
     percentage: number
+  }
+  exercises: {
+    completed: number
+    total: number
+  }
+  quizzes: {
+    total: number
   }
 }
 
@@ -117,9 +140,21 @@ export default function CursusDetail() {
 
             <div className="mt-4">
               <div className="flex items-center justify-between text-sm mb-2">
-                <span className="text-gray-600">
-                  {cursus.progress.completed}/{cursus.progress.total} {t('cursus.lessonsCompleted')}
-                </span>
+                <div className="flex flex-wrap gap-4">
+                  <span className="text-gray-600">
+                    📚 {cursus.progress.completed}/{cursus.progress.total} {t('cursus.lessonsCompleted')}
+                  </span>
+                  {cursus.quizzes && cursus.quizzes.total > 0 && (
+                    <span className="text-gray-600">
+                      ❓ {cursus.quizzes.total} {t('cursus.quizzes', 'questions')}
+                    </span>
+                  )}
+                  {cursus.exercises && cursus.exercises.total > 0 && (
+                    <span className="text-gray-600">
+                      🎯 {cursus.exercises.completed}/{cursus.exercises.total} {t('cursus.exercisesCompleted', 'exercices')}
+                    </span>
+                  )}
+                </div>
                 <span className="font-semibold" style={{ color: cursus.color }}>
                   {cursus.progress.percentage}%
                 </span>
@@ -204,10 +239,26 @@ export default function CursusDetail() {
                 <div className="flex items-center gap-4">
                   <div className="text-right text-sm">
                     <div className="text-gray-500">
-                      {module.completedLessons}/{module.lessonsCount}
+                      📚 {module.completedLessons}/{module.lessonsCount}
                     </div>
                     <div className="text-gray-400">{t('cursus.lessons')}</div>
                   </div>
+                  {module.quizzesCount > 0 && (
+                    <div className="text-right text-sm">
+                      <div className="text-gray-500">
+                        ❓ {module.quizzesCount}
+                      </div>
+                      <div className="text-gray-400">{t('cursus.quizzes', 'questions')}</div>
+                    </div>
+                  )}
+                  {module.exercisesCount > 0 && (
+                    <div className="text-right text-sm">
+                      <div className="text-gray-500">
+                        🎯 {module.completedExercises}/{module.exercisesCount}
+                      </div>
+                      <div className="text-gray-400">{t('cursus.exercises', 'exercices')}</div>
+                    </div>
+                  )}
 
                   {!module.isLocked ? (
                     <Link
@@ -227,11 +278,12 @@ export default function CursusDetail() {
                   )}
 
                   {/* Preview toggle button */}
-                  {module.lessonsPreview && module.lessonsPreview.length > 0 && (
+                  {((module.lessonsPreview && module.lessonsPreview.length > 0) ||
+                    (module.exercisesPreview && module.exercisesPreview.length > 0)) && (
                     <button
                       onClick={() => toggleModuleExpanded(module.id)}
                       className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
-                      title="Voir les leçons"
+                      title="Voir le contenu"
                     >
                       <span className="text-lg">{expandedModules.has(module.id) ? '▼' : '▶'}</span>
                     </button>
@@ -239,41 +291,95 @@ export default function CursusDetail() {
                 </div>
               </div>
 
-              {/* Lessons preview (expandable) */}
-              {expandedModules.has(module.id) && module.lessonsPreview && (
+              {/* Lessons and Exercises preview (expandable) */}
+              {expandedModules.has(module.id) && (
                 <div className="mt-4 border-t pt-4">
-                  <h4 className="text-sm font-semibold text-gray-700 mb-3">
-                    Contenu du module ({module.lessonsPreview.length} leçons)
-                  </h4>
-                  <div className="space-y-2">
-                    {module.lessonsPreview.map((lesson, lessonIndex) => (
-                      <div
-                        key={lesson.id}
-                        className={`flex items-center gap-3 p-2 rounded-lg ${
-                          lesson.completed ? 'bg-green-50' : 'bg-gray-50'
-                        }`}
-                      >
-                        <div
-                          className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-medium ${
-                            lesson.completed
-                              ? 'bg-green-500 text-white'
-                              : 'bg-gray-300 text-gray-600'
-                          }`}
-                        >
-                          {lesson.completed ? '✓' : lessonIndex + 1}
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <p className={`text-sm ${lesson.completed ? 'text-green-700' : 'text-gray-700'}`}>
-                            {lesson.title}
-                          </p>
-                        </div>
-                        <div className="flex items-center gap-3 text-xs text-gray-500">
-                          <span>⏱ {lesson.duration} min</span>
-                          <span>⭐ {lesson.xpReward} XP</span>
-                        </div>
+                  {/* Lessons section */}
+                  {module.lessonsPreview && module.lessonsPreview.length > 0 && (
+                    <>
+                      <h4 className="text-sm font-semibold text-gray-700 mb-3">
+                        📚 Leçons ({module.lessonsPreview.length})
+                      </h4>
+                      <div className="space-y-2 mb-4">
+                        {module.lessonsPreview.map((lesson, lessonIndex) => (
+                          <div
+                            key={lesson.id}
+                            className={`flex items-center gap-3 p-2 rounded-lg ${
+                              lesson.completed ? 'bg-green-50' : 'bg-gray-50'
+                            }`}
+                          >
+                            <div
+                              className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-medium ${
+                                lesson.completed
+                                  ? 'bg-green-500 text-white'
+                                  : 'bg-gray-300 text-gray-600'
+                              }`}
+                            >
+                              {lesson.completed ? '✓' : lessonIndex + 1}
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <p className={`text-sm ${lesson.completed ? 'text-green-700' : 'text-gray-700'}`}>
+                                {lesson.title}
+                              </p>
+                            </div>
+                            <div className="flex items-center gap-3 text-xs text-gray-500">
+                              <span>⏱ {lesson.duration} min</span>
+                              <span>⭐ {lesson.xpReward} XP</span>
+                              {lesson.quizCount > 0 && (
+                                <span>❓ {lesson.quizCount} questions</span>
+                              )}
+                            </div>
+                          </div>
+                        ))}
                       </div>
-                    ))}
-                  </div>
+                    </>
+                  )}
+
+                  {/* Exercises section */}
+                  {module.exercisesPreview && module.exercisesPreview.length > 0 && (
+                    <>
+                      <h4 className="text-sm font-semibold text-gray-700 mb-3">
+                        🎯 Exercices ({module.exercisesPreview.length})
+                      </h4>
+                      <div className="space-y-2">
+                        {module.exercisesPreview.map((exercise, exerciseIndex) => (
+                          <div
+                            key={exercise.id}
+                            className={`flex items-center gap-3 p-2 rounded-lg ${
+                              exercise.completed ? 'bg-blue-50' : 'bg-gray-50'
+                            }`}
+                          >
+                            <div
+                              className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-medium ${
+                                exercise.completed
+                                  ? 'bg-blue-500 text-white'
+                                  : 'bg-gray-300 text-gray-600'
+                              }`}
+                            >
+                              {exercise.completed ? '✓' : exerciseIndex + 1}
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <p className={`text-sm font-medium ${exercise.completed ? 'text-blue-700' : 'text-gray-700'}`}>
+                                {exercise.title}
+                              </p>
+                              <p className="text-xs text-gray-500">{exercise.description}</p>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <span className={`px-2 py-0.5 text-xs rounded-full ${
+                                exercise.difficulty === 'beginner' ? 'bg-green-100 text-green-700' :
+                                exercise.difficulty === 'intermediate' ? 'bg-yellow-100 text-yellow-700' :
+                                'bg-red-100 text-red-700'
+                              }`}>
+                                {exercise.difficulty === 'beginner' ? 'Débutant' :
+                                 exercise.difficulty === 'intermediate' ? 'Intermédiaire' : 'Avancé'}
+                              </span>
+                              <span className="text-xs text-gray-500">⭐ {exercise.xpReward} XP</span>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </>
+                  )}
                 </div>
               )}
             </div>

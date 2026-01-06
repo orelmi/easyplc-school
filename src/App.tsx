@@ -8,6 +8,7 @@ import Dashboard from './pages/Dashboard'
 import Modules from './pages/Modules'
 import ModuleDetail from './pages/ModuleDetail'
 import Lesson from './pages/Lesson'
+import Exercise from './pages/Exercise'
 import Rewards from './pages/Rewards'
 import Leaderboard from './pages/Leaderboard'
 import Profile from './pages/Profile'
@@ -82,6 +83,7 @@ export default function App() {
         <Route path="modules" element={<Modules />} />
         <Route path="modules/:id" element={<ModuleDetail />} />
         <Route path="lessons/:id" element={<Lesson />} />
+        <Route path="exercises/:id" element={<Exercise />} />
         <Route path="rewards" element={<Rewards />} />
         <Route path="leaderboard" element={<Leaderboard />} />
         <Route path="profile" element={<Profile />} />

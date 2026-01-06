@@ -25,6 +25,13 @@ router.get('/', authMiddleware, async (req: AuthRequest, res: Response) => {
                     },
                   },
                 },
+                exercises: {
+                  include: {
+                    progress: {
+                      where: { userId: req.userId },
+                    },
+                  },
+                },
               },
             },
           },
@@ -39,11 +46,17 @@ router.get('/', authMiddleware, async (req: AuthRequest, res: Response) => {
       // Calculate progress for this cursus
       let totalLessons = 0
       let completedLessons = 0
+      let totalExercises = 0
+      let completedExercises = 0
 
       cursus.modules.forEach((cm) => {
         totalLessons += cm.module.lessons.length
         completedLessons += cm.module.lessons.filter((lesson) =>
           lesson.progress.some((p) => p.completed)
+        ).length
+        totalExercises += cm.module.exercises.length
+        completedExercises += cm.module.exercises.filter((exercise) =>
+          exercise.progress.some((p) => p.completed)
         ).length
       })
 
@@ -62,6 +75,8 @@ router.get('/', authMiddleware, async (req: AuthRequest, res: Response) => {
         modulesCount: cursus.modules.length,
         lessonsCount: totalLessons,
         completedLessons,
+        exercisesCount: totalExercises,
+        completedExercises,
         progress,
       }
     })
@@ -89,6 +104,20 @@ router.get('/:id', authMiddleware, async (req: AuthRequest, res: Response) => {
             module: {
               include: {
                 lessons: {
+                  orderBy: { order: 'asc' },
+                  include: {
+                    progress: {
+                      where: { userId: req.userId },
+                    },
+                    translations: {
+                      where: { language: lang },
+                    },
+                    quizzes: {
+                      orderBy: { order: 'asc' },
+                    },
+                  },
+                },
+                exercises: {
                   orderBy: { order: 'asc' },
                   include: {
                     progress: {
@@ -128,6 +157,10 @@ router.get('/:id', authMiddleware, async (req: AuthRequest, res: Response) => {
         lesson.progress.some((p) => p.completed)
       ).length
       const totalLessons = module.lessons.length
+      const completedExercises = module.exercises.filter((exercise) =>
+        exercise.progress.some((p) => p.completed)
+      ).length
+      const totalExercises = module.exercises.length
       const progress = totalLessons > 0 ? Math.round((completedLessons / totalLessons) * 100) : 0
 
       // Check if module is unlocked based on user XP
@@ -135,6 +168,9 @@ router.get('/:id', authMiddleware, async (req: AuthRequest, res: Response) => {
 
       // Get translated content if available
       const translation = module.translations?.[0]
+
+      // Calculate total quizzes
+      const totalQuizzes = module.lessons.reduce((sum, lesson) => sum + (lesson as any).quizzes.length, 0)
 
       // Include lesson preview (titles only for locked modules)
       const lessonsPreview = module.lessons.map((lesson) => {
@@ -145,7 +181,23 @@ router.get('/:id', authMiddleware, async (req: AuthRequest, res: Response) => {
           order: lesson.order,
           duration: lesson.duration,
           xpReward: lesson.xpReward,
+          quizCount: (lesson as any).quizzes.length,
           completed: lesson.progress.some((p) => p.completed),
+        }
+      })
+
+      // Include exercises preview
+      const exercisesPreview = module.exercises.map((exercise) => {
+        const exerciseTrans = (exercise as any).translations?.[0]
+        return {
+          id: exercise.id,
+          title: exerciseTrans?.title || exercise.title,
+          description: exerciseTrans?.description || exercise.description,
+          type: exercise.type,
+          difficulty: exercise.difficulty,
+          order: exercise.order,
+          xpReward: exercise.xpReward,
+          completed: exercise.progress.some((p) => p.completed),
         }
       })
 
@@ -161,8 +213,12 @@ router.get('/:id', authMiddleware, async (req: AuthRequest, res: Response) => {
         isRequired: cm.isRequired,
         lessonsCount: totalLessons,
         completedLessons,
+        exercisesCount: totalExercises,
+        completedExercises,
+        quizzesCount: totalQuizzes,
         progress,
         lessonsPreview,
+        exercisesPreview,
       }
     })
 
@@ -172,11 +228,19 @@ router.get('/:id', authMiddleware, async (req: AuthRequest, res: Response) => {
     // Calculate overall progress
     let totalLessons = 0
     let completedLessons = 0
+    let totalExercises = 0
+    let completedExercises = 0
+    let totalQuizzes = 0
     cursus.modules.forEach((cm) => {
       totalLessons += cm.module.lessons.length
       completedLessons += cm.module.lessons.filter((lesson) =>
         lesson.progress.some((p) => p.completed)
       ).length
+      totalExercises += cm.module.exercises.length
+      completedExercises += cm.module.exercises.filter((exercise) =>
+        exercise.progress.some((p) => p.completed)
+      ).length
+      totalQuizzes += cm.module.lessons.reduce((sum, lesson) => sum + (lesson as any).quizzes.length, 0)
     })
 
     res.json({
@@ -190,6 +254,13 @@ router.get('/:id', authMiddleware, async (req: AuthRequest, res: Response) => {
         completed: completedLessons,
         total: totalLessons,
         percentage: totalLessons > 0 ? Math.round((completedLessons / totalLessons) * 100) : 0,
+      },
+      exercises: {
+        completed: completedExercises,
+        total: totalExercises,
+      },
+      quizzes: {
+        total: totalQuizzes,
       },
     })
   } catch (error) {

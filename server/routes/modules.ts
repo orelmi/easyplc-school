@@ -21,6 +21,17 @@ router.get('/', authMiddleware, async (req: AuthRequest, res: Response) => {
             },
           },
         },
+        exercises: {
+          orderBy: { order: 'asc' },
+          include: {
+            progress: {
+              where: { userId: req.userId },
+            },
+            translations: {
+              where: { language: lang },
+            },
+          },
+        },
         translations: {
           where: { language: lang }
         },
@@ -38,6 +49,10 @@ router.get('/', authMiddleware, async (req: AuthRequest, res: Response) => {
         lesson.progress.some((p) => p.completed)
       ).length
       const totalLessons = module.lessons.length
+      const completedExercises = module.exercises.filter((exercise) =>
+        exercise.progress.some((p) => p.completed)
+      ).length
+      const totalExercises = module.exercises.length
       const progress = totalLessons > 0 ? Math.round((completedLessons / totalLessons) * 100) : 0
 
       // Check if module is unlocked based on user XP
@@ -59,6 +74,21 @@ router.get('/', authMiddleware, async (req: AuthRequest, res: Response) => {
         }
       })
 
+      // Include exercises preview
+      const exercisesPreview = module.exercises.map((exercise) => {
+        const exerciseTrans = (exercise as any).translations?.[0]
+        return {
+          id: exercise.id,
+          title: exerciseTrans?.title || exercise.title,
+          description: exerciseTrans?.description || exercise.description,
+          type: exercise.type,
+          difficulty: exercise.difficulty,
+          order: exercise.order,
+          xpReward: exercise.xpReward,
+          completed: exercise.progress.some((p) => p.completed),
+        }
+      })
+
       return {
         id: module.id,
         title: translation?.title || module.title,
@@ -70,8 +100,11 @@ router.get('/', authMiddleware, async (req: AuthRequest, res: Response) => {
         requiredXp: module.requiredXp,
         lessonsCount: totalLessons,
         completedLessons,
+        exercisesCount: totalExercises,
+        completedExercises,
         progress,
         lessonsPreview,
+        exercisesPreview,
       }
     })
 
@@ -101,6 +134,17 @@ router.get('/:id', authMiddleware, async (req: AuthRequest, res: Response) => {
             quizzes: true,
             translations: {
               where: { language: lang }
+            },
+          },
+        },
+        exercises: {
+          orderBy: { order: 'asc' },
+          include: {
+            progress: {
+              where: { userId: req.userId },
+            },
+            translations: {
+              where: { language: lang },
             },
           },
         },
@@ -139,14 +183,38 @@ router.get('/:id', authMiddleware, async (req: AuthRequest, res: Response) => {
       }
     })
 
+    // Map exercises with progress
+    const exercisesWithProgress = module.exercises.map((exercise) => {
+      const exerciseTrans = (exercise as any).translations?.[0]
+      return {
+        id: exercise.id,
+        title: exerciseTrans?.title || exercise.title,
+        description: exerciseTrans?.description || exercise.description,
+        type: exercise.type,
+        difficulty: exercise.difficulty,
+        order: exercise.order,
+        xpReward: exercise.xpReward,
+        completed: exercise.progress.some((p) => p.completed),
+        bestScore: exercise.progress[0]?.bestScore || null,
+      }
+    })
+
     // Get translated content if available
     const translation = (module as any).translations?.[0]
+
+    // Calculate exercise stats
+    const completedExercises = module.exercises.filter((e) =>
+      e.progress.some((p) => p.completed)
+    ).length
 
     res.json({
       ...module,
       title: translation?.title || module.title,
       description: translation?.description || module.description,
       lessons: lessonsWithProgress,
+      exercises: exercisesWithProgress,
+      exercisesCount: module.exercises.length,
+      completedExercises,
     })
   } catch (error) {
     console.error('Get module error:', error)

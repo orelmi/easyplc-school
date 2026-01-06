@@ -20,10 +20,11 @@ model User {
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
-  progress      LessonProgress[]
-  rewards       UserReward[]
-  quizAttempts  QuizAttempt[]
-  accounts      Account[]
+  progress         LessonProgress[]
+  rewards          UserReward[]
+  quizAttempts     QuizAttempt[]
+  accounts         Account[]
+  exerciseProgress ExerciseProgress[]
 }
 
 model Account {
@@ -97,6 +98,7 @@ model Module {
   lessons       Lesson[]
   translations  ModuleTranslation[]
   cursusModules CursusModule[]
+  exercises     Exercise[]
 }
 
 model ModuleTranslation {
@@ -238,4 +240,57 @@ model UserReward {
   reward      Reward    @relation(fields: [rewardId], references: [id])
 
   @@unique([userId, rewardId])
+}
+
+model Exercise {
+  id          String    @id @default(uuid())
+  moduleId    String
+  title       String
+  description String
+  type        String    // ladder, grafcet, gcode, plc_config, troubleshooting
+  difficulty  String    // beginner, intermediate, advanced
+  instructions String   // JSON with step-by-step instructions
+  initialCode String?   // Initial code/configuration for the exercise
+  solution    String    // Expected solution (JSON)
+  hints       String?   // JSON array of hints
+  xpReward    Int       @default(100)
+  order       Int
+  createdAt   DateTime  @default(now())
+
+  module       Module    @relation(fields: [moduleId], references: [id])
+  translations ExerciseTranslation[]
+  progress     ExerciseProgress[]
+}
+
+model ExerciseTranslation {
+  id           String    @id @default(uuid())
+  exerciseId   String
+  language     String
+  title        String
+  description  String
+  instructions String
+  hints        String?
+  createdAt    DateTime  @default(now())
+
+  exercise     Exercise  @relation(fields: [exerciseId], references: [id], onDelete: Cascade)
+
+  @@unique([exerciseId, language])
+}
+
+model ExerciseProgress {
+  id          String    @id @default(uuid())
+  userId      String
+  exerciseId  String
+  completed   Boolean   @default(false)
+  attempts    Int       @default(0)
+  bestScore   Int?
+  userCode    String?   // User's last submitted solution
+  completedAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  user        User      @relation(fields: [userId], references: [id])
+  exercise    Exercise  @relation(fields: [exerciseId], references: [id])
+
+  @@unique([userId, exerciseId])
 }

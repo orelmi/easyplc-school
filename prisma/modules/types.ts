@@ -34,6 +34,26 @@ export interface ModuleTranslation {
   description: string
 }
 
+export interface ExerciseData {
+  title: string
+  description: string
+  type: 'ladder' | 'grafcet' | 'gcode' | 'plc_config' | 'troubleshooting' | 'wiring' | 'vfd_config'
+  difficulty: 'beginner' | 'intermediate' | 'advanced'
+  instructions: string // JSON stringified instructions
+  initialCode?: string // Initial code/configuration
+  solution: string // JSON stringified solution
+  hints?: string // JSON stringified hints array
+  xpReward: number
+  order: number
+}
+
+export interface ExerciseTranslation {
+  title: string
+  description: string
+  instructions: string
+  hints?: string
+}
+
 export interface ModuleData {
   // Module info
   moduleOrder: number
@@ -60,5 +80,14 @@ export interface ModuleData {
   quizTranslations: {
     en: Record<string, QuizTranslation>
     es: Record<string, QuizTranslation>
+  }
+
+  // Exercises for the module (optional)
+  exercises?: ExerciseData[]
+
+  // Exercise translations
+  exerciseTranslations?: {
+    en: Record<string, ExerciseTranslation>
+    es: Record<string, ExerciseTranslation>
   }
 }

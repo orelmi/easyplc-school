@@ -15,6 +15,7 @@ import progressRoutes from './routes/progress.js'
 import rewardRoutes from './routes/rewards.js'
 import leaderboardRoutes from './routes/leaderboard.js'
 import cursusRoutes from './routes/cursus.js'
+import exerciseRoutes from './routes/exercises.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -64,6 +65,7 @@ app.use('/api/progress', progressRoutes)
 app.use('/api/rewards', rewardRoutes)
 app.use('/api/leaderboard', leaderboardRoutes)
 app.use('/api/cursus', cursusRoutes)
+app.use('/api/exercises', exerciseRoutes)
 
 // Health check
 app.get('/api/health', (_req, res) => {

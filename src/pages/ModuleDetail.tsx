@@ -15,6 +15,18 @@ interface Lesson {
   score: number | null
 }
 
+interface Exercise {
+  id: string
+  title: string
+  description: string
+  type: string
+  difficulty: string
+  order: number
+  xpReward: number
+  completed: boolean
+  bestScore: number | null
+}
+
 interface ModuleData {
   id: string
   title: string
@@ -22,6 +34,9 @@ interface ModuleData {
   icon: string
   color: string
   lessons: Lesson[]
+  exercises: Exercise[]
+  exercisesCount: number
+  completedExercises: number
 }
 
 export default function ModuleDetail() {
@@ -64,7 +79,9 @@ export default function ModuleDetail() {
   if (!module) return null
 
   const completedCount = module.lessons.filter((l) => l.completed).length
-  const progress = Math.round((completedCount / module.lessons.length) * 100)
+  const progress = module.lessons.length > 0 ? Math.round((completedCount / module.lessons.length) * 100) : 0
+  const completedExercises = module.exercises?.filter((e) => e.completed).length || 0
+  const totalExercises = module.exercises?.length || 0
 
   return (
     <div className="animate-slide-in">
@@ -92,7 +109,12 @@ export default function ModuleDetail() {
         {/* Progress */}
         <div className="mt-4">
           <div className="flex justify-between text-sm mb-2">
-            <span>{completedCount}/{module.lessons.length} leçons terminées</span>
+            <div className="flex gap-4">
+              <span>📚 {completedCount}/{module.lessons.length} leçons</span>
+              {totalExercises > 0 && (
+                <span>🎯 {completedExercises}/{totalExercises} exercices</span>
+              )}
+            </div>
             <span className="font-bold">{progress}%</span>
           </div>
           <div className="h-3 bg-white/50 rounded-full overflow-hidden">
@@ -175,6 +197,93 @@ export default function ModuleDetail() {
           )
         })}
       </div>
+
+      {/* Exercises list */}
+      {module.exercises && module.exercises.length > 0 && (
+        <>
+          <h2 className="text-xl font-bold mb-4 mt-8">🎯 Exercices pratiques</h2>
+          <div className="space-y-3">
+            {module.exercises.map((exercise, index) => {
+              // Exercises are available after all lessons are completed or based on order
+              const allLessonsCompleted = module.lessons.every((l) => l.completed)
+              const isAvailable = allLessonsCompleted || index === 0 || module.exercises[index - 1].completed
+
+              return (
+                <div
+                  key={exercise.id}
+                  className={`card ${!isAvailable ? 'opacity-60' : ''}`}
+                >
+                  <div className="flex items-center gap-4">
+                    {/* Number/Status */}
+                    <div
+                      className={`w-10 h-10 rounded-full flex items-center justify-center font-bold ${
+                        exercise.completed
+                          ? 'bg-blue-100 text-blue-600'
+                          : isAvailable
+                          ? 'bg-primary-100 text-primary-600'
+                          : 'bg-gray-100 text-gray-400'
+                      }`}
+                    >
+                      {exercise.completed ? '✓' : exercise.order}
+                    </div>
+
+                    {/* Content */}
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2">
+                        <h3 className="font-semibold">{exercise.title}</h3>
+                        <span className={`px-2 py-0.5 text-xs rounded-full ${
+                          exercise.difficulty === 'beginner' ? 'bg-green-100 text-green-700' :
+                          exercise.difficulty === 'intermediate' ? 'bg-yellow-100 text-yellow-700' :
+                          'bg-red-100 text-red-700'
+                        }`}>
+                          {exercise.difficulty === 'beginner' ? 'Débutant' :
+                           exercise.difficulty === 'intermediate' ? 'Intermédiaire' : 'Avancé'}
+                        </span>
+                      </div>
+                      <p className="text-sm text-gray-500">{exercise.description}</p>
+                      <div className="flex gap-4 mt-2 text-xs text-gray-400">
+                        <span>💎 {exercise.xpReward} XP</span>
+                        <span className="capitalize">📝 {exercise.type.replace('_', ' ')}</span>
+                      </div>
+                    </div>
+
+                    {/* Score/Action */}
+                    <div className="flex items-center gap-3">
+                      {exercise.completed && exercise.bestScore !== null && (
+                        <span
+                          className={`badge ${
+                            exercise.bestScore >= 80
+                              ? 'bg-green-100 text-green-700'
+                              : exercise.bestScore >= 50
+                              ? 'bg-yellow-100 text-yellow-700'
+                              : 'bg-red-100 text-red-700'
+                          }`}
+                        >
+                          {exercise.bestScore}%
+                        </span>
+                      )}
+
+                      {isAvailable ? (
+                        <Link
+                          to={`/exercises/${exercise.id}`}
+                          className="btn btn-primary"
+                          style={{ backgroundColor: module.color }}
+                        >
+                          {exercise.completed ? 'Refaire' : 'Commencer'}
+                        </Link>
+                      ) : (
+                        <button disabled className="btn bg-gray-100 text-gray-400 cursor-not-allowed">
+                          🔒 Verrouillé
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+        </>
+      )}
     </div>
   )
 }
