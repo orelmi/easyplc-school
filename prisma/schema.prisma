@@ -20,10 +20,11 @@ model User {
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
-  progress      LessonProgress[]
-  rewards       UserReward[]
-  quizAttempts  QuizAttempt[]
-  accounts      Account[]
+  progress         LessonProgress[]
+  rewards          UserReward[]
+  quizAttempts     QuizAttempt[]
+  exerciseAttempts ExerciseAttempt[]
+  accounts         Account[]
 }
 
 model Account {
@@ -126,6 +127,7 @@ model Lesson {
   module       Module    @relation(fields: [moduleId], references: [id])
   progress     LessonProgress[]
   quizzes      Quiz[]
+  exercises    Exercise[]
   translations LessonTranslation[]
 }
 
@@ -238,4 +240,55 @@ model UserReward {
   reward      Reward    @relation(fields: [rewardId], references: [id])
 
   @@unique([userId, rewardId])
+}
+
+// Exercise types:
+// Phase 1: fill_blank, ordering, matching, code_input
+// Phase 2: drag_drop, wiring, timing
+// Phase 3: ladder_builder, plc_simulator
+model Exercise {
+  id          String    @id @default(uuid())
+  lessonId    String
+  type        String    // fill_blank, ordering, matching, code_input, drag_drop, wiring, timing, ladder_builder, plc_simulator
+  title       String
+  description String?
+  config      String    // JSON configuration specific to exercise type
+  solution    String    // JSON solution data
+  hints       String?   // JSON array of hints
+  order       Int
+  xpReward    Int       @default(25)
+  createdAt   DateTime  @default(now())
+
+  lesson       Lesson              @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  attempts     ExerciseAttempt[]
+  translations ExerciseTranslation[]
+}
+
+model ExerciseTranslation {
+  id          String    @id @default(uuid())
+  exerciseId  String
+  language    String
+  title       String
+  description String?
+  config      String    // JSON translated configuration
+  hints       String?   // JSON translated hints
+  createdAt   DateTime  @default(now())
+
+  exercise    Exercise  @relation(fields: [exerciseId], references: [id], onDelete: Cascade)
+
+  @@unique([exerciseId, language])
+}
+
+model ExerciseAttempt {
+  id          String    @id @default(uuid())
+  userId      String
+  exerciseId  String
+  answer      String    // JSON user answer
+  isCorrect   Boolean
+  score       Int       // 0-100 for partial scores
+  timeSpent   Int       @default(0) // seconds
+  createdAt   DateTime  @default(now())
+
+  user        User      @relation(fields: [userId], references: [id])
+  exercise    Exercise  @relation(fields: [exerciseId], references: [id], onDelete: Cascade)
 }

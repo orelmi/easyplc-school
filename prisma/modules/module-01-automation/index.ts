@@ -1,4 +1,5 @@
 import type { ModuleData } from '../types.js'
+import { module01Exercises, module01ExerciseTranslations } from './exercises.js'
 
 export const module01Data: ModuleData = {
   moduleOrder: 1,
@@ -1247,5 +1248,11 @@ export const module01Data: ModuleData = {
         explanation: "PROFIBUS (Siemens) y DeviceNet (Allen-Bradley) dominaban antes de la llegada del Ethernet industrial."
       }
     }
-  }
+  },
+
+  // Exercises data
+  exercises: module01Exercises,
+
+  // Exercise translations
+  exerciseTranslations: module01ExerciseTranslations
 }

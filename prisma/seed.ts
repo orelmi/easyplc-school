@@ -94,10 +94,13 @@ const rewardsData = [
 async function main() {
   console.log('🧹 Clearing existing data...')
 
-  // Clear existing data
+  // Clear existing data (in correct order for foreign key constraints)
   await prisma.cursusTranslation.deleteMany()
   await prisma.cursusModule.deleteMany()
   await prisma.cursus.deleteMany()
+  await prisma.exerciseTranslation.deleteMany()
+  await prisma.exerciseAttempt.deleteMany()
+  await prisma.exercise.deleteMany()
   await prisma.quizTranslation.deleteMany()
   await prisma.rewardTranslation.deleteMany()
   await prisma.lessonTranslation.deleteMany()
@@ -210,6 +213,46 @@ async function main() {
                 explanation: trans.explanation,
               },
             })
+          }
+        }
+      }
+
+      // Create exercises for this lesson (if module has exercises)
+      if (moduleData.exercises) {
+        const lessonExercises = moduleData.exercises[lessonData.order - 1] || []
+        for (const exerciseData of lessonExercises) {
+          const exercise = await prisma.exercise.create({
+            data: {
+              lessonId: lesson.id,
+              type: exerciseData.type,
+              title: exerciseData.title,
+              description: exerciseData.description,
+              config: exerciseData.config,
+              solution: exerciseData.solution,
+              hints: exerciseData.hints,
+              order: exerciseData.order,
+              xpReward: exerciseData.xpReward,
+            },
+          })
+
+          // Create exercise translations
+          if (moduleData.exerciseTranslations) {
+            const exerciseKey = `ex-${lessonData.order}-${exerciseData.order}`
+            for (const lang of ['en', 'es'] as const) {
+              const trans = moduleData.exerciseTranslations[lang][exerciseKey]
+              if (trans) {
+                await prisma.exerciseTranslation.create({
+                  data: {
+                    exerciseId: exercise.id,
+                    language: lang,
+                    title: trans.title,
+                    description: trans.description,
+                    config: trans.config,
+                    hints: trans.hints,
+                  },
+                })
+              }
+            }
           }
         }
       }

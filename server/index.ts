@@ -23,6 +23,7 @@ const app = express()
 const prisma = new PrismaClient()
 const PORT = process.env.PORT || 3001
 const NODE_ENV = process.env.NODE_ENV || 'development'
+const EXERCISES_ENABLED = process.env.EXERCISES_ENABLED !== 'false' // Default to true
 
 // CORS configuration
 const corsOptions = {
@@ -51,8 +52,9 @@ const passport = configurePassport()
 app.use(passport.initialize())
 app.use(passport.session())
 
-// Make prisma available in routes
+// Make prisma and config available in routes
 app.locals.prisma = prisma
+app.locals.exercisesEnabled = EXERCISES_ENABLED
 
 // Routes
 app.use('/api/auth', authRoutes)
@@ -68,6 +70,13 @@ app.use('/api/cursus', cursusRoutes)
 // Health check
 app.get('/api/health', (_req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() })
+})
+
+// Config endpoint for feature flags
+app.get('/api/config', (_req, res) => {
+  res.json({
+    exercisesEnabled: EXERCISES_ENABLED,
+  })
 })
 
 // Serve static files in production

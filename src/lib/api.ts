@@ -64,6 +64,11 @@ export const api = {
       method: 'POST',
       body: JSON.stringify({ answers, timeSpent }),
     }),
+  submitExercises: (id: string, answers: { exerciseId: string; answer: unknown }[], timeSpent: number) =>
+    fetchWithAuth(withLang(`/lessons/${id}/submit-exercises`), {
+      method: 'POST',
+      body: JSON.stringify({ answers, timeSpent }),
+    }),
 
   // Progress
   getProgress: () => fetchWithAuth(withLang('/progress')),

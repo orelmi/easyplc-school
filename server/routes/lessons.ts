@@ -4,12 +4,19 @@ import { authMiddleware, AuthRequest } from '../middleware/auth.js'
 
 const router = Router()
 
+// Check if exercises are enabled
+function isExercisesEnabled(req: AuthRequest): boolean {
+  return req.app.locals.exercisesEnabled ?? true
+}
+
 // Get lesson content
 router.get('/:id', authMiddleware, async (req: AuthRequest, res: Response) => {
   try {
     const prisma: PrismaClient = req.app.locals.prisma
     const { id } = req.params
     const lang = (req.query.lang as string) || 'fr'
+
+    const exercisesEnabled = isExercisesEnabled(req)
 
     const lesson = await prisma.lesson.findUnique({
       where: { id },
@@ -29,6 +36,14 @@ router.get('/:id', authMiddleware, async (req: AuthRequest, res: Response) => {
             }
           }
         },
+        exercises: exercisesEnabled ? {
+          orderBy: { order: 'asc' },
+          include: {
+            translations: {
+              where: { language: lang }
+            }
+          }
+        } : false,
         progress: {
           where: { userId: req.userId },
         },
@@ -70,6 +85,24 @@ router.get('/:id', authMiddleware, async (req: AuthRequest, res: Response) => {
       }
     })
 
+    // Format exercises (hide solution, use translations)
+    const exercises = exercisesEnabled && (lesson as any).exercises
+      ? (lesson as any).exercises.map((exercise: any) => {
+          const exerciseTrans = exercise.translations?.[0]
+          return {
+            id: exercise.id,
+            type: exercise.type,
+            title: exerciseTrans?.title || exercise.title,
+            description: exerciseTrans?.description || exercise.description,
+            config: JSON.parse(exerciseTrans?.config || exercise.config),
+            hints: exercise.hints ? JSON.parse(exerciseTrans?.hints || exercise.hints) : null,
+            order: exercise.order,
+            xpReward: exercise.xpReward,
+            // Note: solution is NOT included for security
+          }
+        })
+      : []
+
     res.json({
       id: lesson.id,
       title: lessonTrans?.title || lesson.title,
@@ -78,6 +111,8 @@ router.get('/:id', authMiddleware, async (req: AuthRequest, res: Response) => {
       xpReward: lesson.xpReward,
       duration: lesson.duration,
       quizzes,
+      exercises,
+      exercisesEnabled,
       completed: lesson.progress.some((p) => p.completed),
       score: lesson.progress[0]?.score || null,
       module: {
@@ -330,5 +365,344 @@ async function checkAndAwardRewards(prisma: PrismaClient, userId: string) {
 
   return newRewards
 }
+
+// ==================== EXERCISE VALIDATION ====================
+
+interface ExerciseAnswer {
+  exerciseId: string
+  answer: unknown
+}
+
+// Validate exercise answer and return score (0-100)
+function validateExerciseAnswer(
+  exercise: { type: string; config: string; solution: string },
+  answer: unknown
+): { isCorrect: boolean; score: number; feedback?: string; correctAnswer?: unknown } {
+  const config = JSON.parse(exercise.config)
+  const solution = JSON.parse(exercise.solution)
+
+  switch (exercise.type) {
+    case 'fill_blank': {
+      const userAnswer = answer as { blanks: Record<string, string> }
+      let correctCount = 0
+      const totalBlanks = config.blanks.length
+
+      for (const blank of config.blanks) {
+        const userValue = userAnswer.blanks?.[blank.id]?.trim().toLowerCase() || ''
+        const acceptedAnswers = (solution.answers[blank.id] as string)
+          .split('|')
+          .map((a: string) => a.trim().toLowerCase())
+
+        if (acceptedAnswers.includes(userValue)) {
+          correctCount++
+        }
+      }
+
+      const score = Math.round((correctCount / totalBlanks) * 100)
+      return {
+        isCorrect: score === 100,
+        score,
+        correctAnswer: solution.answers,
+      }
+    }
+
+    case 'ordering': {
+      const userOrder = (answer as { order: string[] }).order || []
+      const correctOrder = solution.correctOrder as string[]
+
+      if (userOrder.length !== correctOrder.length) {
+        return { isCorrect: false, score: 0, correctAnswer: correctOrder }
+      }
+
+      let correctPositions = 0
+      for (let i = 0; i < userOrder.length; i++) {
+        if (userOrder[i] === correctOrder[i]) {
+          correctPositions++
+        }
+      }
+
+      const score = Math.round((correctPositions / correctOrder.length) * 100)
+      return {
+        isCorrect: score === 100,
+        score,
+        correctAnswer: correctOrder,
+      }
+    }
+
+    case 'matching': {
+      const userPairs = (answer as { pairs: [string, string][] }).pairs || []
+      const correctPairs = solution.pairs as [string, string][]
+
+      let correctMatches = 0
+      for (const [left, right] of userPairs) {
+        if (correctPairs.some(([l, r]) => l === left && r === right)) {
+          correctMatches++
+        }
+      }
+
+      const score = Math.round((correctMatches / correctPairs.length) * 100)
+      return {
+        isCorrect: score === 100,
+        score,
+        correctAnswer: correctPairs,
+      }
+    }
+
+    case 'code_input': {
+      const userCode = (answer as { code: string }).code?.trim() || ''
+      const acceptedPatterns = solution.acceptedPatterns as string[] | undefined
+      const exactCode = solution.code as string
+
+      // Check exact match first
+      if (userCode === exactCode.trim()) {
+        return { isCorrect: true, score: 100, correctAnswer: exactCode }
+      }
+
+      // Check regex patterns
+      if (acceptedPatterns) {
+        for (const pattern of acceptedPatterns) {
+          if (new RegExp(pattern, 'i').test(userCode)) {
+            return { isCorrect: true, score: 100, correctAnswer: exactCode }
+          }
+        }
+      }
+
+      return { isCorrect: false, score: 0, correctAnswer: exactCode }
+    }
+
+    case 'drag_drop': {
+      const userPlacements = (answer as { placements: Record<string, string[]> }).placements || {}
+      const correctPlacements = solution.placements as Record<string, string[]>
+
+      let correctItems = 0
+      let totalItems = 0
+
+      for (const [zoneId, items] of Object.entries(correctPlacements)) {
+        totalItems += items.length
+        const userItems = userPlacements[zoneId] || []
+        for (const item of items) {
+          if (userItems.includes(item)) {
+            correctItems++
+          }
+        }
+      }
+
+      const score = totalItems > 0 ? Math.round((correctItems / totalItems) * 100) : 100
+      return {
+        isCorrect: score === 100,
+        score,
+        correctAnswer: correctPlacements,
+      }
+    }
+
+    case 'wiring': {
+      const userConnections = (answer as { connections: [string, string][] }).connections || []
+      const correctConnections = solution.connections as [string, string][]
+
+      let correctWires = 0
+      for (const [t1, t2] of userConnections) {
+        // Check both directions
+        if (
+          correctConnections.some(
+            ([c1, c2]) => (c1 === t1 && c2 === t2) || (c1 === t2 && c2 === t1)
+          )
+        ) {
+          correctWires++
+        }
+      }
+
+      const score = correctConnections.length > 0
+        ? Math.round((correctWires / correctConnections.length) * 100)
+        : 100
+      return {
+        isCorrect: score === 100 && userConnections.length === correctConnections.length,
+        score,
+        correctAnswer: correctConnections,
+      }
+    }
+
+    case 'timing': {
+      const userSignals = (answer as { signals: { signalId: string; transitions: { time: number; value: boolean }[] }[] }).signals || []
+      const expectedSignals = solution.expectedSignals as { signalId: string; transitions: { time: number; value: boolean }[] }[]
+      const tolerance = solution.tolerance || 100 // Default 100ms tolerance
+
+      let totalTransitions = 0
+      let correctTransitions = 0
+
+      for (const expected of expectedSignals) {
+        const userSignal = userSignals.find(s => s.signalId === expected.signalId)
+        totalTransitions += expected.transitions.length
+
+        if (userSignal) {
+          for (const expectedTrans of expected.transitions) {
+            const matchingTrans = userSignal.transitions.find(
+              t => Math.abs(t.time - expectedTrans.time) <= tolerance && t.value === expectedTrans.value
+            )
+            if (matchingTrans) {
+              correctTransitions++
+            }
+          }
+        }
+      }
+
+      const score = totalTransitions > 0 ? Math.round((correctTransitions / totalTransitions) * 100) : 100
+      return {
+        isCorrect: score === 100,
+        score,
+        correctAnswer: expectedSignals,
+      }
+    }
+
+    case 'ladder_builder':
+    case 'plc_simulator': {
+      // For complex exercises, we check against expected behavior
+      const expectedBehavior = solution.expectedBehavior as { inputs: Record<string, boolean>; expectedOutputs: Record<string, boolean> }[]
+
+      // Simplified validation - in real implementation, would run the program
+      // For now, return partial credit based on structure
+      return {
+        isCorrect: false,
+        score: 50, // Placeholder - real validation would be more complex
+        feedback: 'Exercice soumis pour évaluation manuelle',
+        correctAnswer: solution,
+      }
+    }
+
+    default:
+      return { isCorrect: false, score: 0, feedback: 'Type d\'exercice non reconnu' }
+  }
+}
+
+// Submit exercise answers
+router.post('/:id/submit-exercises', authMiddleware, async (req: AuthRequest, res: Response) => {
+  try {
+    const prisma: PrismaClient = req.app.locals.prisma
+    const { id } = req.params
+    const { answers, timeSpent } = req.body as { answers: ExerciseAnswer[]; timeSpent: number }
+    const lang = (req.query.lang as string) || 'fr'
+
+    // Check if exercises are enabled
+    if (!isExercisesEnabled(req)) {
+      return res.status(403).json({ error: 'Les exercices pratiques sont désactivés' })
+    }
+
+    // Verify user exists
+    const user = await prisma.user.findUnique({
+      where: { id: req.userId },
+    })
+
+    if (!user) {
+      return res.status(401).json({ error: 'Session invalide, veuillez vous reconnecter' })
+    }
+
+    // Get lesson with exercises
+    const lesson = await prisma.lesson.findUnique({
+      where: { id },
+      include: {
+        exercises: {
+          include: {
+            translations: {
+              where: { language: lang }
+            }
+          }
+        },
+      },
+    })
+
+    if (!lesson) {
+      return res.status(404).json({ error: 'Leçon non trouvée' })
+    }
+
+    if (!lesson.exercises || lesson.exercises.length === 0) {
+      return res.status(400).json({ error: 'Cette leçon n\'a pas d\'exercices' })
+    }
+
+    // Validate each exercise answer
+    const results: {
+      exerciseId: string
+      isCorrect: boolean
+      score: number
+      feedback?: string
+      correctAnswer?: unknown
+    }[] = []
+
+    let totalScore = 0
+    let totalXpEarned = 0
+
+    for (const exerciseAnswer of answers) {
+      const exercise = lesson.exercises.find(e => e.id === exerciseAnswer.exerciseId)
+
+      if (!exercise) {
+        results.push({
+          exerciseId: exerciseAnswer.exerciseId,
+          isCorrect: false,
+          score: 0,
+          feedback: 'Exercice non trouvé',
+        })
+        continue
+      }
+
+      const validation = validateExerciseAnswer(exercise, exerciseAnswer.answer)
+      results.push({
+        exerciseId: exercise.id,
+        ...validation,
+      })
+
+      totalScore += validation.score
+
+      // Calculate XP for this exercise
+      const exerciseXp = Math.round(exercise.xpReward * (validation.score / 100))
+      totalXpEarned += exerciseXp
+
+      // Record exercise attempt
+      await prisma.exerciseAttempt.create({
+        data: {
+          userId: req.userId!,
+          exerciseId: exercise.id,
+          answer: JSON.stringify(exerciseAnswer.answer),
+          isCorrect: validation.isCorrect,
+          score: validation.score,
+          timeSpent: Math.round((timeSpent || 0) / lesson.exercises.length),
+        },
+      })
+    }
+
+    // Calculate average score
+    const averageScore = lesson.exercises.length > 0
+      ? Math.round(totalScore / lesson.exercises.length)
+      : 100
+
+    const correctCount = results.filter(r => r.isCorrect).length
+
+    // Award XP to user
+    if (totalXpEarned > 0) {
+      const newTotalXp = user.totalXp + totalXpEarned
+      const newLevel = calculateLevel(newTotalXp)
+
+      await prisma.user.update({
+        where: { id: req.userId },
+        data: {
+          totalXp: newTotalXp,
+          level: newLevel,
+        },
+      })
+    }
+
+    // Check for new rewards
+    const newRewards = await checkAndAwardRewards(prisma, req.userId!)
+
+    res.json({
+      totalScore: averageScore,
+      exerciseCount: lesson.exercises.length,
+      correctCount,
+      xpEarned: totalXpEarned,
+      results,
+      newRewards,
+    })
+  } catch (error) {
+    console.error('Submit exercises error:', error)
+    res.status(500).json({ error: 'Erreur serveur' })
+  }
+})
 
 export default router
