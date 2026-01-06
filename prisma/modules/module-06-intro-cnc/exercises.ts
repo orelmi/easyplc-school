@@ -4,7 +4,7 @@ export const module06Exercises: ExerciseData[] = [
   {
     title: "Identification des axes CNC",
     description: "Identifiez les axes X, Y et Z sur une fraiseuse CNC",
-    type: "plc_config",
+    type: "matching",
     difficulty: "beginner",
     instructions: JSON.stringify({
       steps: [
@@ -15,12 +15,24 @@ export const module06Exercises: ExerciseData[] = [
       ],
       objective: "Associer correctement chaque axe à son mouvement"
     }),
+    config: JSON.stringify({
+      leftItems: [
+        { id: "axeX", text: "Axe X" },
+        { id: "axeY", text: "Axe Y" },
+        { id: "axeZ", text: "Axe Z" }
+      ],
+      rightItems: [
+        { id: "lateral", text: "Mouvement gauche/droite (latéral)" },
+        { id: "longitudinal", text: "Mouvement avant/arrière (longitudinal)" },
+        { id: "vertical", text: "Mouvement haut/bas (vertical - broche)" }
+      ]
+    }),
     solution: JSON.stringify({
-      axes: {
-        X: "lateral",
-        Y: "longitudinal",
-        Z: "vertical"
-      }
+      pairs: [
+        ["axeX", "lateral"],
+        ["axeY", "longitudinal"],
+        ["axeZ", "vertical"]
+      ]
     }),
     hints: JSON.stringify([
       "X est généralement le mouvement gauche/droite",
@@ -33,7 +45,7 @@ export const module06Exercises: ExerciseData[] = [
   {
     title: "Composants d'une CNC",
     description: "Identifiez les composants principaux d'une machine CNC",
-    type: "plc_config",
+    type: "drag_drop",
     difficulty: "beginner",
     instructions: JSON.stringify({
       steps: [
@@ -44,13 +56,29 @@ export const module06Exercises: ExerciseData[] = [
       ],
       objective: "Identifier tous les composants principaux"
     }),
+    config: JSON.stringify({
+      items: [
+        { id: "spindle", text: "Rotation de l'outil" },
+        { id: "table", text: "Support de la pièce" },
+        { id: "controller", text: "Commande de la machine" },
+        { id: "toolChanger", text: "Changement automatique d'outils" },
+        { id: "guides", text: "Guidage linéaire des axes" }
+      ],
+      zones: [
+        { id: "broche", label: "Broche" },
+        { id: "table_zone", label: "Table" },
+        { id: "pupitre", label: "Pupitre" },
+        { id: "atc", label: "Changeur d'outils" },
+        { id: "guidage", label: "Guides linéaires" }
+      ]
+    }),
     solution: JSON.stringify({
-      components: {
-        spindle: "Rotation de l'outil",
-        table: "Support de la pièce",
-        controller: "Commande de la machine",
-        toolChanger: "Changement automatique d'outils",
-        guides: "Guidage linéaire des axes"
+      placements: {
+        broche: ["spindle"],
+        table_zone: ["table"],
+        pupitre: ["controller"],
+        atc: ["toolChanger"],
+        guidage: ["guides"]
       }
     }),
     hints: JSON.stringify([
@@ -64,7 +92,7 @@ export const module06Exercises: ExerciseData[] = [
   {
     title: "Origines machine et pièce",
     description: "Comprenez la différence entre origine machine et origine pièce",
-    type: "troubleshooting",
+    type: "fill_blank",
     difficulty: "intermediate",
     instructions: JSON.stringify({
       steps: [
@@ -75,11 +103,26 @@ export const module06Exercises: ExerciseData[] = [
       ],
       objective: "Convertir entre coordonnées machine et pièce"
     }),
-    solution: JSON.stringify({
-      exercises: [
-        { machine: { x: 100, y: 50, z: -20 }, offset: { x: 80, y: 30, z: 0 }, piece: { x: 20, y: 20, z: -20 } },
-        { machine: { x: 150, y: 80, z: -30 }, offset: { x: 80, y: 30, z: 0 }, piece: { x: 70, y: 50, z: -30 } }
+    config: JSON.stringify({
+      text: "Origines en CNC:\n\n1. L'origine {{blank1}} est fixe, définie par les fins de course\n2. L'origine {{blank2}} est définie par l'opérateur\n\nFormule: Coordonnées pièce = Coordonnées machine - {{blank3}}\n\nLe décalage d'origine pièce est stocké dans {{blank4}} à G59\n\nExemple:\n- Position machine: X=100, Y=50\n- Décalage G54: X=80, Y=30\n- Position pièce: X={{blank5}}, Y={{blank6}}",
+      blanks: [
+        { id: "blank1", placeholder: "type" },
+        { id: "blank2", placeholder: "type" },
+        { id: "blank3", placeholder: "paramètre" },
+        { id: "blank4", placeholder: "code G" },
+        { id: "blank5", placeholder: "valeur X" },
+        { id: "blank6", placeholder: "valeur Y" }
       ]
+    }),
+    solution: JSON.stringify({
+      answers: {
+        blank1: "machine",
+        blank2: "pièce",
+        blank3: "Décalage|décalage|offset",
+        blank4: "G54",
+        blank5: "20",
+        blank6: "20"
+      }
     }),
     hints: JSON.stringify([
       "Coordonnées pièce = Coordonnées machine - Décalage",

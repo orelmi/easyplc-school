@@ -2,9 +2,9 @@ import type { ExerciseData, ExerciseTranslation } from '../types.js'
 
 export const module09Exercises: ExerciseData[] = [
   {
-    title: "Identification CPU Siemens",
+    title: "Gammes CPU Siemens",
     description: "Identifiez les différentes gammes de CPU Siemens",
-    type: "plc_config",
+    type: "matching",
     difficulty: "beginner",
     instructions: JSON.stringify({
       steps: [
@@ -14,12 +14,24 @@ export const module09Exercises: ExerciseData[] = [
       ],
       objective: "Connaître les gammes de CPU Siemens"
     }),
+    config: JSON.stringify({
+      leftItems: [
+        { id: "s71200", text: "S7-1200" },
+        { id: "s71500", text: "S7-1500" },
+        { id: "s7300", text: "S7-300" }
+      ],
+      rightItems: [
+        { id: "compact", text: "Gamme compacte - Petites machines" },
+        { id: "modulaire", text: "Gamme modulaire - Grandes installations" },
+        { id: "classique", text: "Gamme classique - Systèmes existants (fin de vie)" }
+      ]
+    }),
     solution: JSON.stringify({
-      cpus: {
-        "S7-1200": { type: "Compact", application: "Petites machines" },
-        "S7-1500": { type: "Modulaire", application: "Grandes installations" },
-        "S7-300": { type: "Classique", application: "Systèmes existants" }
-      }
+      pairs: [
+        ["s71200", "compact"],
+        ["s71500", "modulaire"],
+        ["s7300", "classique"]
+      ]
     }),
     hints: JSON.stringify([
       "S7-1200 est la gamme compact",
@@ -32,7 +44,7 @@ export const module09Exercises: ExerciseData[] = [
   {
     title: "Adressage Siemens",
     description: "Maîtrisez l'adressage des E/S Siemens",
-    type: "troubleshooting",
+    type: "fill_blank",
     difficulty: "intermediate",
     instructions: JSON.stringify({
       steps: [
@@ -43,11 +55,32 @@ export const module09Exercises: ExerciseData[] = [
       ],
       objective: "Maîtriser l'adressage bit, octet, mot et double mot"
     }),
-    solution: JSON.stringify({
-      exercises: [
-        { bit: "I1.3", byte: "IB1", word: "IW0" },
-        { bit: "Q2.5", byte: "QB2", word: "QW2" }
+    config: JSON.stringify({
+      text: "Adressage Siemens:\n\nFormat: [Type][Taille][Numéro].[Bit]\n\nTypes:\n- I = {{blank1}} (Input)\n- Q = {{blank2}} (Output)\n- M = {{blank3}} (Memory)\n\nTailles:\n- Sans lettre = {{blank4}}\n- B = {{blank5}} (8 bits)\n- W = {{blank6}} (16 bits)\n- D = {{blank7}} (32 bits)\n\nExemple: I1.3 = Entrée, octet {{blank8}}, bit {{blank9}}",
+      blanks: [
+        { id: "blank1", placeholder: "type" },
+        { id: "blank2", placeholder: "type" },
+        { id: "blank3", placeholder: "type" },
+        { id: "blank4", placeholder: "taille" },
+        { id: "blank5", placeholder: "taille" },
+        { id: "blank6", placeholder: "taille" },
+        { id: "blank7", placeholder: "taille" },
+        { id: "blank8", placeholder: "numéro" },
+        { id: "blank9", placeholder: "numéro" }
       ]
+    }),
+    solution: JSON.stringify({
+      answers: {
+        blank1: "Entrée|entrée",
+        blank2: "Sortie|sortie",
+        blank3: "Mémoire|mémoire|Mémento",
+        blank4: "Bit",
+        blank5: "Octet|Byte",
+        blank6: "Mot|Word",
+        blank7: "Double mot|Double Word|DWord",
+        blank8: "1",
+        blank9: "3"
+      }
     }),
     hints: JSON.stringify([
       "Le premier chiffre est l'octet, le second le bit",
@@ -56,6 +89,53 @@ export const module09Exercises: ExerciseData[] = [
     ]),
     xpReward: 125,
     order: 2
+  },
+  {
+    title: "Composants Siemens",
+    description: "Identifiez les composants d'un système Siemens",
+    type: "drag_drop",
+    difficulty: "beginner",
+    instructions: JSON.stringify({
+      steps: [
+        "Identifiez chaque composant du système",
+        "Classez-les par catégorie",
+        "Vérifiez vos placements"
+      ],
+      objective: "Connaître les composants d'un système Siemens"
+    }),
+    config: JSON.stringify({
+      items: [
+        { id: "cpu", text: "CPU S7-1500" },
+        { id: "di", text: "Module DI (entrées digitales)" },
+        { id: "do", text: "Module DO (sorties digitales)" },
+        { id: "ai", text: "Module AI (entrées analogiques)" },
+        { id: "hmi", text: "Pupitre HMI" },
+        { id: "ps", text: "Alimentation PS" }
+      ],
+      zones: [
+        { id: "traitement", label: "Traitement" },
+        { id: "entrees", label: "Entrées" },
+        { id: "sorties", label: "Sorties" },
+        { id: "ihm", label: "Interface homme-machine" },
+        { id: "alim", label: "Alimentation" }
+      ]
+    }),
+    solution: JSON.stringify({
+      placements: {
+        traitement: ["cpu"],
+        entrees: ["di", "ai"],
+        sorties: ["do"],
+        ihm: ["hmi"],
+        alim: ["ps"]
+      }
+    }),
+    hints: JSON.stringify([
+      "Le CPU est le cerveau du système",
+      "DI/AI sont des entrées, DO sont des sorties",
+      "Le HMI est l'interface opérateur"
+    ]),
+    xpReward: 100,
+    order: 3
   }
 ]
 
@@ -64,8 +144,8 @@ export const module09ExerciseTranslations: {
   es: Record<string, ExerciseTranslation>
 } = {
   en: {
-    "Identification CPU Siemens": {
-      title: "Siemens CPU Identification",
+    "Gammes CPU Siemens": {
+      title: "Siemens CPU Ranges",
       description: "Identify the different Siemens CPU ranges",
       instructions: JSON.stringify({
         steps: [
@@ -98,11 +178,28 @@ export const module09ExerciseTranslations: {
         "One word = 2 consecutive bytes",
         "Watch out for word overlap"
       ])
+    },
+    "Composants Siemens": {
+      title: "Siemens Components",
+      description: "Identify the components of a Siemens system",
+      instructions: JSON.stringify({
+        steps: [
+          "Identify each system component",
+          "Classify them by category",
+          "Verify your placements"
+        ],
+        objective: "Know the components of a Siemens system"
+      }),
+      hints: JSON.stringify([
+        "The CPU is the brain of the system",
+        "DI/AI are inputs, DO are outputs",
+        "The HMI is the operator interface"
+      ])
     }
   },
   es: {
-    "Identification CPU Siemens": {
-      title: "Identificación CPU Siemens",
+    "Gammes CPU Siemens": {
+      title: "Gamas CPU Siemens",
       description: "Identifique las diferentes gamas de CPU Siemens",
       instructions: JSON.stringify({
         steps: [
@@ -134,6 +231,23 @@ export const module09ExerciseTranslations: {
         "El primer número es el byte, el segundo el bit",
         "Una palabra = 2 bytes consecutivos",
         "Cuidado con el solapamiento de palabras"
+      ])
+    },
+    "Composants Siemens": {
+      title: "Componentes Siemens",
+      description: "Identifique los componentes de un sistema Siemens",
+      instructions: JSON.stringify({
+        steps: [
+          "Identifique cada componente del sistema",
+          "Clasifíquelos por categoría",
+          "Verifique sus colocaciones"
+        ],
+        objective: "Conocer los componentes de un sistema Siemens"
+      }),
+      hints: JSON.stringify([
+        "La CPU es el cerebro del sistema",
+        "DI/AI son entradas, DO son salidas",
+        "El HMI es la interfaz del operador"
       ])
     }
   }

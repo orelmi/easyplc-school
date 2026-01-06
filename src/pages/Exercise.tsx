@@ -1,23 +1,17 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { api } from '../lib/api'
 import { useAuthStore } from '../store/authStore'
+import { ExerciseRenderer, exerciseIcons, exerciseLabels } from '../components/exercises'
+import type { ExerciseForUser, ExerciseAnswer, ExerciseResult, ExerciseType } from '../types/exercises'
 
-interface ExerciseData {
-  id: string
-  title: string
-  description: string
-  type: string
-  difficulty: string
+interface ExerciseData extends ExerciseForUser {
   instructions: {
     steps: string[]
     objective: string
   }
-  initialCode?: string
-  hints: string[]
-  xpReward: number
-  order: number
+  difficulty: string
   completed: boolean
   bestScore: number | null
   attempts: number
@@ -30,6 +24,7 @@ interface SubmitResult {
   feedback: string
   xpEarned: number
   attempts: number
+  correctAnswer?: unknown
 }
 
 export default function Exercise() {
@@ -43,8 +38,7 @@ export default function Exercise() {
 
   // Exercise state
   const [currentStep, setCurrentStep] = useState<'instructions' | 'exercise' | 'results'>('instructions')
-  const [userCode, setUserCode] = useState('')
-  const [userAnswer, setUserAnswer] = useState<Record<string, string>>({})
+  const [currentAnswer, setCurrentAnswer] = useState<ExerciseAnswer | null>(null)
   const [result, setResult] = useState<SubmitResult | null>(null)
   const [submitting, setSubmitting] = useState(false)
   const [hintsRevealed, setHintsRevealed] = useState<number[]>([])
@@ -56,14 +50,15 @@ export default function Exercise() {
         .getExercise(id)
         .then((data) => {
           setExercise(data)
-          if (data.initialCode) {
-            setUserCode(data.initialCode)
-          }
         })
         .catch((err) => setError(err.message))
         .finally(() => setLoading(false))
     }
   }, [id, i18n.language])
+
+  const handleAnswerChange = useCallback((answer: ExerciseAnswer) => {
+    setCurrentAnswer(answer)
+  }, [])
 
   const handleStartExercise = () => {
     setCurrentStep('exercise')
@@ -77,13 +72,12 @@ export default function Exercise() {
   }
 
   const handleSubmit = async () => {
-    if (!exercise || !id) return
+    if (!exercise || !id || !currentAnswer) return
 
     setSubmitting(true)
     try {
       const submitResult = await api.submitExercise(id, {
-        userCode: userCode || undefined,
-        userAnswer: Object.keys(userAnswer).length > 0 ? userAnswer : undefined,
+        answer: currentAnswer,
       })
       setResult(submitResult)
       setCurrentStep('results')
@@ -104,6 +98,7 @@ export default function Exercise() {
   const handleRetry = () => {
     setCurrentStep('exercise')
     setResult(null)
+    setCurrentAnswer(null)
     setHintsRevealed([])
     window.scrollTo(0, 0)
   }
@@ -124,19 +119,6 @@ export default function Exercise() {
       case 'advanced': return 'bg-red-100 text-red-700'
       default: return 'bg-gray-100 text-gray-700'
     }
-  }
-
-  const getTypeLabel = (type: string) => {
-    const labels: Record<string, string> = {
-      'ladder': 'Programmation LADDER',
-      'grafcet': 'GRAFCET',
-      'gcode': 'G-Code',
-      'plc_config': 'Configuration PLC',
-      'vfd_config': 'Configuration Variateur',
-      'troubleshooting': 'Depannage',
-      'wiring': 'Cablage',
-    }
-    return labels[type] || type
   }
 
   if (loading) {
@@ -219,7 +201,15 @@ export default function Exercise() {
         {/* Header */}
         <div className="card mb-6">
           <div className="flex items-center justify-between">
-            <h1 className="text-xl font-bold">{exercise.title}</h1>
+            <div className="flex items-center gap-3">
+              <span className="text-2xl">{exerciseIcons[exercise.type as ExerciseType] || '📝'}</span>
+              <div>
+                <h1 className="text-xl font-bold">{exercise.title}</h1>
+                <span className="text-sm text-gray-500">
+                  {exerciseLabels[exercise.type as ExerciseType] || exercise.type}
+                </span>
+              </div>
+            </div>
             <span className={`px-3 py-1 rounded-full text-sm ${getDifficultyColor(exercise.difficulty)}`}>
               {getDifficultyLabel(exercise.difficulty)}
             </span>
@@ -227,76 +217,17 @@ export default function Exercise() {
           <p className="text-gray-600 mt-2">{exercise.instructions.objective}</p>
         </div>
 
-        {/* Exercise area based on type */}
+        {/* Exercise component */}
         <div className="card mb-6">
-          {(exercise.type === 'ladder' || exercise.type === 'grafcet' || exercise.type === 'gcode') && (
-            <div>
-              <h3 className="font-semibold mb-3">Votre code</h3>
-              <textarea
-                value={userCode}
-                onChange={(e) => setUserCode(e.target.value)}
-                className="w-full h-64 font-mono text-sm bg-gray-900 text-green-400 p-4 rounded-lg"
-                placeholder="Ecrivez votre code ici..."
-              />
-            </div>
-          )}
-
-          {(exercise.type === 'plc_config' || exercise.type === 'vfd_config') && (
-            <div>
-              <h3 className="font-semibold mb-3">Configuration</h3>
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Parametre 1
-                  </label>
-                  <input
-                    type="text"
-                    value={userAnswer['param1'] || ''}
-                    onChange={(e) => setUserAnswer({ ...userAnswer, param1: e.target.value })}
-                    className="w-full border rounded-lg px-3 py-2"
-                    placeholder="Entrez la valeur..."
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Parametre 2
-                  </label>
-                  <input
-                    type="text"
-                    value={userAnswer['param2'] || ''}
-                    onChange={(e) => setUserAnswer({ ...userAnswer, param2: e.target.value })}
-                    className="w-full border rounded-lg px-3 py-2"
-                    placeholder="Entrez la valeur..."
-                  />
-                </div>
-              </div>
-            </div>
-          )}
-
-          {exercise.type === 'troubleshooting' && (
-            <div>
-              <h3 className="font-semibold mb-3">Votre diagnostic</h3>
-              <textarea
-                value={userAnswer['diagnosis'] || ''}
-                onChange={(e) => setUserAnswer({ ...userAnswer, diagnosis: e.target.value })}
-                className="w-full h-32 border rounded-lg p-3"
-                placeholder="Decrivez le probleme identifie et la solution proposee..."
-              />
-            </div>
-          )}
-
-          {exercise.type === 'wiring' && (
-            <div>
-              <h3 className="font-semibold mb-3">Connexions</h3>
-              <p className="text-gray-600 mb-4">
-                Definissez les connexions (format: FROM,TO sur chaque ligne)
-              </p>
-              <textarea
-                value={userCode}
-                onChange={(e) => setUserCode(e.target.value)}
-                className="w-full h-48 font-mono text-sm border rounded-lg p-3"
-                placeholder="L1,T1&#10;L2,T2&#10;L3,T3"
-              />
+          {exercise.config ? (
+            <ExerciseRenderer
+              exercise={exercise as ExerciseForUser}
+              onAnswer={handleAnswerChange}
+              showResult={false}
+            />
+          ) : (
+            <div className="p-4 bg-yellow-50 rounded-lg text-yellow-700">
+              Configuration d'exercice manquante
             </div>
           )}
         </div>
@@ -330,7 +261,7 @@ export default function Exercise() {
         <div className="flex justify-end">
           <button
             onClick={handleSubmit}
-            disabled={submitting}
+            disabled={submitting || !currentAnswer}
             className="btn btn-primary px-8 py-3"
           >
             {submitting ? 'Verification...' : 'Soumettre ma solution'}
@@ -366,8 +297,9 @@ export default function Exercise() {
               <span className={`px-3 py-1 rounded-full text-sm ${getDifficultyColor(exercise.difficulty)}`}>
                 {getDifficultyLabel(exercise.difficulty)}
               </span>
-              <span className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm">
-                {getTypeLabel(exercise.type)}
+              <span className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm flex items-center gap-1">
+                <span>{exerciseIcons[exercise.type as ExerciseType] || '📝'}</span>
+                {exerciseLabels[exercise.type as ExerciseType] || exercise.type}
               </span>
               <span className="px-3 py-1 bg-primary-100 text-primary-700 rounded-full text-sm">
                 💎 {exercise.xpReward} XP

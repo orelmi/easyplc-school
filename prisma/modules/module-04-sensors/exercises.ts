@@ -4,7 +4,7 @@ export const module04Exercises: ExerciseData[] = [
   {
     title: "Choix du capteur approprié",
     description: "Sélectionnez le type de capteur adapté à chaque application",
-    type: "troubleshooting",
+    type: "matching",
     difficulty: "beginner",
     instructions: JSON.stringify({
       steps: [
@@ -14,13 +14,29 @@ export const module04Exercises: ExerciseData[] = [
       ],
       objective: "Associer correctement 5 applications à leur type de capteur"
     }),
+    config: JSON.stringify({
+      leftItems: [
+        { id: "metal", text: "Détection de pièces métalliques" },
+        { id: "plastic", text: "Détection de bouteilles en plastique" },
+        { id: "counting", text: "Comptage de personnes" },
+        { id: "level", text: "Mesure de niveau de liquide" },
+        { id: "color", text: "Détection de couleur" }
+      ],
+      rightItems: [
+        { id: "inductif", text: "Capteur inductif" },
+        { id: "capacitif", text: "Capteur capacitif" },
+        { id: "photo", text: "Capteur photoélectrique" },
+        { id: "ultra", text: "Capteur ultrasonique" },
+        { id: "optique", text: "Capteur optique couleur" }
+      ]
+    }),
     solution: JSON.stringify({
-      associations: [
-        { application: "Détection de pièces métalliques", sensor: "inductif" },
-        { application: "Détection de bouteilles en plastique", sensor: "capacitif" },
-        { application: "Comptage de personnes", sensor: "photoélectrique" },
-        { application: "Mesure de niveau de liquide", sensor: "ultrasonique" },
-        { application: "Détection de couleur", sensor: "optique couleur" }
+      pairs: [
+        ["metal", "inductif"],
+        ["plastic", "capacitif"],
+        ["counting", "photo"],
+        ["level", "ultra"],
+        ["color", "optique"]
       ]
     }),
     hints: JSON.stringify([
@@ -45,16 +61,45 @@ export const module04Exercises: ExerciseData[] = [
       ],
       objective: "Câbler correctement un capteur 3 fils PNP"
     }),
-    initialCode: JSON.stringify({
-      connections: []
+    config: JSON.stringify({
+      components: [
+        {
+          id: "sensor",
+          type: "sensor_3wire",
+          label: "Capteur PNP",
+          terminals: [
+            { id: "BN", label: "BN (Brun)", color: "#8B4513" },
+            { id: "BU", label: "BU (Bleu)", color: "#0000FF" },
+            { id: "BK", label: "BK (Noir)", color: "#000000" }
+          ]
+        },
+        {
+          id: "power",
+          type: "power_supply",
+          label: "Alimentation",
+          terminals: [
+            { id: "24V", label: "+24V", color: "#FF0000" },
+            { id: "0V", label: "0V", color: "#0000FF" }
+          ]
+        },
+        {
+          id: "plc",
+          type: "plc_input",
+          label: "Automate",
+          terminals: [
+            { id: "I0.0", label: "I0.0", color: "#00FF00" },
+            { id: "COM", label: "COM", color: "#808080" }
+          ]
+        }
+      ],
+      wireColors: ["#FF0000", "#0000FF", "#000000", "#00FF00"]
     }),
     solution: JSON.stringify({
       connections: [
-        { from: "sensor.BN", to: "power.24V" },
-        { from: "sensor.BU", to: "power.0V" },
-        { from: "sensor.BK", to: "plc.I0.0" }
-      ],
-      type: "PNP"
+        ["sensor.BN", "power.24V"],
+        ["sensor.BU", "power.0V"],
+        ["sensor.BK", "plc.I0.0"]
+      ]
     }),
     hints: JSON.stringify([
       "PNP = le capteur fournit du +24V quand activé",
@@ -78,12 +123,47 @@ export const module04Exercises: ExerciseData[] = [
       ],
       objective: "Câbler un capteur 4 fils avec ses deux sorties"
     }),
+    config: JSON.stringify({
+      components: [
+        {
+          id: "sensor",
+          type: "sensor_4wire",
+          label: "Capteur photoélectrique",
+          terminals: [
+            { id: "BN", label: "BN (+24V)", color: "#8B4513" },
+            { id: "BU", label: "BU (0V)", color: "#0000FF" },
+            { id: "BK", label: "BK (NO)", color: "#000000" },
+            { id: "WH", label: "WH (NC)", color: "#FFFFFF" }
+          ]
+        },
+        {
+          id: "power",
+          type: "power_supply",
+          label: "Alimentation",
+          terminals: [
+            { id: "24V", label: "+24V", color: "#FF0000" },
+            { id: "0V", label: "0V", color: "#0000FF" }
+          ]
+        },
+        {
+          id: "plc",
+          type: "plc_input",
+          label: "Automate",
+          terminals: [
+            { id: "I0.0", label: "I0.0 (Présence)", color: "#00FF00" },
+            { id: "I0.1", label: "I0.1 (Absence)", color: "#00FF00" },
+            { id: "COM", label: "COM", color: "#808080" }
+          ]
+        }
+      ],
+      wireColors: ["#FF0000", "#0000FF", "#000000", "#FFFFFF"]
+    }),
     solution: JSON.stringify({
       connections: [
-        { from: "sensor.BN", to: "power.24V" },
-        { from: "sensor.BU", to: "power.0V" },
-        { from: "sensor.BK", to: "plc.I0.0" },
-        { from: "sensor.WH", to: "plc.I0.1" }
+        ["sensor.BN", "power.24V"],
+        ["sensor.BU", "power.0V"],
+        ["sensor.BK", "plc.I0.0"],
+        ["sensor.WH", "plc.I0.1"]
       ]
     }),
     hints: JSON.stringify([
@@ -93,6 +173,48 @@ export const module04Exercises: ExerciseData[] = [
     ]),
     xpReward: 125,
     order: 3
+  },
+  {
+    title: "Caractéristiques des capteurs",
+    description: "Complétez les caractéristiques des différents types de capteurs",
+    type: "fill_blank",
+    difficulty: "intermediate",
+    instructions: JSON.stringify({
+      steps: [
+        "Analysez chaque type de capteur",
+        "Complétez les caractéristiques manquantes",
+        "Vérifiez vos réponses"
+      ],
+      objective: "Compléter les caractéristiques des capteurs industriels"
+    }),
+    config: JSON.stringify({
+      text: "Caractéristiques des capteurs:\n\n1. Capteur INDUCTIF:\n   - Détecte les matériaux: {{blank1}}\n   - Portée typique: {{blank2}} mm\n\n2. Capteur CAPACITIF:\n   - Détecte: {{blank3}} types de matériaux\n   - Sensible à: l'humidité et la {{blank4}}\n\n3. Capteur PHOTOÉLECTRIQUE:\n   - Utilise la {{blank5}} pour détecter\n   - Types: barrage, reflex, {{blank6}}",
+      blanks: [
+        { id: "blank1", placeholder: "type" },
+        { id: "blank2", placeholder: "distance" },
+        { id: "blank3", placeholder: "quantité" },
+        { id: "blank4", placeholder: "facteur" },
+        { id: "blank5", placeholder: "source" },
+        { id: "blank6", placeholder: "type" }
+      ]
+    }),
+    solution: JSON.stringify({
+      answers: {
+        blank1: "métalliques|métal|métaux",
+        blank2: "1-30|1 à 30|5-10",
+        blank3: "tous|plusieurs|différents",
+        blank4: "température|poussière",
+        blank5: "lumière|LED|infrarouge",
+        blank6: "proximité|diffus"
+      }
+    }),
+    hints: JSON.stringify([
+      "Les capteurs inductifs ne détectent que le métal",
+      "Les capteurs capacitifs sont plus polyvalents",
+      "Les photoélectriques ont plusieurs modes de fonctionnement"
+    ]),
+    xpReward: 100,
+    order: 4
   }
 ]
 
@@ -153,6 +275,23 @@ export const module04ExerciseTranslations: {
         "WH (White) = Normally Closed (NC)",
         "NO activates when object is detected"
       ])
+    },
+    "Caractéristiques des capteurs": {
+      title: "Sensor Characteristics",
+      description: "Complete the characteristics of different sensor types",
+      instructions: JSON.stringify({
+        steps: [
+          "Analyze each sensor type",
+          "Complete the missing characteristics",
+          "Verify your answers"
+        ],
+        objective: "Complete the characteristics of industrial sensors"
+      }),
+      hints: JSON.stringify([
+        "Inductive sensors only detect metal",
+        "Capacitive sensors are more versatile",
+        "Photoelectric sensors have multiple operating modes"
+      ])
     }
   },
   es: {
@@ -207,6 +346,23 @@ export const module04ExerciseTranslations: {
         "BK (Negro) = Normalmente Abierto (NO)",
         "WH (Blanco) = Normalmente Cerrado (NC)",
         "NO se activa cuando se detecta el objeto"
+      ])
+    },
+    "Caractéristiques des capteurs": {
+      title: "Características de los sensores",
+      description: "Complete las características de los diferentes tipos de sensores",
+      instructions: JSON.stringify({
+        steps: [
+          "Analice cada tipo de sensor",
+          "Complete las características faltantes",
+          "Verifique sus respuestas"
+        ],
+        objective: "Completar las características de los sensores industriales"
+      }),
+      hints: JSON.stringify([
+        "Los sensores inductivos solo detectan metal",
+        "Los sensores capacitivos son más versátiles",
+        "Los fotoeléctricos tienen varios modos de funcionamiento"
       ])
     }
   }

@@ -37,10 +37,11 @@ export interface ModuleTranslation {
 export interface ExerciseData {
   title: string
   description: string
-  type: 'ladder' | 'grafcet' | 'gcode' | 'plc_config' | 'troubleshooting' | 'wiring' | 'vfd_config'
+  type: 'fill_blank' | 'ordering' | 'matching' | 'code_input' | 'drag_drop' | 'wiring' | 'timing' | 'ladder_builder' | 'plc_simulator'
   difficulty: 'beginner' | 'intermediate' | 'advanced'
   instructions: string // JSON stringified instructions
-  initialCode?: string // Initial code/configuration
+  config: string // JSON stringified exercise configuration
+  initialCode?: string // Initial code/configuration (legacy)
   solution: string // JSON stringified solution
   hints?: string // JSON stringified hints array
   xpReward: number

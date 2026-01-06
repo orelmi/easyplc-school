@@ -4,7 +4,7 @@ export const module07Exercises: ExerciseData[] = [
   {
     title: "Carré en G-Code",
     description: "Programmez un parcours carré de 50mm x 50mm",
-    type: "gcode",
+    type: "code_input",
     difficulty: "beginner",
     instructions: JSON.stringify({
       steps: [
@@ -15,15 +15,19 @@ export const module07Exercises: ExerciseData[] = [
       ],
       objective: "Écrire un programme G-Code pour usiner un carré"
     }),
+    config: JSON.stringify({
+      language: "gcode",
+      starterCode: "G21 ; Unités en mm\nG90 ; Coordonnées absolues\nG00 X0 Y0 ; Point de départ\n; Votre code ici\n",
+      expectedPatterns: ["G01", "X50", "Y50", "X0", "Y0"]
+    }),
     initialCode: "G21 ; Unités en mm\nG90 ; Coordonnées absolues\nG00 X0 Y0 ; Point de départ\n; Votre code ici\n",
     solution: JSON.stringify({
       code: "G21\nG90\nG00 X0 Y0\nG01 X50 F500\nG01 Y50\nG01 X0\nG01 Y0",
-      path: [
-        { x: 0, y: 0 },
-        { x: 50, y: 0 },
-        { x: 50, y: 50 },
-        { x: 0, y: 50 },
-        { x: 0, y: 0 }
+      acceptedPatterns: [
+        "G01.*X50.*F",
+        "G01.*Y50",
+        "G01.*X0",
+        "G01.*Y0"
       ]
     }),
     hints: JSON.stringify([
@@ -35,9 +39,55 @@ export const module07Exercises: ExerciseData[] = [
     order: 1
   },
   {
+    title: "Codes G essentiels",
+    description: "Associez chaque code G à sa fonction",
+    type: "matching",
+    difficulty: "beginner",
+    instructions: JSON.stringify({
+      steps: [
+        "Lisez la description de chaque code G",
+        "Associez chaque code à sa fonction",
+        "Vérifiez vos associations"
+      ],
+      objective: "Connaître les codes G fondamentaux"
+    }),
+    config: JSON.stringify({
+      leftItems: [
+        { id: "g00", text: "G00" },
+        { id: "g01", text: "G01" },
+        { id: "g02", text: "G02" },
+        { id: "g90", text: "G90" },
+        { id: "g91", text: "G91" }
+      ],
+      rightItems: [
+        { id: "rapid", text: "Déplacement rapide (sans usinage)" },
+        { id: "linear", text: "Interpolation linéaire (usinage)" },
+        { id: "cw", text: "Interpolation circulaire horaire" },
+        { id: "abs", text: "Mode coordonnées absolues" },
+        { id: "inc", text: "Mode coordonnées relatives" }
+      ]
+    }),
+    solution: JSON.stringify({
+      pairs: [
+        ["g00", "rapid"],
+        ["g01", "linear"],
+        ["g02", "cw"],
+        ["g90", "abs"],
+        ["g91", "inc"]
+      ]
+    }),
+    hints: JSON.stringify([
+      "G00 = rapide, G01 = travail",
+      "G02 = horaire, G03 = anti-horaire",
+      "G90 = absolu, G91 = relatif"
+    ]),
+    xpReward: 75,
+    order: 2
+  },
+  {
     title: "Cercle en interpolation",
     description: "Programmez un cercle de rayon 25mm en utilisant G02/G03",
-    type: "gcode",
+    type: "code_input",
     difficulty: "intermediate",
     instructions: JSON.stringify({
       steps: [
@@ -48,12 +98,18 @@ export const module07Exercises: ExerciseData[] = [
       ],
       objective: "Maîtriser l'interpolation circulaire G02/G03"
     }),
+    config: JSON.stringify({
+      language: "gcode",
+      starterCode: "G21\nG90\nG00 X25 Y0 ; Point de départ sur le cercle\n; Votre code ici\n",
+      expectedPatterns: ["G02|G03", "I-?\\d+", "J-?\\d+"]
+    }),
     initialCode: "G21\nG90\nG00 X25 Y0 ; Point de départ sur le cercle\n; Votre code ici\n",
     solution: JSON.stringify({
       code: "G21\nG90\nG00 X25 Y0\nG02 X25 Y0 I-25 J0 F300",
-      path: "circle",
-      radius: 25,
-      center: { x: 0, y: 0 }
+      acceptedPatterns: [
+        "G0[23].*X25.*Y0.*I-25.*J0",
+        "G0[23].*I-25.*J0.*X25.*Y0"
+      ]
     }),
     hints: JSON.stringify([
       "G02 = interpolation circulaire horaire, G03 = anti-horaire",
@@ -61,60 +117,12 @@ export const module07Exercises: ExerciseData[] = [
       "Pour un cercle complet, le point final = point initial"
     ]),
     xpReward: 150,
-    order: 2
-  },
-  {
-    title: "Poche rectangulaire",
-    description: "Programmez l'usinage d'une poche rectangulaire",
-    type: "gcode",
-    difficulty: "advanced",
-    instructions: JSON.stringify({
-      steps: [
-        "Dimensions de la poche: 60mm x 40mm, profondeur 10mm",
-        "Utilisez un outil de 10mm de diamètre",
-        "Programmez les passes en Z par incréments de 2mm",
-        "Utilisez une stratégie de contournage"
-      ],
-      objective: "Créer un programme complet pour usiner une poche"
-    }),
-    initialCode: "G21 ; mm\nG90 ; Absolu\nG17 ; Plan XY\nT1 M6 ; Outil 10mm\nS3000 M3 ; Broche 3000 tr/min\n; Votre code ici\n",
-    solution: JSON.stringify({
-      code: `G21
-G90
-G17
-T1 M6
-S3000 M3
-G00 X5 Y5
-G00 Z2
-G01 Z-2 F100
-G01 X55 F500
-G01 Y35
-G01 X5
-G01 Y5
-G01 Z-4 F100
-G01 X55 F500
-G01 Y35
-G01 X5
-G01 Y5
-; Répéter jusqu'à Z-10
-G00 Z10
-M5
-M30`,
-      passes: 5,
-      depth_per_pass: 2
-    }),
-    hints: JSON.stringify([
-      "Compensez le rayon d'outil (5mm de chaque côté)",
-      "Descendez progressivement en Z",
-      "Terminez par une remontée de sécurité"
-    ]),
-    xpReward: 250,
     order: 3
   },
   {
     title: "Triangle équilatéral",
     description: "Programmez un triangle équilatéral de 60mm de côté",
-    type: "gcode",
+    type: "fill_blank",
     difficulty: "intermediate",
     instructions: JSON.stringify({
       steps: [
@@ -125,13 +133,30 @@ M30`,
       ],
       objective: "Appliquer la trigonométrie en programmation CNC"
     }),
-    solution: JSON.stringify({
-      code: "G21\nG90\nG00 X0 Y0\nG01 X60 Y0 F500\nG01 X30 Y51.96\nG01 X0 Y0",
-      vertices: [
-        { x: 0, y: 0 },
-        { x: 60, y: 0 },
-        { x: 30, y: 51.96 }
+    config: JSON.stringify({
+      text: "Triangle équilatéral de 60mm:\n\nHauteur = 60 × √3 / 2 ≈ {{blank1}} mm\n\nSommets:\n- Point 1: X={{blank2}}, Y={{blank3}}\n- Point 2: X={{blank4}}, Y={{blank5}}\n- Point 3: X={{blank6}}, Y={{blank7}}\n\nLe sommet supérieur est à X = côté/2 = {{blank8}} mm",
+      blanks: [
+        { id: "blank1", placeholder: "hauteur" },
+        { id: "blank2", placeholder: "X1" },
+        { id: "blank3", placeholder: "Y1" },
+        { id: "blank4", placeholder: "X2" },
+        { id: "blank5", placeholder: "Y2" },
+        { id: "blank6", placeholder: "X3" },
+        { id: "blank7", placeholder: "Y3" },
+        { id: "blank8", placeholder: "X sommet" }
       ]
+    }),
+    solution: JSON.stringify({
+      answers: {
+        blank1: "51.96|52",
+        blank2: "0",
+        blank3: "0",
+        blank4: "60",
+        blank5: "0",
+        blank6: "30",
+        blank7: "51.96|52",
+        blank8: "30"
+      }
     }),
     hints: JSON.stringify([
       "Hauteur = 60 × √3 / 2 ≈ 51.96mm",
@@ -166,6 +191,23 @@ export const module07ExerciseTranslations: {
         "Don't forget to define a feed rate with F"
       ])
     },
+    "Codes G essentiels": {
+      title: "Essential G Codes",
+      description: "Match each G code to its function",
+      instructions: JSON.stringify({
+        steps: [
+          "Read the description of each G code",
+          "Match each code to its function",
+          "Verify your matches"
+        ],
+        objective: "Know the fundamental G codes"
+      }),
+      hints: JSON.stringify([
+        "G00 = rapid, G01 = work",
+        "G02 = clockwise, G03 = counter-clockwise",
+        "G90 = absolute, G91 = relative"
+      ])
+    },
     "Cercle en interpolation": {
       title: "Circle with Interpolation",
       description: "Program a 25mm radius circle using G02/G03",
@@ -182,24 +224,6 @@ export const module07ExerciseTranslations: {
         "G02 = clockwise circular interpolation, G03 = counter-clockwise",
         "I and J define the vector from current point to center",
         "For a full circle, end point = start point"
-      ])
-    },
-    "Poche rectangulaire": {
-      title: "Rectangular Pocket",
-      description: "Program the machining of a rectangular pocket",
-      instructions: JSON.stringify({
-        steps: [
-          "Pocket dimensions: 60mm x 40mm, depth 10mm",
-          "Use a 10mm diameter tool",
-          "Program Z passes in 2mm increments",
-          "Use a contouring strategy"
-        ],
-        objective: "Create a complete program to machine a pocket"
-      }),
-      hints: JSON.stringify([
-        "Compensate for tool radius (5mm on each side)",
-        "Descend progressively in Z",
-        "End with a safety retract"
       ])
     },
     "Triangle équilatéral": {
@@ -240,6 +264,23 @@ export const module07ExerciseTranslations: {
         "No olvide definir un avance con F"
       ])
     },
+    "Codes G essentiels": {
+      title: "Códigos G esenciales",
+      description: "Asocie cada código G a su función",
+      instructions: JSON.stringify({
+        steps: [
+          "Lea la descripción de cada código G",
+          "Asocie cada código a su función",
+          "Verifique sus asociaciones"
+        ],
+        objective: "Conocer los códigos G fundamentales"
+      }),
+      hints: JSON.stringify([
+        "G00 = rápido, G01 = trabajo",
+        "G02 = horario, G03 = antihorario",
+        "G90 = absoluto, G91 = relativo"
+      ])
+    },
     "Cercle en interpolation": {
       title: "Círculo con interpolación",
       description: "Programe un círculo de radio 25mm usando G02/G03",
@@ -256,24 +297,6 @@ export const module07ExerciseTranslations: {
         "G02 = interpolación circular horaria, G03 = antihoraria",
         "I y J definen el vector del punto actual al centro",
         "Para un círculo completo, punto final = punto inicial"
-      ])
-    },
-    "Poche rectangulaire": {
-      title: "Cajera rectangular",
-      description: "Programe el mecanizado de una cajera rectangular",
-      instructions: JSON.stringify({
-        steps: [
-          "Dimensiones de la cajera: 60mm x 40mm, profundidad 10mm",
-          "Use una herramienta de 10mm de diámetro",
-          "Programe las pasadas en Z en incrementos de 2mm",
-          "Use una estrategia de contorneado"
-        ],
-        objective: "Crear un programa completo para mecanizar una cajera"
-      }),
-      hints: JSON.stringify([
-        "Compense el radio de herramienta (5mm a cada lado)",
-        "Descienda progresivamente en Z",
-        "Termine con una retracción de seguridad"
       ])
     },
     "Triangle équilatéral": {

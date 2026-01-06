@@ -67,7 +67,7 @@ export const api = {
 
   // Exercises
   getExercise: (id: string) => fetchWithAuth(withLang(`/exercises/${id}`)),
-  submitExercise: (id: string, data: { userCode?: string; userAnswer?: any }) =>
+  submitExercise: (id: string, data: { answer: unknown }) =>
     fetchWithAuth(withLang(`/exercises/${id}/submit`), {
       method: 'POST',
       body: JSON.stringify(data),

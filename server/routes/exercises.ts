@@ -52,6 +52,16 @@ router.get('/:id', authMiddleware, async (req: AuthRequest, res: Response) => {
     const instructions = JSON.parse(exerciseTrans?.instructions || exercise.instructions)
     const hints = exercise.hints ? JSON.parse(exerciseTrans?.hints || exercise.hints) : []
 
+    // Parse config if available
+    let config = null
+    if (exercise.config) {
+      try {
+        config = JSON.parse(exercise.config)
+      } catch (e) {
+        console.error('Failed to parse exercise config:', e)
+      }
+    }
+
     res.json({
       id: exercise.id,
       title: exerciseTrans?.title || exercise.title,
@@ -59,6 +69,7 @@ router.get('/:id', authMiddleware, async (req: AuthRequest, res: Response) => {
       type: exercise.type,
       difficulty: exercise.difficulty,
       instructions,
+      config,
       initialCode: exercise.initialCode,
       hints,
       xpReward: exercise.xpReward,
@@ -82,7 +93,7 @@ router.post('/:id/submit', authMiddleware, async (req: AuthRequest, res: Respons
   try {
     const prisma: PrismaClient = req.app.locals.prisma
     const { id } = req.params
-    const { userCode, userAnswer } = req.body
+    const { answer } = req.body
 
     // Verify user still exists
     const userExists = await prisma.user.findUnique({
@@ -103,109 +114,192 @@ router.post('/:id/submit', authMiddleware, async (req: AuthRequest, res: Respons
     }
 
     // Parse solution for validation
-    const solution = JSON.parse(exercise.solution)
+    const solution = exercise.solution ? JSON.parse(exercise.solution) : null
 
     // Calculate score based on exercise type
     let score = 0
     let isCorrect = false
     let feedback = ''
+    let correctAnswer: unknown = null
 
     switch (exercise.type) {
-      case 'ladder':
-      case 'grafcet':
-      case 'gcode':
-        // For code-based exercises, compare user code with solution
-        // Simple comparison for now - can be enhanced with more sophisticated validation
-        if (userCode) {
-          const normalizedUserCode = userCode.toLowerCase().replace(/\s+/g, '')
-          const normalizedSolution = JSON.stringify(solution).toLowerCase().replace(/\s+/g, '')
+      case 'fill_blank':
+        // For fill-blank exercises, check each blank
+        if (answer && answer.blanks && solution?.answers) {
+          let correctCount = 0
+          const totalBlanks = Object.keys(solution.answers).length
 
-          // Check if key elements are present
-          const keyElements = solution.code || solution.steps || []
-          let matchCount = 0
-
-          if (Array.isArray(keyElements)) {
-            keyElements.forEach((element: string) => {
-              if (normalizedUserCode.includes(element.toLowerCase().replace(/\s+/g, ''))) {
-                matchCount++
-              }
-            })
-            score = keyElements.length > 0 ? Math.round((matchCount / keyElements.length) * 100) : 0
-          } else {
-            // Direct comparison
-            score = normalizedUserCode === normalizedSolution ? 100 : 50
-          }
-
-          isCorrect = score >= 70
-          feedback = isCorrect ? 'Excellent travail!' : 'Continuez à améliorer votre solution.'
-        }
-        break
-
-      case 'plc_config':
-      case 'vfd_config':
-        // For configuration exercises, check if configuration matches
-        if (userAnswer && typeof userAnswer === 'object') {
-          const solutionConfig = solution.configuration || solution
-          let correctFields = 0
-          let totalFields = Object.keys(solutionConfig).length
-
-          Object.keys(solutionConfig).forEach((key) => {
-            if (userAnswer[key] !== undefined &&
-                String(userAnswer[key]).toLowerCase() === String(solutionConfig[key]).toLowerCase()) {
-              correctFields++
+          Object.entries(solution.answers).forEach(([blankId, expectedAnswer]) => {
+            const userAnswer = answer.blanks[blankId]?.toLowerCase().trim()
+            const acceptedAnswers = String(expectedAnswer).toLowerCase().split('|')
+            if (acceptedAnswers.includes(userAnswer)) {
+              correctCount++
             }
           })
 
-          score = totalFields > 0 ? Math.round((correctFields / totalFields) * 100) : 0
-          isCorrect = score >= 70
-          feedback = isCorrect ? 'Configuration correcte!' : 'Vérifiez les paramètres de configuration.'
+          score = totalBlanks > 0 ? Math.round((correctCount / totalBlanks) * 100) : 0
+          isCorrect = score === 100
+          feedback = isCorrect ? 'Toutes les réponses sont correctes!' : 'Certaines réponses sont incorrectes.'
+          correctAnswer = solution.answers
         }
         break
 
-      case 'troubleshooting':
-        // For troubleshooting, check if the answer matches
-        if (userAnswer) {
-          const correctAnswer = solution.answer || solution.cause || solution
-          if (typeof correctAnswer === 'string') {
-            isCorrect = userAnswer.toLowerCase().includes(correctAnswer.toLowerCase())
-          } else if (typeof correctAnswer === 'object') {
-            // Check multiple possible answers
-            const answers = Object.values(correctAnswer)
-            isCorrect = answers.some((ans: any) =>
-              userAnswer.toLowerCase().includes(String(ans).toLowerCase())
+      case 'ordering':
+        // For ordering exercises, check the order
+        if (answer && answer.order && solution?.correctOrder) {
+          let correctPositions = 0
+          const totalItems = solution.correctOrder.length
+
+          solution.correctOrder.forEach((itemId: string, index: number) => {
+            if (answer.order[index] === itemId) {
+              correctPositions++
+            }
+          })
+
+          score = totalItems > 0 ? Math.round((correctPositions / totalItems) * 100) : 0
+          isCorrect = score === 100
+          feedback = isCorrect ? 'L\'ordre est parfait!' : 'L\'ordre n\'est pas tout à fait correct.'
+          correctAnswer = solution.correctOrder
+        }
+        break
+
+      case 'matching':
+        // For matching exercises, check pairs
+        if (answer && answer.pairs && solution?.pairs) {
+          let correctPairs = 0
+          const totalPairs = solution.pairs.length
+
+          solution.pairs.forEach(([leftId, rightId]: [string, string]) => {
+            const found = answer.pairs.some(([l, r]: [string, string]) =>
+              l === leftId && r === rightId
             )
+            if (found) correctPairs++
+          })
+
+          score = totalPairs > 0 ? Math.round((correctPairs / totalPairs) * 100) : 0
+          isCorrect = score === 100
+          feedback = isCorrect ? 'Toutes les associations sont correctes!' : 'Certaines associations sont incorrectes.'
+          correctAnswer = solution.pairs
+        }
+        break
+
+      case 'code_input':
+        // For code input exercises, check patterns or test cases
+        if (answer && answer.code) {
+          const userCode = answer.code.trim()
+
+          if (solution?.acceptedPatterns) {
+            // Check against regex patterns
+            const matches = solution.acceptedPatterns.some((pattern: string) =>
+              new RegExp(pattern, 'i').test(userCode)
+            )
+            score = matches ? 100 : 30
+          } else if (solution?.code) {
+            // Simple comparison
+            const normalizedUser = userCode.toLowerCase().replace(/\s+/g, ' ')
+            const normalizedSolution = solution.code.toLowerCase().replace(/\s+/g, ' ')
+            score = normalizedUser === normalizedSolution ? 100 : 40
           }
-          score = isCorrect ? 100 : 30
-          feedback = isCorrect ? 'Diagnostic correct!' : 'Analysez les symptômes plus attentivement.'
+
+          isCorrect = score >= 70
+          feedback = isCorrect ? 'Code correct!' : 'Le code ne correspond pas à la solution attendue.'
+          correctAnswer = solution?.code
+        }
+        break
+
+      case 'drag_drop':
+        // For drag-drop exercises, check placements
+        if (answer && answer.placements && solution?.placements) {
+          let correctPlacements = 0
+          let totalExpected = 0
+
+          Object.entries(solution.placements).forEach(([zoneId, expectedItems]) => {
+            const items = expectedItems as string[]
+            totalExpected += items.length
+            const userItems = answer.placements[zoneId] || []
+
+            items.forEach((itemId: string) => {
+              if (userItems.includes(itemId)) correctPlacements++
+            })
+          })
+
+          score = totalExpected > 0 ? Math.round((correctPlacements / totalExpected) * 100) : 0
+          isCorrect = score >= 80
+          feedback = isCorrect ? 'Tous les éléments sont bien placés!' : 'Certains éléments ne sont pas au bon endroit.'
+          correctAnswer = solution.placements
         }
         break
 
       case 'wiring':
         // For wiring exercises, check connections
-        if (userAnswer && Array.isArray(userAnswer)) {
-          const correctConnections = solution.connections || solution
-          let correctCount = 0
+        if (answer && answer.connections && solution?.connections) {
+          let correctConnections = 0
+          const totalConnections = solution.connections.length
 
-          if (Array.isArray(correctConnections)) {
-            correctConnections.forEach((conn: any) => {
-              const found = userAnswer.some((ua: any) =>
-                ua.from === conn.from && ua.to === conn.to
+          solution.connections.forEach(([t1, t2]: [string, string]) => {
+            const found = answer.connections.some(([c1, c2]: [string, string]) =>
+              (c1 === t1 && c2 === t2) || (c1 === t2 && c2 === t1)
+            )
+            if (found) correctConnections++
+          })
+
+          score = totalConnections > 0 ? Math.round((correctConnections / totalConnections) * 100) : 0
+          isCorrect = score >= 80
+          feedback = isCorrect ? 'Câblage correct!' : 'Certaines connexions sont manquantes ou incorrectes.'
+          correctAnswer = solution.connections
+        }
+        break
+
+      case 'timing':
+        // For timing exercises, check signal transitions with tolerance
+        if (answer && answer.signals && solution?.expectedSignals) {
+          const tolerance = solution.tolerance || 50 // ms
+
+          let correctSignals = 0
+          const totalSignals = solution.expectedSignals.length
+
+          solution.expectedSignals.forEach((expected: any) => {
+            const userSignal = answer.signals.find((s: any) => s.signalId === expected.signalId)
+            if (userSignal) {
+              // Check if transitions are close enough
+              let transitionsMatch = expected.transitions.every((et: any) =>
+                userSignal.transitions.some((ut: any) =>
+                  Math.abs(ut.time - et.time) <= tolerance && ut.value === et.value
+                )
               )
-              if (found) correctCount++
-            })
-            score = correctConnections.length > 0
-              ? Math.round((correctCount / correctConnections.length) * 100)
-              : 0
-          }
-          isCorrect = score >= 70
-          feedback = isCorrect ? 'Câblage correct!' : 'Vérifiez vos connexions.'
+              if (transitionsMatch) correctSignals++
+            }
+          })
+
+          score = totalSignals > 0 ? Math.round((correctSignals / totalSignals) * 100) : 0
+          isCorrect = score >= 80
+          feedback = isCorrect ? 'Chronogramme correct!' : 'Le chronogramme ne correspond pas tout à fait.'
+          correctAnswer = solution.expectedSignals
+        }
+        break
+
+      case 'ladder_builder':
+      case 'plc_simulator':
+        // For simulation exercises, check objectives or behavior
+        if (answer && answer.completedObjectives) {
+          const totalObjectives = solution?.objectiveChecks?.length || 1
+          const completedCount = answer.completedObjectives.length
+          score = Math.round((completedCount / totalObjectives) * 100)
+          isCorrect = completedCount === totalObjectives
+          feedback = isCorrect ? 'Tous les objectifs sont atteints!' : `${totalObjectives - completedCount} objectif(s) restant(s).`
+        } else if (answer && answer.program) {
+          // Basic program validation
+          score = 70
+          isCorrect = true
+          feedback = 'Programme soumis avec succès!'
         }
         break
 
       default:
-        // Generic scoring
+        // Generic scoring for legacy types
         score = 50
-        feedback = 'Exercice soumis.'
+        isCorrect = false
+        feedback = 'Type d\'exercice non supporté.'
     }
 
     // Get existing progress
@@ -258,7 +352,7 @@ router.post('/:id/submit', authMiddleware, async (req: AuthRequest, res: Respons
         bestScore: existingProgress?.bestScore
           ? Math.max(existingProgress.bestScore, score)
           : score,
-        userCode: userCode || null,
+        userCode: answer ? JSON.stringify(answer) : null,
         completedAt: isCorrect ? new Date() : existingProgress?.completedAt,
       },
       create: {
@@ -267,7 +361,7 @@ router.post('/:id/submit', authMiddleware, async (req: AuthRequest, res: Respons
         completed: isCorrect,
         attempts: 1,
         bestScore: score,
-        userCode: userCode || null,
+        userCode: answer ? JSON.stringify(answer) : null,
         completedAt: isCorrect ? new Date() : null,
       },
     })
@@ -278,6 +372,7 @@ router.post('/:id/submit', authMiddleware, async (req: AuthRequest, res: Respons
       feedback,
       xpEarned,
       attempts: (existingProgress?.attempts || 0) + 1,
+      correctAnswer,
     })
   } catch (error) {
     console.error('Submit exercise error:', error)

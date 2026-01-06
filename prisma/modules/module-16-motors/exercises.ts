@@ -4,7 +4,7 @@ export const module16Exercises: ExerciseData[] = [
   {
     title: "Choix du type de moteur",
     description: "Sélectionnez le type de moteur adapté à chaque application",
-    type: "troubleshooting",
+    type: "matching",
     difficulty: "beginner",
     instructions: JSON.stringify({
       steps: [
@@ -14,12 +14,30 @@ export const module16Exercises: ExerciseData[] = [
       ],
       objective: "Choisir le moteur optimal pour chaque cas"
     }),
+    config: JSON.stringify({
+      leftItems: [
+        { id: "conveyor", text: "Convoyeur industriel" },
+        { id: "robot", text: "Robot articulé 6 axes" },
+        { id: "printer", text: "Imprimante 3D" },
+        { id: "pump", text: "Pompe centrifuge" },
+        { id: "cnc", text: "Axe de machine CNC" }
+      ],
+      rightItems: [
+        { id: "async", text: "Moteur asynchrone - Couple constant, coût faible" },
+        { id: "brushless", text: "Servomoteur brushless - Haute dynamique, précision" },
+        { id: "stepper", text: "Moteur pas à pas - Positionnement simple, boucle ouverte" },
+        { id: "async2", text: "Asynchrone avec VFD - Variation de vitesse économique" },
+        { id: "servo", text: "Servomoteur avec encodeur - Positionnement précis haute vitesse" }
+      ]
+    }),
     solution: JSON.stringify({
-      applications: {
-        "Convoyeur": { motor: "Asynchrone", reason: "Couple constant, coût faible" },
-        "Robot": { motor: "Brushless", reason: "Précision, dynamique" },
-        "Imprimante 3D": { motor: "Pas à pas", reason: "Positionnement précis, coût" }
-      }
+      pairs: [
+        ["conveyor", "async"],
+        ["robot", "brushless"],
+        ["printer", "stepper"],
+        ["pump", "async2"],
+        ["cnc", "servo"]
+      ]
     }),
     hints: JSON.stringify([
       "Asynchrone: applications de puissance",
@@ -32,7 +50,7 @@ export const module16Exercises: ExerciseData[] = [
   {
     title: "Dimensionnement moteur",
     description: "Calculez les besoins en couple et puissance",
-    type: "troubleshooting",
+    type: "fill_blank",
     difficulty: "advanced",
     instructions: JSON.stringify({
       steps: [
@@ -43,11 +61,29 @@ export const module16Exercises: ExerciseData[] = [
       ],
       objective: "Dimensionner correctement un moteur"
     }),
+    config: JSON.stringify({
+      text: "Dimensionnement d'un servomoteur:\n\nDonnées:\n- Inertie totale (charge + moteur): J = {{blank1}} kg.m²\n- Accélération angulaire requise: α = {{blank2}} rad/s²\n- Vitesse maximale: N = {{blank3}} tr/min\n\nCalcul du couple d'accélération:\nT_acc = J × α = {{blank1}} × {{blank2}} = {{blank4}} N.m\n\nConversion vitesse en rad/s:\nω = (2 × π × N) / 60 = (2 × π × {{blank3}}) / 60 = {{blank5}} rad/s\n\nCalcul de la puissance:\nP = T × ω = {{blank4}} × {{blank5}} = {{blank6}} W\n\nAvec marge de sécurité (25%):\nP_moteur ≥ {{blank6}} × 1.25 = {{blank7}} W = {{blank8}} kW",
+      blanks: [
+        { id: "blank1", placeholder: "inertie" },
+        { id: "blank2", placeholder: "accélération" },
+        { id: "blank3", placeholder: "vitesse" },
+        { id: "blank4", placeholder: "couple" },
+        { id: "blank5", placeholder: "rad/s" },
+        { id: "blank6", placeholder: "puissance W" },
+        { id: "blank7", placeholder: "P avec marge" },
+        { id: "blank8", placeholder: "P kW" }
+      ]
+    }),
     solution: JSON.stringify({
-      calculation: {
-        torque: 5,
-        power: 1570,
-        formula: "T = J × α, P = T × ω"
+      answers: {
+        blank1: "0.5",
+        blank2: "10",
+        blank3: "3000",
+        blank4: "5",
+        blank5: "314|314.16",
+        blank6: "1570|1571",
+        blank7: "1962|1963|1964",
+        blank8: "1.96|2|1.97"
       }
     }),
     hints: JSON.stringify([
@@ -57,6 +93,51 @@ export const module16Exercises: ExerciseData[] = [
     ]),
     xpReward: 175,
     order: 2
+  },
+  {
+    title: "Caractéristiques des moteurs",
+    description: "Identifiez les caractéristiques de chaque type de moteur",
+    type: "drag_drop",
+    difficulty: "intermediate",
+    instructions: JSON.stringify({
+      steps: [
+        "Classez les caractéristiques par type de moteur",
+        "Identifiez les avantages et inconvénients",
+        "Comprenez les domaines d'application"
+      ],
+      objective: "Comprendre les spécificités de chaque moteur"
+    }),
+    config: JSON.stringify({
+      items: [
+        { id: "simple", text: "Construction simple, robuste" },
+        { id: "maintenance", text: "Pas de balais, faible maintenance" },
+        { id: "steps", text: "Rotation par pas discrets" },
+        { id: "induction", text: "Fonctionne par induction" },
+        { id: "magnets", text: "Aimants permanents au rotor" },
+        { id: "openloop", text: "Fonctionne sans capteur de position" },
+        { id: "lowspeed", text: "Fort couple à basse vitesse" },
+        { id: "efficient", text: "Rendement élevé (>90%)" }
+      ],
+      zones: [
+        { id: "async", label: "Moteur asynchrone" },
+        { id: "brushless", label: "Servomoteur brushless" },
+        { id: "stepper", label: "Moteur pas à pas" }
+      ]
+    }),
+    solution: JSON.stringify({
+      placements: {
+        async: ["simple", "induction"],
+        brushless: ["maintenance", "magnets", "efficient"],
+        stepper: ["steps", "openloop", "lowspeed"]
+      }
+    }),
+    hints: JSON.stringify([
+      "Le moteur asynchrone est le plus simple et robuste",
+      "Le brushless utilise des aimants permanents",
+      "Le pas à pas avance par incréments fixes"
+    ]),
+    xpReward: 150,
+    order: 3
   }
 ]
 
@@ -99,6 +180,23 @@ export const module16ExerciseTranslations: {
         "Add load torque",
         "Plan for 20-30% margin"
       ])
+    },
+    "Caractéristiques des moteurs": {
+      title: "Motor Characteristics",
+      description: "Identify characteristics of each motor type",
+      instructions: JSON.stringify({
+        steps: [
+          "Classify characteristics by motor type",
+          "Identify advantages and disadvantages",
+          "Understand application domains"
+        ],
+        objective: "Understand specifics of each motor"
+      }),
+      hints: JSON.stringify([
+        "Induction motor is simplest and most robust",
+        "Brushless uses permanent magnets",
+        "Stepper moves in fixed increments"
+      ])
     }
   },
   es: {
@@ -135,6 +233,23 @@ export const module16ExerciseTranslations: {
         "Par de aceleración = Inercia × Aceleración",
         "Añada el par de carga",
         "Prevea un margen del 20-30%"
+      ])
+    },
+    "Caractéristiques des moteurs": {
+      title: "Características de los motores",
+      description: "Identifique las características de cada tipo de motor",
+      instructions: JSON.stringify({
+        steps: [
+          "Clasifique las características por tipo de motor",
+          "Identifique ventajas e inconvenientes",
+          "Comprenda los dominios de aplicación"
+        ],
+        objective: "Comprender las especificidades de cada motor"
+      }),
+      hints: JSON.stringify([
+        "El motor asíncrono es el más simple y robusto",
+        "El brushless usa imanes permanentes",
+        "El paso a paso avanza por incrementos fijos"
       ])
     }
   }

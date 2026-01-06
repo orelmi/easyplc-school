@@ -247,10 +247,11 @@ model Exercise {
   moduleId    String
   title       String
   description String
-  type        String    // ladder, grafcet, gcode, plc_config, troubleshooting
+  type        String    // fill_blank, ordering, matching, code_input, drag_drop, wiring, timing, ladder_builder, plc_simulator
   difficulty  String    // beginner, intermediate, advanced
   instructions String   // JSON with step-by-step instructions
-  initialCode String?   // Initial code/configuration for the exercise
+  config      String?   // JSON configuration for the exercise type
+  initialCode String?   // Initial code/configuration for the exercise (legacy)
   solution    String    // Expected solution (JSON)
   hints       String?   // JSON array of hints
   xpReward    Int       @default(100)

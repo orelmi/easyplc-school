@@ -312,6 +312,7 @@ async function main() {
           type: exerciseData.type,
           difficulty: exerciseData.difficulty,
           instructions: exerciseData.instructions,
+          config: exerciseData.config || null,
           initialCode: exerciseData.initialCode || null,
           solution: exerciseData.solution,
           hints: exerciseData.hints || null,

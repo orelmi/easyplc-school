@@ -4,7 +4,7 @@ export const module12Exercises: ExerciseData[] = [
   {
     title: "Configuration basique VFD",
     description: "Configurez les paramètres de base d'un variateur de fréquence",
-    type: "vfd_config",
+    type: "fill_blank",
     difficulty: "beginner",
     instructions: JSON.stringify({
       steps: [
@@ -15,12 +15,25 @@ export const module12Exercises: ExerciseData[] = [
       ],
       objective: "Paramétrer correctement un VFD pour un moteur standard"
     }),
+    config: JSON.stringify({
+      text: "Configuration de base VFD:\n\nP001 - Fréquence nominale: {{blank1}} Hz\nP002 - Tension nominale: {{blank2}} V\nP003 - Rampe d'accélération: {{blank3}} secondes\nP004 - Rampe de décélération: {{blank4}} secondes\n\nLa relation entre fréquence et vitesse:\nVitesse = (Fréquence × {{blank5}}) / Nombre de paires de pôles\n\nPour un moteur 4 pôles à 50Hz: {{blank6}} tr/min synchrone",
+      blanks: [
+        { id: "blank1", placeholder: "fréquence" },
+        { id: "blank2", placeholder: "tension" },
+        { id: "blank3", placeholder: "temps" },
+        { id: "blank4", placeholder: "temps" },
+        { id: "blank5", placeholder: "valeur" },
+        { id: "blank6", placeholder: "vitesse" }
+      ]
+    }),
     solution: JSON.stringify({
-      parameters: {
-        P001: 50,
-        P002: 400,
-        P003: 5.0,
-        P004: 3.0
+      answers: {
+        blank1: "50",
+        blank2: "400",
+        blank3: "5",
+        blank4: "3",
+        blank5: "60|120",
+        blank6: "1500"
       }
     }),
     hints: JSON.stringify([
@@ -34,33 +47,46 @@ export const module12Exercises: ExerciseData[] = [
   {
     title: "Lecture plaque signalétique",
     description: "Interprétez les données de la plaque signalétique d'un moteur",
-    type: "troubleshooting",
+    type: "matching",
     difficulty: "beginner",
     instructions: JSON.stringify({
       steps: [
         "Identifiez la puissance nominale",
         "Repérez la tension et le courant nominal",
         "Notez la vitesse de rotation",
-        "Calculez le couple nominal"
+        "Comprenez le facteur de puissance"
       ],
       objective: "Extraire toutes les informations utiles de la plaque"
     }),
+    config: JSON.stringify({
+      leftItems: [
+        { id: "kw", text: "4 kW" },
+        { id: "volt", text: "400 V" },
+        { id: "amp", text: "8.5 A" },
+        { id: "rpm", text: "1450 tr/min" },
+        { id: "cos", text: "cos φ = 0.85" }
+      ],
+      rightItems: [
+        { id: "power", text: "Puissance mécanique nominale" },
+        { id: "voltage", text: "Tension d'alimentation triphasée" },
+        { id: "current", text: "Courant nominal absorbé" },
+        { id: "speed", text: "Vitesse de rotation nominale" },
+        { id: "factor", text: "Facteur de puissance (rendement réactif)" }
+      ]
+    }),
     solution: JSON.stringify({
-      motorData: {
-        power: "4 kW",
-        voltage: "400V",
-        current: "8.5A",
-        speed: "1450 tr/min",
-        frequency: "50Hz",
-        cos_phi: 0.85,
-        torque: "26.3 Nm"
-      },
-      formula: "Couple = (P × 9550) / N"
+      pairs: [
+        ["kw", "power"],
+        ["volt", "voltage"],
+        ["amp", "current"],
+        ["rpm", "speed"],
+        ["cos", "factor"]
+      ]
     }),
     hints: JSON.stringify([
       "La puissance est en kW ou HP",
       "Le courant dépend du couplage (étoile/triangle)",
-      "Le couple se calcule: T = (P × 9550) / N"
+      "Le cos φ indique l'efficacité du moteur"
     ]),
     xpReward: 75,
     order: 2
@@ -79,13 +105,56 @@ export const module12Exercises: ExerciseData[] = [
       ],
       objective: "Réaliser un câblage complet et sécurisé"
     }),
+    config: JSON.stringify({
+      components: [
+        {
+          id: "power",
+          type: "power_supply",
+          label: "Alimentation triphasée",
+          terminals: [
+            { id: "L1", label: "L1", color: "#8B4513" },
+            { id: "L2", label: "L2", color: "#000000" },
+            { id: "L3", label: "L3", color: "#808080" }
+          ]
+        },
+        {
+          id: "vfd",
+          type: "vfd",
+          label: "Variateur",
+          terminals: [
+            { id: "R", label: "R (L1)", color: "#8B4513" },
+            { id: "S", label: "S (L2)", color: "#000000" },
+            { id: "T", label: "T (L3)", color: "#808080" },
+            { id: "U", label: "U", color: "#FF0000" },
+            { id: "V", label: "V", color: "#FFFF00" },
+            { id: "W", label: "W", color: "#0000FF" },
+            { id: "DI1", label: "DI1 (Marche)", color: "#00FF00" },
+            { id: "DI2", label: "DI2 (Arrêt)", color: "#00FF00" },
+            { id: "AI1", label: "AI1 (Vitesse)", color: "#FFA500" }
+          ]
+        },
+        {
+          id: "motor",
+          type: "motor",
+          label: "Moteur",
+          terminals: [
+            { id: "U", label: "U", color: "#FF0000" },
+            { id: "V", label: "V", color: "#FFFF00" },
+            { id: "W", label: "W", color: "#0000FF" }
+          ]
+        }
+      ],
+      wireColors: ["#8B4513", "#000000", "#808080", "#FF0000", "#FFFF00", "#0000FF"]
+    }),
     solution: JSON.stringify({
-      connections: {
-        power: ["L1-R", "L2-S", "L3-T"],
-        motor: ["U-U", "V-V", "W-W"],
-        safety: ["S1-24V", "S2-DI1"],
-        control: ["Start-DI2", "Stop-DI3", "Speed-AI1"]
-      }
+      connections: [
+        ["power.L1", "vfd.R"],
+        ["power.L2", "vfd.S"],
+        ["power.L3", "vfd.T"],
+        ["vfd.U", "motor.U"],
+        ["vfd.V", "motor.V"],
+        ["vfd.W", "motor.W"]
+      ]
     }),
     hints: JSON.stringify([
       "Respectez le sens des phases pour le sens de rotation",
@@ -128,14 +197,14 @@ export const module12ExerciseTranslations: {
           "Identify the nominal power",
           "Find the voltage and nominal current",
           "Note the rotation speed",
-          "Calculate the nominal torque"
+          "Understand the power factor"
         ],
         objective: "Extract all useful information from the nameplate"
       }),
       hints: JSON.stringify([
         "Power is in kW or HP",
         "Current depends on wiring (star/delta)",
-        "Torque is calculated: T = (P × 9550) / N"
+        "cos φ indicates motor efficiency"
       ])
     },
     "Schéma de câblage VFD": {
@@ -184,14 +253,14 @@ export const module12ExerciseTranslations: {
           "Identifique la potencia nominal",
           "Encuentre la tensión y corriente nominal",
           "Anote la velocidad de rotación",
-          "Calcule el par nominal"
+          "Comprenda el factor de potencia"
         ],
         objective: "Extraer toda la información útil de la placa"
       }),
       hints: JSON.stringify([
         "La potencia está en kW o HP",
         "La corriente depende del conexionado (estrella/triángulo)",
-        "El par se calcula: T = (P × 9550) / N"
+        "cos φ indica la eficiencia del motor"
       ])
     },
     "Schéma de câblage VFD": {
